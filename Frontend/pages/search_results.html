@@ -39,6 +39,19 @@
             cursor: pointer;
         }
 
+        /* Set the main container to be a flex container */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: row;
+            flex-grow: 1;
+        }
+
         /* Styles for filter section */
         .filter-section {
             float: left;
@@ -47,6 +60,8 @@
             background-color: #f1f1f1;
             height: 100%;
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
         }
 
         .filter-section h2 {
@@ -75,6 +90,8 @@
             width: 80%;
             padding: 20px;
             box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
         }
 
         .search-result-section h2 {
@@ -100,6 +117,14 @@
         .search-result-item p {
             margin-top: 5px;
         }
+
+        /* Style the footer */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
     </style>
 </head>
 
@@ -115,68 +140,69 @@
         <input type="text" id="search" name="search">
         <button type="submit">Search</button>
     </form>
-    <div class="filter-section">
-        <h2>Filter Results</h2>
-        <ul>
-            <li>
-                <label>Car Type</label>
-                <input type="checkbox" name="car-type" value="Sedan">Sedan<br>
-                <input type="checkbox" name="car-type" value="SUV">SUV<br>
-                <input type="checkbox" name="car-type" value="Hatchback">Hatchback<br>
-                <input type="checkbox" name="car-type" value="Sports Car">Sports Car<br>
-            </li>
-            <li>
-                <p><label>Publish Date</label>From:
-                    <select name="year-from">
-                        <option value="2020">2020</option>
-                        <option value="2021">2021</option>
-                        <option value="2022">2022</option>
-                        <option value="2023">2023</option>
-                    </select>
-                    To:
-                    <select name="year-to">
-                        <option value="2020">2020</option>
-                        <option value="2021">2021</option>
-                        <option value="2022">2022</option>
-                        <option value="2023">2023</option>
-                    </select>
-                </p>
-            </li>
-            <li>
-                <label>Source</label>
-                <input type="checkbox" name="source" value="Dealer">Dealer<br>
-                <input type="checkbox" name="source" value="Private">Private<br>
-            </li>
-        </ul>
+    <div class="main-container">
+        <div class="filter-section">
+            <h2>Filter Results</h2>
+            <ul>
+                <li>
+                    <label>Car Type</label>
+                    <input type="checkbox" name="car-type" value="Sedan">Sedan<br>
+                    <input type="checkbox" name="car-type" value="SUV">SUV<br>
+                    <input type="checkbox" name="car-type" value="Hatchback">Hatchback<br>
+                    <input type="checkbox" name="car-type" value="Sports Car">Sports Car<br>
+                </li>
+                <li>
+                    <p><label>Publish Date</label>From:
+                        <select name="year-from">
+                            <option value="2020">2020</option>
+                            <option value="2021">2021</option>
+                            <option value="2022">2022</option>
+                            <option value="2023">2023</option>
+                        </select>
+                        To:
+                        <select name="year-to">
+                            <option value="2020">2020</option>
+                            <option value="2021">2021</option>
+                            <option value="2022">2022</option>
+                            <option value="2023">2023</option>
+                        </select>
+                    </p>
+                </li>
+                <li>
+                    <label>Source</label>
+                    <input type="checkbox" name="source" value="Dealer">Dealer<br>
+                    <input type="checkbox" name="source" value="Private">Private<br>
+                </li>
+            </ul>
+        </div>
+        <div class="search-result-section">
+            <h2>Search Result</h2>
+            <div class="sort-by">
+                <label for="sort-by-select">Sort By:</label>
+                <select id="sort-by-select" name="sort-by">
+                    <option value="relevance">Relevance</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="year-asc">Year: Old to New</option>
+                    <option value="year-desc">Year: New to Old</option>
+                </select>
+            </div>
+            <div class="search-result-item">
+                <h3>Product 1</h3>
+                <p>Description of Product 1</p>
+                <p>Category: Books</p>
+                <p>Price: $10</p>
+                <p>Brand: Apple</p>
+            </div>
+            <div class="search-result-item">
+                <h3>Product 2</h3>
+                <p>Description of Product 2</p>
+                <p>Category: Electronics</p>
+                <p>Price: $50</p>
+                <p>Brand: Samsung</p>
+            </div>
+        </div>
     </div>
-    <div class="search-result-section">
-        <h2>Search Result</h2>
-        <div class="sort-by">
-            <label for="sort-by-select">Sort By:</label>
-            <select id="sort-by-select" name="sort-by">
-                <option value="relevance">Relevance</option>
-                <option value="price-asc">Price: Low to High</option>
-                <option value="price-desc">Price: High to Low</option>
-                <option value="year-asc">Year: Old to New</option>
-                <option value="year-desc">Year: New to Old</option>
-            </select>
-        </div>
-        <div class="search-result-item">
-            <h3>Product 1</h3>
-            <p>Description of Product 1</p>
-            <p>Category: Books</p>
-            <p>Price: $10</p>
-            <p>Brand: Apple</p>
-        </div>
-        <div class="search-result-item">
-            <h3>Product 2</h3>
-            <p>Description of Product 2</p>
-            <p>Category: Electronics</p>
-            <p>Price: $50</p>
-            <p>Brand: Samsung</p>
-        </div>
-    </div>
-
     <footer>
         <p>&copy; 2023 My Website</p>
     </footer>
