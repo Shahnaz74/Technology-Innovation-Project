@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Search Results</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background-color: #333;
+            color: #fff;
+        }
+
+        h1 {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+        }
+
+        h1::before {
+            content: url("path/to/icon.png");
+            display: inline-block;
+            margin-right: 0.5rem;
+            height: 1.5rem;
+            width: 1.5rem;
+        }
+
+        button {
+            background-color: #fe0404;
+            color: #333;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+        }
+
+        /* Styles for filter section */
+        .filter-section {
+            float: left;
+            width: 20%;
+            padding: 20px;
+            background-color: #f1f1f1;
+            height: 100%;
+            box-sizing: border-box;
+        }
+
+        .filter-section h2 {
+            margin-top: 0;
+        }
+
+        .filter-section ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .filter-section li {
+            margin-bottom: 5px;
+        }
+
+        .filter-section label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        /* Styles for search result section */
+        .search-result-section {
+            float: right;
+            width: 80%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .search-result-section h2 {
+            margin-top: 0;
+        }
+
+        .search-result-section p {
+            margin-top: 0;
+        }
+
+        /* Styles for search result items */
+        .search-result-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .search-result-item h3 {
+            margin-top: 0;
+        }
+
+        .search-result-item p {
+            margin-top: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1><span>Rover Car Club Of Australia - Record Archive</span></h1>
+        <div>
+            <button onclick="location.href='/page1'">Upload</button>
+            <button onclick="location.href='/page2'">Admin Portal</button>
+        </div>
+    </header>
+    <form action="/search" method="get">
+        <input type="text" id="search" name="search">
+        <button type="submit">Search</button>
+    </form>
+    <div class="filter-section">
+        <h2>Filter Results</h2>
+        <ul>
+            <li>
+                <label>Car Type</label>
+                <input type="checkbox" name="car-type" value="Sedan">Sedan<br>
+                <input type="checkbox" name="car-type" value="SUV">SUV<br>
+                <input type="checkbox" name="car-type" value="Hatchback">Hatchback<br>
+                <input type="checkbox" name="car-type" value="Sports Car">Sports Car<br>
+            </li>
+            <li>
+                <p><label>Publish Date</label>From:
+                    <select name="year-from">
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                    </select>
+                    To:
+                    <select name="year-to">
+                        <option value="2020">2020</option>
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                    </select>
+                </p>
+            </li>
+            <li>
+                <label>Source</label>
+                <input type="checkbox" name="source" value="Dealer">Dealer<br>
+                <input type="checkbox" name="source" value="Private">Private<br>
+            </li>
+        </ul>
+    </div>
+    <div class="search-result-section">
+        <h2>Search Result</h2>
+        <div class="sort-by">
+            <label for="sort-by-select">Sort By:</label>
+            <select id="sort-by-select" name="sort-by">
+                <option value="relevance">Relevance</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="year-asc">Year: Old to New</option>
+                <option value="year-desc">Year: New to Old</option>
+            </select>
+        </div>
+        <div class="search-result-item">
+            <h3>Product 1</h3>
+            <p>Description of Product 1</p>
+            <p>Category: Books</p>
+            <p>Price: $10</p>
+            <p>Brand: Apple</p>
+        </div>
+        <div class="search-result-item">
+            <h3>Product 2</h3>
+            <p>Description of Product 2</p>
+            <p>Category: Electronics</p>
+            <p>Price: $50</p>
+            <p>Brand: Samsung</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2023 My Website</p>
+    </footer>
+</body>
+
+</html>
