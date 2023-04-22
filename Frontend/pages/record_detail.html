@@ -2,7 +2,8 @@
 <html>
 
 <head>
-    <title>My Home Page</title>
+    <title>Record Details</title>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
         header {
@@ -38,6 +39,26 @@
             cursor: pointer;
         }
 
+        /* Set the main container to be a flex container */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: row;
+            flex-grow: 1;
+        }
+
+        /* Style the footer */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
 
         @media only screen and (max-width: 600px) {
             header {
@@ -76,9 +97,9 @@
             <button onclick="location.href='/page2'">Admin Portal</button>
         </div>
     </header>
-    <main>
+    <div class="main-container">
 
-    </main>
+    </div>
     <footer>
         <p>&copy; 2023 My Website</p>
     </footer>
