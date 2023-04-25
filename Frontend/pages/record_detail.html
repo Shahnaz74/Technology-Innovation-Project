@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Record Details</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            background-color: #333;
+            color: #fff;
+        }
+
+        h1 {
+            margin: 0;
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+        }
+
+        h1::before {
+            content: url("path/to/icon.png");
+            display: inline-block;
+            margin-right: 0.5rem;
+            height: 1.5rem;
+            width: 1.5rem;
+        }
+
+        button {
+            background-color: #fe0404;
+            color: #333;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+        }
+
+        /* Set the main container to be a flex container */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .main-container {
+            display: flex;
+            flex-direction: row;
+            flex-grow: 1;
+        }
+
+        /* Style the footer */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        @media only screen and (max-width: 600px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            h1 {
+                margin-bottom: 1rem;
+            }
+
+            h1::before {
+                margin-right: 0;
+            }
+
+            button {
+                margin-bottom: 1rem;
+            }
+
+            section {
+                padding: 1rem;
+            }
+
+            .area {
+                flex-basis: calc(50% - 1rem);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1><span>Rover Car Club Of Australia - Record Archive</span></h1>
+        <div>
+            <button onclick="location.href='/page1'">Upload</button>
+            <button onclick="location.href='/page2'">Admin Portal</button>
+        </div>
+    </header>
+    <div class="main-container">
+
+    </div>
+    <footer>
+        <p>&copy; 2023 My Website</p>
+    </footer>
+</body>
+
+</html>
