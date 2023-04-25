@@ -1,15 +1,93 @@
 /* ---------------------------------------------------
-  CUSTOM ELEMENTS
+  CUSTOM STYLING
 ----------------------------------------------------- */
-
-.sidebar-list-group-item {
-  color: #565c54;
-  border: none;
-  background-color: #f3f3f3;
-}
 
 .primary-red {
   color: #ec1414;
+}
+
+.primary-red-darker {
+  color: #d41212;
+}
+
+.primary-red-lighter {
+  color: #f7a1a1;
+}
+
+.primary-red-subtle {
+  color: #fde8e8;
+}
+
+.primary-yellow {
+  color: #ffba08;
+}
+
+.primary-yellow-darker {
+  color: #e6a707;
+}
+
+.primary-yellow-lighter {
+  color: #ffe39c;
+}
+
+.primary-yellow-subtle {
+  color: #fff8e6;
+}
+
+.primary-blue {
+  color: #3772ff;
+}
+
+.primary-blue-darker {
+  color: #3267e6;
+}
+
+.primary-blue-lighter {
+  color: #afc7ff;
+}
+
+.primary-blue-subtle {
+  color: #ebf1ff;
+}
+
+.primary-green {
+  color: #57cc99;
+}
+
+.primary-green-darker {
+  color: #4eb88a;
+}
+
+.primary-green-lighter {
+  color: #bcebd6;
+}
+
+.primary-green-subtle {
+  color: #eefaf5;
+}
+
+.primary-neutal-900 {
+  color: #0d160b;
+}
+
+.primary-neutal-800 {
+  color: #565c54;
+}
+
+.primary-neutal-700 {
+  color: #9ea29d;
+}
+
+.primary-neutal-600 {
+  color: #c3c5c2;
+}
+
+.primary-neutal-300 {
+  color: #e7e8e7;
+}
+
+.primary-neutal-100 {
+  color: #f3f3f3;
 }
 
 /* ---------------------------------------------------
@@ -52,13 +130,39 @@ body {
 }
 
 /* ---------------------------------------------------
-  SIDEBAR STYLE
+  CUSTOM ELEMENTS
 ----------------------------------------------------- */
+/* Toast message */
+.neutral-outlin-btn {
+  border: 1px solid #c3c5c2;
+  color: #565c54;
+}
+
+/* ---------------------------------------------------
+  LAYOUT STYLE
+----------------------------------------------------- */
+
+#content {
+  width: 100%;
+  padding: 0 40px 0 40px;
+  min-height: 100vh;
+  transition: all 0.3s;
+}
 
 .wrapper {
   display: flex;
   width: 100%;
   align-items: stretch;
+}
+
+/* ---------------------------------------------------
+  SIDEBAR STYLE
+----------------------------------------------------- */
+
+.sidebar-list-group-item {
+  color: #565c54;
+  border: none;
+  background-color: #f3f3f3;
 }
 
 #sidebar {
@@ -67,86 +171,16 @@ body {
   background: #f3f3f3;
   color: #565c54;
   transition: all 0.3s;
+  padding: 20px;
 }
 
 #sidebar.active {
   margin-left: -250px;
 }
 
-#sidebar {
-  padding: 20px;
-  background: #f3f3f3;
-}
-
-#sidebar ul.components {
-  padding: 20px 0;
-}
-
-#sidebar ul p {
-  color: #fff;
-  padding: 10px;
-}
-
-#sidebar ul li a {
-  padding: 10px;
-  font-size: 1.1em;
-  display: block;
-}
-
-#sidebar ul li a:hover {
-  color: #ec1414;
-}
-
-a[data-toggle="collapse"] {
-  position: relative;
-}
-
-.dropdown-toggle::after {
-  display: block;
-  position: absolute;
-  top: 50%;
-  right: 20px;
-  transform: translateY(-50%);
-}
-
-ul ul a {
-  font-size: 0.9em !important;
-  padding-left: 30px !important;
-  background: #6d7fcc;
-}
-
-ul.CTAs {
-  padding: 20px;
-}
-
-ul.CTAs a {
-  text-align: center;
-  font-size: 0.9em !important;
-  display: block;
-  border-radius: 5px;
-  margin-bottom: 5px;
-}
-
-a.download {
-  background: #fff;
-  color: #7386d5;
-}
-
-a.article,
-a.article:hover {
-  background: #6d7fcc !important;
-  color: #fff !important;
-}
-
-/* ---------------------------------------------------
-  CONTENT STYLE
------------------------------------------------------ */
-
-#content {
-  width: 100%;
-  padding: 0 40px 0 40px;
-  min-height: 100vh;
-  transition: all 0.3s;
+#sidebar li {
+  border-radius: 8px;
+  margin: 2px 0 2px 0;
 }
 
 /* ---------------------------------------------------
