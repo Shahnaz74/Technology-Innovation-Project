@@ -1,0 +1,188 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal - Records</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <script src="https://use.fontawesome.com/releases/v6.4.0/js/all.js" crossorigin="anonymous"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/custom-css.css">
+</head>
+
+<body id="page-top">
+    <div class="wrapper">
+
+        <!-- Sidebar  -->
+        <nav id="sidebar">
+            <div class="container text-center pb-4">
+                <img class="img-fluid px-4 pb-2" src="../img/rcca-logo.png" alt="">
+                <p class="primary-red serif">Admin Portal</p>
+            </div>
+            <ul class="list-group sidebar-nostyle">
+                <a href="#" class="list-group-item list-group-item-action sidebar-list-group-item">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fa fa-fw fa-solid fa-file-lines me-2"></span>
+                        <span>Records</span>
+                    </div>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action sidebar-list-group-item">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fa fa-fw fa-solid fa-cloud-arrow-up me-2"></span>
+                        <span>Uploads</span>
+                    </div>
+                </a>
+                <a href="#" class="list-group-item list-group-item-action sidebar-list-group-item">
+                    <div class="d-flex w-100 justify-content-start align-items-center">
+                        <span class="fa fa-fw fas fa-th me-2"></span>
+                        <span>Templates</span>
+                    </div>
+                </a>
+            </ul>
+        </nav>
+
+        <!-- Page Content  -->
+        <div id="content">
+
+            <!-- Topnav -->
+            <nav class="navbar navbar-expand-lg border-bottom mb-5">
+                <div class="container-fluid">
+                    <!-- Sidebar toggle -->
+                    <button type="button" id="sidebarCollapse" class="btn">
+                        <i class="fas fa-align-left"></i>
+                        <span>Toggle Menu</span>
+                    </button>
+
+                    <nav class="navbar navbar-expand">
+                        <!-- Navbar-->
+                        <ul class="navbar-nav ml-auto">
+                            <!-- Top Navbar items - User Information -->
+                            <li class="nav-item dropdown no-arrow">
+                                <a class="nav-link" href="#" id="userDropdown" role="button" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    <span class="mr-2">Admin Name</span>
+                                    <img class="img-profile rounded-circle" src="../img/undraw_profile.svg"
+                                        style="width: 32px; height: 32px;">
+                                </a>
+
+                                <!-- Top Navbar items Dropdown -->
+                                <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                    aria-labelledby="userDropdown">
+                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout
+                                    </a>
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </nav>
+
+            <div class="container-fluid">
+
+                <!-- Page header -->
+                <div class="row d-flex justify-content-between mx-0">
+                    <!-- Page heading -->
+                    <div class="row mb-2 p-0">
+                        <div class="col-lg d-flex px-0">
+                            <h1 class="h3 mb-0">Records</h1>
+                            <form class="form-inline ms-4">
+                                <div class="input-group">
+                                    <input class="form-control" type="text" placeholder="Search for..."
+                                        aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                                    <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i
+                                            class="fas fa-search pe-2"></i>Search</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-lg-auto px-0">
+                            <button type="button" class="btn btn-primary"><i class="fa-solid fa-plus pe-2"></i>Add New
+                                Record</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Page content -->
+                <div class="row">
+                    <!-- Tab menu -->
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="published-tab" data-bs-toggle="tab"
+                                data-bs-target="#published-tab-pane" type="button" role="tab"
+                                aria-controls="published-tab-pane" aria-selected="true">Published</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="archived-tab" data-bs-toggle="tab"
+                                data-bs-target="#archived-tab-pane" type="button" role="tab"
+                                aria-controls="archived-tab-pane" aria-selected="false">Archived</button>
+                        </li>
+                    </ul>
+
+                    <!-- Tab content -->
+                    <div class="tab-content px-0" id="myTabContent">
+                        <!-- Published content -->
+                        <div class="tab-pane fade show active" id="published-tab-pane" role="tabpanel"
+                            aria-labelledby="published-tab" tabindex="0">
+                            <table class="table table-striped table-hover">
+                                <!-- Table header -->
+                                <thead>
+                                    <tr>
+                                        <th scope="col">File name</th>
+                                        <th scope="col">Views</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <!-- Record listing content -->
+                                <tbody>
+                                    <tr class="align-middle">
+                                        <td class="col-8">
+                                            <p class="recordFileName mb-0">Rover Regent Motors Advertred 2</p>
+                                            <p class="recordCategory mb-0"><img src="../img/recordCat_advertisment.svg"
+                                                    alt="Custom SVG" class="pe-1">Advertisement</p>
+                                        </td>
+                                        <td><span>10</span> Views</td>
+                                        <td>
+                                            <button type="button" class="btn btn-outline-primary me-2"><i
+                                                    class="fa-solid fa-pen pe-2"></i>Edit</button>
+                                            <button type="button" class="btn btn-outline-primary"><i
+                                                    class="fa-solid fa-trash-can pe-2"></i>Delete</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Archive content -->
+                        <div class="tab-pane fade" id="archived-tab-pane" role="tabpanel" aria-labelledby="archived-tab"
+                            tabindex="0">
+                            Tab 2 content
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF"
+        crossorigin="anonymous"></script>
+    <script src="../js/custom-js.js"></script>
+</body>
+
+
+</html>
