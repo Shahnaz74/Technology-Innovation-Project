@@ -221,3 +221,111 @@ body {
     display: none;
   }
 }
+
+/* ---------------------------------------------------
+  home search
+----------------------------------------------------- */
+.search-area{
+  background: #ffffff;
+  border-radius: 5px;
+  height: 60vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  box-shadow: 0 8px 6px -10px #b3c6ff;
+}
+
+.search-area .dropdown{
+  width: 20%;
+  border-left: 2px solid #dde2f1;
+  color: #9fa3b1;
+  position: relative;
+  cursor: pointer;
+}
+
+.search-area .dropdown .default_option{
+  text-transform: uppercase;
+  padding: 13px 15px;
+  font-size: 14px;
+}
+
+.search-area .dropdown ul{
+  position: absolute;
+  top: 70px;
+  background: #ffffff;
+  width: 150px;
+  border-radius: 5px;
+  padding: 20px;
+  display: none;
+  box-shadow: 8px 8px 6px -10px #b3c6ff;
+  list-style-type: none;
+}
+
+.search-area .dropdown ul.active{
+  display: block;
+}
+
+.search-area .dropdown ul li{
+  padding-bottom: 20px;
+}
+
+.search-area .dropdown ul li:last-child{
+  padding-bottom: 0;
+}
+
+.search-area .dropdown ul li:hover{
+  color: #6f768d;
+}
+
+.search-area .dropdown:before{
+  content: "";
+  position: absolute;
+  top: 18px;
+  right: 20px;
+  border: 8px solid;
+  border-color: #5078ef transparent transparent transparent;
+}
+
+.search-area .search_field{
+  width: 33%;
+}
+
+.search-area .search_field .input{
+  width: 100%;
+  height: 100%;
+  border: 0px;
+  font-size: 16px;
+  padding-left: 20px;
+  padding-right: 38px;
+  color: #6f768d;
+}
+
+.search-area .search_field .fas{
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 22px;
+  color: #5078ef;
+  cursor: pointer;
+}
+/* ---------------------------------------------------
+  home 6 equal areas
+----------------------------------------------------- */
+.col-sm-2.search-results {
+  height: 25vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid gray;
+  padding: 10px;
+  text-align: center;
+}
+/* ---------------------------------------------------
+  home footer
+----------------------------------------------------- */
+.footer {
+  background-color: black;
+  color: white;
+  text-align: center;
+}
