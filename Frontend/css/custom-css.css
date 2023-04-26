@@ -207,6 +207,15 @@ header.active {
   transition: all 0.3s;
 }
 
+.record-content {
+  width: 100%;
+  padding: 0 240px 0 240px;
+  min-height: 86vh;
+  transition: all 0.3s;
+  display: flex;
+  flex-direction: column;
+}
+
 .wrapper {
   display: flex;
   width: 100%;
@@ -367,4 +376,30 @@ header.active {
   border: 1px solid gray;
   padding: 10px;
   text-align: center;
+}
+
+/* ---------------------------------------------------
+  record detail
+----------------------------------------------------- */
+#doctypecontainer {
+  margin-top: 64px;
+}
+
+#titlecontainer {
+  width: 100vh;
+  color: #ec1414;
+  font-size: 28px;
+}
+
+#desccontainer {
+  margin-top: 30px;
+}
+
+#publishdatecontainer {
+  margin-top: 30px;
+}
+
+#previewcontainer {
+  margin-top: 30px;
+  margin-bottom: 64px;
 }
