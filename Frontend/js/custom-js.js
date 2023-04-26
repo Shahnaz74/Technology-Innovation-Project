@@ -18,7 +18,7 @@ $(document).ready(function () {
     var text = $(this).text();
     $(".default_option").text(text);
     $(".dropdown ul").removeClass("active");
-  }
+  });
 });
 
 // Sticky header
