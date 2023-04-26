@@ -161,6 +161,29 @@ body {
   color: #565c54;
 }
 
+.deleteFileUpload {
+  background: #ec1414;
+  color: #fff;
+}
+
+/* Record form header */
+header {
+  background-color: white;
+}
+
+header.active {
+  box-shadow: 0 8px 6px -6px hsla(0 0% 0% / 0.1);
+  transition-duration: 400ms;
+  border-bottom: 1px #e7e8e7;
+  padding: 20px 0 20px 0;
+}
+
+/* File upload preview */
+.fileUpload .img-thumbnail {
+  border: none;
+  box-shadow: hsla(0 0% 0% / 0.1) 0 0.5rem 1rem;
+}
+
 /* ---------------------------------------------------
   LAYOUT STYLE
 ----------------------------------------------------- */

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Portal - Submit Record</title>
+    <title>Admin Portal - Edit Record</title>
 
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -114,14 +114,14 @@
                 <!-- Page header -->
                 <header id="form-header" class="row mx-0 mb-4 sticky-top">
                     <div class="col-lg d-flex px-0">
-                        <h1 class="h3 primary-red mb-0">New Record</h1>
+                        <h1 class="h3 primary-red mb-0">Edit Record</h1>
                     </div>
                     <div class="col-lg-auto">
                         <button type="button" class="btn btn-outline-primary me-2"><i
-                                class=" bi bi-archive-fill pe-2 "></i>Save to
+                                class="bi bi-archive-fill pe-2 "></i>Move to
                             Archive</button>
-                        <button type=" submit" class="btn btn-primary"><i
-                                class="bi bi-check-circle-fill pe-2"></i>Publish</button>
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle-fill pe-2"></i>Save &
+                            Publish</button>
                     </div>
                 </header>
 
@@ -133,7 +133,8 @@
                         <div class="mb-4">
                             <label for="fileName" class="form-label">File name <span
                                     class="mandatoryField">*</span></label>
-                            <input type="text" class="form-control" id="fileName" placeholder="" required>
+                            <input type="text" class="form-control" id="fileName" placeholder=""
+                                value="Rover Regent Motors Advertred 2" required>
                             <div class="invalid-feedback">
                                 File name is required
                             </div>
@@ -154,8 +155,22 @@
                         </div>
 
                         <!-- File upload -->
-                        <div class="container mb-4 px-0">
+                        <div class="fileUpload container mb-4 px-0">
+                            <label for="documentType" class="form-label">File upload <span
+                                    class="mandatoryField">*</span></label>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="" aria-label=""
+                                    aria-describedby="basic-addon2">
+                                <button class="input-group-text deleteFileUpload" id="basic-addon2">
+                                    <i class="bi bi-trash3-fill pe-2"></i>
+                                    Delete file
+                                </button>
+                            </div>
 
+                            <!-- Uploaad file preview -->
+                            <div class="col-4">
+                                <img src="../img/uploadFileDummy.png" class="img-thumbnail" alt="...">
+                            </div>
                         </div>
 
                         <div class="row mb-4">
