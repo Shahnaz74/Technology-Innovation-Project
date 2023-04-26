@@ -144,9 +144,22 @@
                             <label for="documentType" class="form-label">Document type</label>
                             <select class="form-select" id="documentType" required>
                                 <option selected disabled value="">Choose...</option>
-                                <option>Document type 1</option>
-                                <option>Document type 2</option>
-                                <option>Document type 3</option>
+                                <option>Advertisement Journal</option>
+                                <option>Advertisement Newspaper</option>
+                                <option>Article Journal</option>
+                                <option>Article Newspaper
+                                </option>
+                                <option>Book Historical
+                                </option>
+                                <option>Book Technical</option>
+                                <option>Photograph Commercial
+                                </option>
+                                <option>Photograph Personal
+                                </option>
+                                <option>Sales Brochure
+                                </option>
+                                <option>Sales Record
+                                </option>
                             </select>
                             <div class="invalid-feedback">
                                 Please select document type.
@@ -160,17 +173,27 @@
 
                         <div class="row mb-4">
 
-                            <!-- File source -->
+                            <!-- File publisher -->
                             <div class="col-6">
-                                <label for="fileSource" class="form-label">Source</label>
-                                <input type="text" class="form-control" id="fileSource" placeholder="">
+                                <label for="filePublisher" class="form-label">Publisher</label>
+                                <input type="text" class="form-control" id="filePublisher" placeholder="">
                             </div>
+
+                            <!-- File identifier -->
+                            <div class="col-6">
+                                <label for="fileIdentifier" class="form-label">Identifier<span
+                                        class="mandatoryField">*</span></label>
+                                <input type="text" class="form-control" id="fileIdentifier" placeholder="">
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
 
                             <!-- File publish date -->
                             <div class="col-6">
                                 <label for="publishedDate" class="form-label">Published date <span
                                         class="mandatoryField">*</span></label>
-                                <input type="text" class="form-control" id="fileSource" placeholder="DD/MM/YYYY">
+                                <input type="text" class="form-control" id="publishedDate" placeholder="DD/MM/YYYY">
                             </div>
                         </div>
 

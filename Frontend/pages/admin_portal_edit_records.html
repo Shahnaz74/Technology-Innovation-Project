@@ -30,6 +30,7 @@
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
         crossorigin="anonymous"></script>
 
+    <script src="../js/multiselect-dropdown.js"></script>
     <!-- Custom JS -->
     <script defer src="../js/custom-js.js"></script>
 </head>
@@ -145,9 +146,22 @@
                             <label for="documentType" class="form-label">Document type</label>
                             <select class="form-select" id="documentType" required>
                                 <option selected disabled value="">Choose...</option>
-                                <option>Document type 1</option>
-                                <option>Document type 2</option>
-                                <option>Document type 3</option>
+                                <option>Advertisement Journal</option>
+                                <option>Advertisement Newspaper</option>
+                                <option>Article Journal</option>
+                                <option>Article Newspaper
+                                </option>
+                                <option>Book Historical
+                                </option>
+                                <option>Book Technical</option>
+                                <option>Photograph Commercial
+                                </option>
+                                <option>Photograph Personal
+                                </option>
+                                <option>Sales Brochure
+                                </option>
+                                <option>Sales Record
+                                </option>
                             </select>
                             <div class="invalid-feedback">
                                 Please select document type.
@@ -173,19 +187,52 @@
                             </div>
                         </div>
 
+                        <!-- File keyword -->
+                        <div class="col-md-4 mb-4">
+                            <label class="mb-2" for="fileKeyword">Topic subject</label>
+                            <p>
+                                <select id="fileKeyword" name="fileKeyword" class="selectpicker" multiple
+                                    multiselect-search="true">
+                                    <option>Keyword 1</option>
+                                    <option>Keyword 2</option>
+                                    <option>Keyword 3</option>
+                                    <option>Keyword 4</option>
+                                    <option>Keyword 5</option>
+                                    <option>Keyword 6</option>
+                                    <option>Keyword 7</option>
+                                    <option>Keyword 8</option>
+                                    <option>Keyword 9</option>
+                                    <option>Keyword 10</option>
+                                </select>
+                            </p>
+
+
+                        </div>
+
+
                         <div class="row mb-4">
 
-                            <!-- File source -->
+                            <!-- File publisher -->
                             <div class="col-6">
-                                <label for="fileSource" class="form-label">Source</label>
-                                <input type="text" class="form-control" id="fileSource" placeholder="">
+                                <label for="filePublisher" class="form-label">Publisher</label>
+                                <input type="text" class="form-control" id="filePublisher" placeholder="">
                             </div>
+
+                            <!-- File identifier -->
+                            <div class="col-6">
+                                <label for="fileIdentifier" class="form-label">Identifier<span
+                                        class="mandatoryField">*</span></label>
+                                <input type="text" class="form-control" id="fileIdentifier" placeholder="DD/MM/YYYY">
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
 
                             <!-- File publish date -->
                             <div class="col-6">
                                 <label for="publishedDate" class="form-label">Published date <span
                                         class="mandatoryField">*</span></label>
-                                <input type="text" class="form-control" id="fileSource" placeholder="DD/MM/YYYY">
+                                <input type="text" class="form-control" id="publishedDate" placeholder="">
                             </div>
                         </div>
 
@@ -200,12 +247,14 @@
         </div>
     </div>
 
+
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
     <script src=”https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js”
         integrity=”sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo”
         crossorigin=”anonymous”></script>
+
 </body>
 
 

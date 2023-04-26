@@ -2436,12 +2436,12 @@ textarea.form-control-lg {
 }
 
 .form-check-input {
-  --bs-form-check-bg: var(--bs-body-bg);
+  --bs-form-check-bg: #ec1414;
   width: 1em;
   height: 1em;
   margin-top: 0.25em;
   vertical-align: top;
-  background-color: var(--bs-form-check-bg);
+  background-color: #ec1414;
   background-image: var(--bs-form-check-bg-image);
   background-repeat: no-repeat;
   background-position: center;

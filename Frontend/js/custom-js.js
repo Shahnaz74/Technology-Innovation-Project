@@ -20,3 +20,8 @@ const observer = new IntersectionObserver(([entry]) => {
 });
 
 observer.observe(intercept);
+
+// File keyword selector
+$(function () {
+  $("select").selectpicker();
+});
