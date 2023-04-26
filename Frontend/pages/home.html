@@ -45,13 +45,13 @@
                     <div class="collapse navbar-collapse" id="navbarNav">
                         <ul class="navbar-nav ms-auto">
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Upload</a>
+                                <a class="nav-link" href="submit_records.html">Upload</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link">|</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="#">Admin Portal</a>
+                                <a class="nav-link" href="admin_portal_login.html">Admin Portal</a>
                             </li>
                         </ul>
                     </div>
@@ -60,10 +60,11 @@
 
             <div class="container-fluid">
                 <!-- Search Bar -->
-                <div class="row mx-0">
+                <form class="row mx-0" action="search.php" method="GET">
+                    <!-- Search Bar -->
                     <div class="search-area">
                         <div class="search_field">
-                            <input type="text" class="input" placeholder="Search">
+                            <input type="text" class="input" name="query" placeholder="Search">
                         </div>
                         <div class="dropdown">
                             <div class="default_option">All Document Type</div>
@@ -73,9 +74,9 @@
                                 <li>IMAGE</li>
                             </ul>
                         </div>
-                        <button>Search</button>
+                        <button type="submit" class="btn btn-primary btn-block sans">Search</button>
                     </div>
-                </div>
+                </form>
                 <!-- Nav Boxes -->
                 <div class="row">
                     <div class="col-sm-2 search-results">
