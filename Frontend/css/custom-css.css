@@ -165,10 +165,22 @@ body {
   LAYOUT STYLE
 ----------------------------------------------------- */
 
+#topnavbar {
+  width: 100%;
+  min-height: 10vh;
+  border-bottom: red;
+}
+
 #content {
   width: 100%;
   padding: 0 40px 0 40px;
   min-height: 100vh;
+  transition: all 0.3s;
+}
+
+.user-content {
+  width: 100%;
+  min-height: 86vh;
   transition: all 0.3s;
 }
 
@@ -178,6 +190,14 @@ body {
   align-items: stretch;
 }
 
+.footer {
+  min-height: 4vh;
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 /* ---------------------------------------------------
   SIDEBAR STYLE
 ----------------------------------------------------- */
@@ -225,10 +245,13 @@ body {
 /* ---------------------------------------------------
   home search
 ----------------------------------------------------- */
+#home-search-form {
+  min-height: 61vh;
+}
+
 .search-area{
   background: #ffffff;
   border-radius: 5px;
-  height: 60vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -289,6 +312,7 @@ body {
 
 .search-area .search_field{
   width: 33%;
+  margin-right: 15px;
 }
 
 .search-area .search_field .input{
@@ -313,19 +337,11 @@ body {
   home 6 equal areas
 ----------------------------------------------------- */
 .col-sm-2.search-results {
-  height: 25vh;
+  min-height: 25vh;
   display: flex;
   justify-content: center;
   align-items: center;
   border: 1px solid gray;
   padding: 10px;
-  text-align: center;
-}
-/* ---------------------------------------------------
-  home footer
------------------------------------------------------ */
-.footer {
-  background-color: black;
-  color: white;
   text-align: center;
 }
