@@ -2436,12 +2436,12 @@ textarea.form-control-lg {
 }
 
 .form-check-input {
-  --bs-form-check-bg: #ec1414;
+  --bs-form-check-bg: #fff;
   width: 1em;
   height: 1em;
   margin-top: 0.25em;
   vertical-align: top;
-  background-color: #ec1414;
+  background-color: #fff;
   background-image: var(--bs-form-check-bg-image);
   background-repeat: no-repeat;
   background-position: center;
@@ -2464,9 +2464,9 @@ textarea.form-control-lg {
   filter: brightness(90%);
 }
 .form-check-input:focus {
-  border-color: #86b7fe;
+  border-color: #f7a1a1;
   outline: 0;
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+  box-shadow: 0 0 0 0.25rem rgba(236, 20, 20, 0.25);
 }
 .form-check-input:checked {
   background-color: #ec1414;
@@ -3955,7 +3955,7 @@ fieldset:disabled .btn {
   padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
   font-size: var(--bs-nav-link-font-size);
   font-weight: var(--bs-nav-link-font-weight);
-  color: var(--bs-nav-link-color);
+  color: #565c54;
   text-decoration: none;
   background: none;
   border: 0;
@@ -4013,9 +4013,10 @@ fieldset:disabled .btn {
 }
 .nav-tabs .nav-link.active,
 .nav-tabs .nav-item.show .nav-link {
-  color: var(--bs-nav-tabs-link-active-color);
+  color: #ec1414;
   background-color: var(--bs-nav-tabs-link-active-bg);
   border-color: var(--bs-nav-tabs-link-active-border-color);
+  font-weight: 600;
 }
 .nav-tabs .dropdown-menu {
   margin-top: calc(-1 * var(--bs-nav-tabs-border-width));

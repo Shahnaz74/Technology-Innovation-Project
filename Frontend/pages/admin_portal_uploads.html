@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Portal - Records</title>
+    <title>Admin Portal - Uploads</title>
 
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -34,20 +34,6 @@
     <script defer src="../js/custom-js.js"></script>
 </head>
 
-<!-- Toast message -->
-<div class="toast-container position-absolute bottom-0 end-0 p-3">
-    <div class=" toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
-        <div class="toast-header">
-            <i class="bi bi-check-circle-fill primary-green-darker pe-2"></i>
-            <strong class="primary-green-darker me-auto">Record Added Successfully</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-            Regent Motors Advertisment has been to the digital archive.
-        </div>
-    </div>
-</div>
-
 <body id="page-top">
     <div class="wrapper">
 
@@ -58,7 +44,7 @@
                 <p class="primary-red serif">Admin Portal</p>
             </div>
             <ul class="list-group">
-                <li class="list-group-item list-group-item-action sidebar-list-group-item active">
+                <li class="list-group-item list-group-item-action sidebar-list-group-item">
                     <a href="./admin_portal_records.html">
                         <div class="d-flex w-100 justify-content-start align-items-center">
                             <i class="bi bi-file-earmark-text-fill me-2"></i>
@@ -66,7 +52,7 @@
                         </div>
                     </a>
                 </li>
-                <li class="list-group-item list-group-item-action sidebar-list-group-item">
+                <li class="list-group-item list-group-item-action sidebar-list-group-item active">
                     <a href="./admin_portal_uploads.html">
                         <div class="d-flex w-100 justify-content-start align-items-center">
                             <i class="bi bi-cloud-arrow-up-fill me-2"></i>
@@ -131,20 +117,7 @@
                 <!-- Page header -->
                 <div class="row mx-0 mb-4">
                     <div class="col-lg d-flex px-0">
-                        <h1 class="h3 primary-red mb-0">Records</h1>
-                        <form class="form-inline ms-4">
-                            <div class="input-group">
-                                <input class="form-control" type="text" placeholder="Search for..."
-                                    aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i
-                                        class="bi bi-search pe-2"></i>Search</button>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="col-lg-auto">
-                        <a href="./admin_portal_submit_record.html">
-                            <button type="button" class="btn btn-primary"><i class="bi bi-plus-lg pe-2"></i></i>Add New
-                                Record</button></a>
+                        <h1 class="h3 primary-red mb-0">Uploads</h1>
                     </div>
                 </div>
 
@@ -156,7 +129,7 @@
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="published-tab" data-bs-toggle="tab"
                                 data-bs-target="#published-tab-pane" type="button" role="tab"
-                                aria-controls="published-tab-pane" aria-selected="true">Published</button>
+                                aria-controls="published-tab-pane" aria-selected="true">New</button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="archived-tab" data-bs-toggle="tab"
@@ -168,7 +141,7 @@
                     <!-- Tab content -->
                     <div class="tab-content px-0" id="myTabContent">
 
-                        <!-- Published content -->
+                        <!-- New upload -->
                         <div class="tab-pane fade show active" id="published-tab-pane" role="tabpanel"
                             aria-labelledby="published-tab" tabindex="0">
                             <table class="table table-striped table-hover">
@@ -183,19 +156,28 @@
                                 <!-- Record listing content -->
                                 <tbody>
                                     <tr class="align-middle">
-                                        <th scope="row" width="60%">
-                                            <p class="recordFileName mb-0">Rover Regent Motors Advertred 2</p>
+                                        <!-- File name & document type -->
+                                        <th scope="row" width="40%">
+                                            <p class="recordFileName mb-0">Upload file name</p>
                                             <p class="recordCategory mb-0"><img src="../img/recordCat_advertisment.svg"
                                                     alt="Custom SVG" class="pe-1">Advertisement</p>
                                         </th>
-                                        <td><span>10</span> Views</td>
+
+                                        <!-- Upload date -->
+                                        <td>Uploaded at <span>DD/MM/YYYY</span></td>
+
+                                        <!-- Uploader details -->
+                                        <td scope="row">
+                                            <p class="mb-0">Uploader name</p>
+                                            <p class="mb-0">uploaderemail@gmail.com</p>
+                                        </td>
+
+                                        <!-- Action button -->
                                         <td>
                                             <button type="button" class="btn neutral-outlin-btn me-lg-2"><a
-                                                    href="./admin_portal_edit_record.html">
+                                                    href="./admin_portal_edit_upload.html">
                                                     <i class="bi bi-pencil-fill pe-2"></i>Edit
                                                 </a></button>
-                                            <button type="button" class="btn neutral-outlin-btn"><i
-                                                    class="bi bi-trash3-fill pe-2"></i>Delete</button>
                                         </td>
                                     </tr>
                                 </tbody>
