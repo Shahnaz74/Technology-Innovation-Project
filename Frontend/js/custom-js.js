@@ -93,3 +93,4 @@ $("input.form-control").change(function () {
 $(".connected-sortable").on("sortupdate", function (event, ui) {
   renumber();
 });
+
