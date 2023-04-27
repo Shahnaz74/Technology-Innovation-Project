@@ -108,13 +108,30 @@
                 </div>
 
                 <!-- File upload -->
-                <label for="fileUpload" class="form-label">File Upload <span class="mandatoryField">*</span></label>
-                <div class="container mb-4 px-0">
+                <div class="fileUpload container mb-4 px-0">
+                    <label for="documentType" class="form-label">File upload <span
+                            class="mandatoryField">*</span></label>
+                    <!-- Upload file area -->
                     <div id="drop-area" class="col-md-6 col-md-offset-3">
                         <p id="drop-hint">Drag & drop files or <a href="#" id="browse-btn">Browse</a></p>
                         <p id="drop-subhint">Supported formats: JPEG, PNG, PDF</p>
                         <input type="file" id="file-input" accept=".jpg, .jpeg, .png, .pdf" style="display:none;">
-                        <div class="row" id="thumbnails"></div>
+                        <!-- <div class="row" id="thumbnails"></div> -->
+                    </div>
+                    <!-- Uploaded file area -->
+                    <div id="uploaded-area">
+                        <div class="input-group mb-3">
+                            <input id="uploaded-file-name" type="text" class="form-control" placeholder="" aria-label=""
+                                aria-describedby="basic-addon2">
+                            <button class="input-group-text deleteFileUpload" id="basic-addon2">
+                                <i class="bi bi-trash3-fill pe-2"></i>
+                                Delete file
+                            </button>
+                        </div>
+
+                        <div class="col-4" id="thumbnails">
+                            <!-- <img src="../img/uploadFileDummy.png" class="img-thumbnail" alt="..."> -->
+                        </div>
                     </div>
                 </div>
 
@@ -171,7 +188,7 @@
         &copy; 2023 Rover Car Club of Australia
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -182,9 +199,13 @@
     <!--script for drag and drop-->
     <script>
         $(document).ready(function () {
+            $('#drop-area').show();
+            $('#uploaded-area').hide();
+
             const dropZone = document.querySelector('#drop-area');
             const browseBtn = document.querySelector('#browse-btn');
             const fileInput = document.querySelector('#file-input');
+            const deleteBtn = document.querySelector('#basic-addon2');
 
             dropZone.addEventListener('dragover', (e) => {
                 e.preventDefault();
@@ -213,6 +234,12 @@
                 handleFile(file);
             });
 
+            deleteBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                $('#drop-area').show();
+                $('#uploaded-area').hide();
+            });
+
             function handleFile(file) {
                 // check file type
                 const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
@@ -220,11 +247,14 @@
                     alert('Invalid file type. Please upload a JPEG, PNG, or PDF file.');
                     return;
                 }
+                $('#drop-area').hide();
+                $('#uploaded-area').show();
                 // Do something with the file, like upload it to a server
                 console.log(file);
                 var reader = new FileReader();
                 reader.onload = function (event) {
-                    var thumbnail = '<div class="col-md-4 mb-4"><div class="card"><img class="card-img-top" src="' + event.target.result + '"><div class="card-body"><h5 class="card-title">' + file.name + '</h5></div></div></div>';
+                    $('#uploaded-file-name').val(file.name);
+                    var thumbnail = '<div class="col-md-4 mb-4"><div class="card"><img class="card-img-top" src="' + event.target.result + '"></div></div>';
                     $('#thumbnails').html(thumbnail);
                 };
                 reader.readAsDataURL(file);
