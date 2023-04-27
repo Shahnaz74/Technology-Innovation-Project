@@ -156,6 +156,13 @@ body {
 /* ---------------------------------------------------
   CUSTOM ELEMENTS
 ----------------------------------------------------- */
+.homeHero {
+  background-image: url("../img/hero-focus.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 /* Toast message */
 .neutral-outlin-btn {
   border: 1px solid #c3c5c2;
@@ -243,13 +250,50 @@ li.draggable-item.ui-sortable-placeholder {
   background-color: #f7a1a1;
 }
 
+/* Home record categories */
+.recordCatAdv {
+  background-image: url("../img/recordCat_advertisment_bkg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.recordCatNews {
+  background-image: url("../img/recordCat_article_bkg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.recordCatBook {
+  background-image: url("../img/recordCat_book_bkg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.recordCatPhoto {
+  background-image: url("../img/recordCat_photos_bkg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.recordCatSalesBrochure {
+  background-image: url("../img/recordCat_sales_brochure_bkg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.recordCatSalesRecord {
+  background-image: url("../img/recordCat_sales_record_bkg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
 /* ---------------------------------------------------
   LAYOUT STYLE
 ----------------------------------------------------- */
 
 #topnavbar {
   width: 100%;
-  min-height: 10vh;
+  /* min-height: 10vh; */
   border-bottom: red;
 }
 
@@ -267,8 +311,8 @@ li.draggable-item.ui-sortable-placeholder {
 }
 
 .record-content {
-  width: 100%;
-  padding: 0 240px 0 240px;
+  /* width: 100%; */
+  /* padding: 0 240px 0 240px; */
   min-height: 86vh;
   transition: all 0.3s;
   display: flex;
@@ -322,6 +366,7 @@ li.draggable-item.ui-sortable-placeholder {
   MEDIAQUERIES
 ----------------------------------------------------- */
 
+/* Tablet and smaller */
 @media (max-width: 768px) {
   #sidebar {
     margin-left: -250px;
@@ -334,6 +379,33 @@ li.draggable-item.ui-sortable-placeholder {
   #sidebarCollapse span {
     display: none;
   }
+
+  .search-results {
+    width: 33vw;
+    height: 33vw;
+  }
+}
+
+/* Mobile and smaller */
+@media (max-width: 576px) {
+  .hideInMobile {
+    display: none;
+  }
+
+  .homeSearchBtn i {
+    display: none;
+  }
+
+  h5.serif {
+    font-size: 1rem; /* or any other font size you want */
+    white-space: normal;
+    word-wrap: break-word;
+  }
+
+  .search-results {
+    width: 50vw;
+    height: 50vw;
+  }
 }
 
 /* ---------------------------------------------------
@@ -344,7 +416,7 @@ li.draggable-item.ui-sortable-placeholder {
 }
 
 .search-area {
-  background: #ffffff;
+  /* background: #ffffff; */
   border-radius: 5px;
   display: flex;
   justify-content: center;
@@ -431,8 +503,10 @@ li.draggable-item.ui-sortable-placeholder {
 /* ---------------------------------------------------
   home 6 equal areas
 ----------------------------------------------------- */
-.col-sm-2.search-results {
+.search-results {
   min-height: 25vh;
+  /* width: 16.67vw;
+  height: 16.67vw; */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -444,14 +518,8 @@ li.draggable-item.ui-sortable-placeholder {
 /* ---------------------------------------------------
   record detail
 ----------------------------------------------------- */
-#doctypecontainer {
-  margin-top: 64px;
-}
-
-#titlecontainer {
-  width: 100vh;
-  color: #ec1414;
-  font-size: 28px;
+#doctypecontainer img {
+  width: 24px;
 }
 
 #desccontainer {
@@ -470,43 +538,31 @@ li.draggable-item.ui-sortable-placeholder {
 /* ---------------------------------------------------
   submit record
 ----------------------------------------------------- */
-#maincontainer {
-  margin-top: 64px;
-}
-
-#uploadFormTitle {
-  width: 100vh;
-  color: #ec1414;
-  font-size: 22px;
-}
-
 #uploadFormDesc {
   margin-top: 30px;
 }
 
-#fileFormTitle {
+#fileFormTitle,
+#uploaderDetailsTitle {
   margin-top: 64px;
-  color: #ec1414;
-  font-size: 22px;
 }
 
 #drop-area {
   width: 100%;
-  background-color: #FDE8E840;
+  background-color: #fde8e840;
   border: 1px dashed #ec1414;
-  padding: 20px;
   text-align: center;
   font-size: 20px;
   margin-bottom: 20px;
+  border-radius: 8px;
 }
 
-#drop-hint {
+/* #drop-hint {
   font-size: 18px;
-}
+} */
 
 #drop-subhint {
   font-size: 14px;
-  color: #565C54;
 }
 
 #browse-btn {
