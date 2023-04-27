@@ -309,8 +309,8 @@ li.draggable-item.ui-sortable-placeholder {
 }
 
 .record-content {
-  width: 100%;
-  padding: 0 240px 0 240px;
+  /* width: 100%; */
+  /* padding: 0 240px 0 240px; */
   min-height: 86vh;
   transition: all 0.3s;
   display: flex;
@@ -414,11 +414,7 @@ li.draggable-item.ui-sortable-placeholder {
 }
 
 .search-area {
-<<<<<<< HEAD
   /* background: #ffffff; */
-=======
-  background: #ffffff;
->>>>>>> 063258f2984a5e913aab71dea0b6c7fade52bd33
   border-radius: 5px;
   display: flex;
   justify-content: center;
@@ -516,20 +512,12 @@ li.draggable-item.ui-sortable-placeholder {
   padding: 10px;
   text-align: center;
 }
-<<<<<<< HEAD
-=======
 
 /* ---------------------------------------------------
   record detail
 ----------------------------------------------------- */
-#doctypecontainer {
-  margin-top: 64px;
-}
-
-#titlecontainer {
-  width: 100vh;
-  color: #ec1414;
-  font-size: 28px;
+#doctypecontainer img {
+  width: 24px;
 }
 
 #desccontainer {
@@ -548,53 +536,34 @@ li.draggable-item.ui-sortable-placeholder {
 /* ---------------------------------------------------
   submit record
 ----------------------------------------------------- */
-#maincontainer {
-  margin-top: 64px;
-}
-
-#uploadFormTitle {
-  width: 100vh;
-  color: #ec1414;
-  font-size: 22px;
-}
-
 #uploadFormDesc {
   margin-top: 30px;
 }
 
-#fileFormTitle {
+#fileFormTitle,
+#uploaderDetailsTitle {
   margin-top: 64px;
-  color: #ec1414;
-  font-size: 22px;
 }
 
 #drop-area {
   width: 100%;
-  background-color: #FDE8E840;
+  background-color: #fde8e840;
   border: 1px dashed #ec1414;
-  padding: 20px;
   text-align: center;
   font-size: 20px;
   margin-bottom: 20px;
+  border-radius: 8px;
 }
 
-#drop-hint {
+/* #drop-hint {
   font-size: 18px;
-}
+} */
 
 #drop-subhint {
   font-size: 14px;
-  color: #565C54;
 }
 
 #browse-btn {
   color: #ec1414;
   text-decoration: underline;
 }
-
-#sumbitRecordBtn {
-  display: block;
-  margin: 0 auto;
-  margin-bottom: 64px;
-}
->>>>>>> 063258f2984a5e913aab71dea0b6c7fade52bd33
