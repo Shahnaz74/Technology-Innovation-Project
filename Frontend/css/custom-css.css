@@ -89,6 +89,7 @@
 .primary-neutal-100 {
   color: #f3f3f3;
 }
+
 a:link {
   color: inherit;
   text-decoration: none;
@@ -230,6 +231,7 @@ header.active {
   justify-content: center;
   align-items: center;
 }
+
 /* ---------------------------------------------------
   SIDEBAR STYLE
 ----------------------------------------------------- */
@@ -266,9 +268,11 @@ header.active {
   #sidebar {
     margin-left: -250px;
   }
+
   #sidebar.active {
     margin-left: 0;
   }
+
   #sidebarCollapse span {
     display: none;
   }
@@ -281,7 +285,7 @@ header.active {
   min-height: 61vh;
 }
 
-.search-area{
+.search-area {
   background: #ffffff;
   border-radius: 5px;
   display: flex;
@@ -291,7 +295,7 @@ header.active {
   box-shadow: 0 8px 6px -10px #b3c6ff;
 }
 
-.search-area .dropdown{
+.search-area .dropdown {
   width: 20%;
   border-left: 2px solid #dde2f1;
   color: #9fa3b1;
@@ -299,13 +303,13 @@ header.active {
   cursor: pointer;
 }
 
-.search-area .dropdown .default_option{
+.search-area .dropdown .default_option {
   text-transform: uppercase;
   padding: 13px 15px;
   font-size: 14px;
 }
 
-.search-area .dropdown ul{
+.search-area .dropdown ul {
   position: absolute;
   top: 70px;
   background: #ffffff;
@@ -317,23 +321,23 @@ header.active {
   list-style-type: none;
 }
 
-.search-area .dropdown ul.active{
+.search-area .dropdown ul.active {
   display: block;
 }
 
-.search-area .dropdown ul li{
+.search-area .dropdown ul li {
   padding-bottom: 20px;
 }
 
-.search-area .dropdown ul li:last-child{
+.search-area .dropdown ul li:last-child {
   padding-bottom: 0;
 }
 
-.search-area .dropdown ul li:hover{
+.search-area .dropdown ul li:hover {
   color: #6f768d;
 }
 
-.search-area .dropdown:before{
+.search-area .dropdown:before {
   content: "";
   position: absolute;
   top: 18px;
@@ -342,12 +346,12 @@ header.active {
   border-color: #5078ef transparent transparent transparent;
 }
 
-.search-area .search_field{
+.search-area .search_field {
   width: 33%;
   margin-right: 15px;
 }
 
-.search-area .search_field .input{
+.search-area .search_field .input {
   width: 100%;
   height: 100%;
   border: 0px;
@@ -357,7 +361,7 @@ header.active {
   color: #6f768d;
 }
 
-.search-area .search_field .fas{
+.search-area .search_field .fas {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -365,6 +369,7 @@ header.active {
   color: #5078ef;
   cursor: pointer;
 }
+
 /* ---------------------------------------------------
   home 6 equal areas
 ----------------------------------------------------- */
@@ -401,5 +406,58 @@ header.active {
 
 #previewcontainer {
   margin-top: 30px;
+  margin-bottom: 64px;
+}
+
+/* ---------------------------------------------------
+  submit record
+----------------------------------------------------- */
+#maincontainer {
+  margin-top: 64px;
+}
+
+#uploadFormTitle {
+  width: 100vh;
+  color: #ec1414;
+  font-size: 22px;
+}
+
+#uploadFormDesc {
+  margin-top: 30px;
+}
+
+#fileFormTitle {
+  margin-top: 64px;
+  color: #ec1414;
+  font-size: 22px;
+}
+
+#drop-area {
+  width: 100%;
+  background-color: #FDE8E840;
+  border: 1px dashed #ec1414;
+  padding: 20px;
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+#drop-hint {
+  font-size: 18px;
+}
+
+#drop-subhint {
+  font-size: 14px;
+  color: #565C54;
+}
+
+#browse-btn {
+  color: #ec1414;
+  text-decoration: underline;
+}
+
+#sumbitRecordBtn {
+  display: block;
+  margin: 0 auto;
   margin-bottom: 64px;
 }
