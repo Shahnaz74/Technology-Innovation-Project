@@ -31,6 +31,19 @@ $(document).ready(function () {
   });
 });
 
+// home search bar dropdown list
+$(document).ready(function () {
+  $(".default_option").click(function () {
+    $(".dropdown ul").addClass("active");
+  });
+
+  $(".dropdown ul li").click(function () {
+    var text = $(this).text();
+    $(".default_option").text(text);
+    $(".dropdown ul").removeClass("active");
+  });
+});
+
 // Sticky header
 const header = document.getElementById("form-header");
 const intercept = document.createElement("div");

@@ -1,155 +1,162 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>My Home Page</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 1rem;
-            background-color: #333;
-            color: #fff;
-        }
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
 
-        h1 {
-            margin: 0;
-            display: flex;
-            align-items: center;
-            font-size: 1.5rem;
-        }
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet">
 
-        h1::before {
-            content: url("path/to/icon.png");
-            display: inline-block;
-            margin-right: 0.5rem;
-            height: 1.5rem;
-            width: 1.5rem;
-        }
+    <!-- Bootstrap Icon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
 
-        button {
-            background-color: #fe0404;
-            color: #333;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 0.25rem;
-            cursor: pointer;
-        }
+    <!-- Font Awesome -->
+    <script src="https://use.fontawesome.com/releases/v6.4.0/js/all.js" crossorigin="anonymous"></script>
 
-        section {
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            padding: 2rem;
-        }
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../css/bootstrap.css">
 
-        .area {
-            flex-basis: calc(16.666% - 1rem);
-            margin-bottom: 2rem;
-            background-color: #f2f2f2;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/custom-css.css">
 
-        .area:hover {
-            transform: translateY(-0.25rem);
-        }
+    <!-- Bootstrap JS -->
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
 
-        .area img {
-            width: 100%;
-            height: auto;
-        }
-
-        .area h2 {
-            margin-top: 1rem;
-            margin-bottom: 0.5rem;
-        }
-
-        @media only screen and (max-width: 600px) {
-            header {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            h1 {
-                margin-bottom: 1rem;
-            }
-
-            h1::before {
-                margin-right: 0;
-            }
-
-            button {
-                margin-bottom: 1rem;
-            }
-
-            section {
-                padding: 1rem;
-            }
-
-            .area {
-                flex-basis: calc(50% - 1rem);
-            }
-        }
-    </style>
+    <!-- Custom JS -->
+    <script defer src="../js/custom-js.js"></script>
 </head>
 
-<body>
-    <header>
-        <h1><span>Rover Car Club Of Australia - Record Archive</span></h1>
-        <div>
-            <button onclick="location.href='/page1'">Upload</button>
-            <button onclick="location.href='/page2'">Admin Portal</button>
+<body class="homePage">
+    <nav id="topnavbar">
+        <!-- Top Nav Bar -->
+        <div class="navbar navbar-expand-lg navbar-light border-bottom border-danger">
+            <div class="container-fluid d-flex align-items-center px-4">
+                <a href="./home.html"><img src="../img/rcca-logo.png" class="hideInMobile pe-3" width="100px"
+                        alt=""></a>
+                <h5 class="flex-grow-1 primary-neutral-900 serif">Rover Car Club Of Australia - Record Archive</h5>
+
+                <!-- Responsive menu toggler -->
+                <button class="btn btn-primary navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                    aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item primary-red">
+                            <a class="nav-link" href="submit_records.html">Upload</a>
+                        </li>
+                        <li class="nav-item hideInMobile">
+                            <a class="nav-link">|</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="admin_portal_login.html">Admin Portal</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-    </header>
-    <main>
-        <form action="/search" method="get">
-            <label for="search">Search:</label>
-            <input type="text" id="search" name="search">
-            <label for="docType">Document Type:</label>
-            <select id="docType" name="docType">
-                <option value="all">All Types</option>
-                <option value="pdf">PDF</option>
-                <option value="doc">Word Document</option>
-                <option value="xls">Excel Spreadsheet</option>
-                <!-- Add more options as needed -->
-            </select>
-            <button type="submit">Search</button>
-        </form>
-        <section>
-            <div class="area" onclick="location.href='/area1'">
-                <img src="path/to/image1.jpg" alt="Area 1">
-                <p>Advertisement</p>
+    </nav>
+
+    <div class="wrapper">
+        <div class="user-content ">
+            <div class="container-fluid homeHero">
+
+                <!-- Search Form -->
+                <form id="home-search-form" class="row mx-0" action="search_results.html" method="GET">
+                    <!-- Search Bar -->
+                    <!-- <div class="search-area">
+                        <div class="search_field">
+                            <input type="text" class="input" name="query" placeholder="Search">
+                        </div>
+                        <div class="dropdown">
+                            <div class="default_option">All Document Type</div>
+                            <ul>
+                                <li>All</li>
+                                <li>PDF</li>
+                                <li>IMAGE</li>
+                            </ul>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block sans">Search</button>
+                    </div> -->
+
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="col-md-8">
+                            <div class="d-flex mb-3">
+                                <div class="flex-grow-1">
+                                    <div class="input-group pe-2">
+                                        <input type="text" class="form-control"
+                                            aria-label="Text input with dropdown button">
+                                        <button class="btn btn-light pe-lg-5 dropdown-toggle default_option"
+                                            type="button" data-bs-toggle="dropdown" aria-expanded="false">All Document
+                                            Types</button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="#">All</a></li>
+                                            <li><a class="dropdown-item" href="#">PDF</a></li>
+                                            <li><a class="dropdown-item" href="#">IMAGE</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary homeSearchBtn"><i
+                                        class="bi bi-search pe-2"></i>Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="area" onclick="location.href='/area2'">
-                <img src="path/to/image2.jpg" alt="Area 2">            
-                <p>News Article</p>
-            </div>
-            <div class="area" onclick="location.href='/area3'">
-                <img src="path/to/image3.jpg" alt="Area 3">
-                <p>Photograph</p>
-            </div>
-            <div class="area" onclick="location.href='/area4'">
-                <img src="path/to/image4.jpg" alt="Area 4">
-                <p>Sales Brochure</p>
-            </div>
-            <div class="area" onclick="location.href='/area5'">
-                <img src="path/to/image5.jpg" alt="Area 5">
-                <p>Sales Record</p>
-            </div>
-            <div class="area" onclick="location.href='/area6'">
-                <img src="path/to/image6.jpg" alt="Area 6">
-                <p>Audio / Video</p>
-            </div>
-        </section>
-    </main>
-    <footer>
-        <p>&copy; 2023 My Website</p>
-    </footer>
+
+            <!-- Nav Boxes -->
+            <section class="row">
+                <div class="col-sm-2 search-results recordCatAdv">
+                    <h5 class="primary-neutal-100 serif"><img src="../img/recordCat_advertisement_white.svg"
+                            width="64px" alt="Area 1" class="pb-2"><br>Advertisement
+                    </h5>
+                </div>
+                <div class="col-sm-2 search-results recordCatNews">
+                    <h5 class="primary-neutal-100 serif"><img src="../img/recordCat_article_white.svg" width="64px"
+                            alt="Area 1" class="pb-2"><br>Article</h5>
+                </div>
+                <div class="col-sm-2 search-results recordCatBook">
+                    <h5 class="primary-neutal-100 serif"><img src="../img/recordCat_book_white.svg" width="64px"
+                            alt="Area 1" class="pb-2"><br>Book</h5>
+                </div>
+                <div class="col-sm-2 search-results recordCatPhoto">
+                    <h5 class="primary-neutal-100 serif"><img src="../img/recordCat_photos_white.svg" width="64px"
+                            alt="Area 1" class="pb-2"><br>Photograph</h5>
+                </div>
+                <div class="col-sm-2 search-results recordCatSalesBrochure">
+                    <h5 class="primary-neutal-100 serif"><img src="../img/recordCat_sales_brochure_white.svg"
+                            width="64px" alt="Area 1" class="pb-2"><br>Sales
+                        Brochure
+                    </h5>
+                </div>
+                <div class="col-sm-2 search-results recordCatSalesRecord">
+                    <h5 class="primary-neutal-100 serif"><img src="../img/recordCat_sales_records_white.svg"
+                            width="64px" alt="Area 1" class="pb-2"><br>Sales Record
+                    </h5>
+                </div>
+            </section>
+        </div>
+    </div>
+    <!-- footer -->
+    <div class="footer">
+        &copy; 2023 Rover Car Club of Australia
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src=”https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js”
+        integrity=”sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo”
+        crossorigin=”anonymous”></script>
 </body>
 
 </html>
