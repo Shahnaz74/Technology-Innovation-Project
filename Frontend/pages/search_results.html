@@ -49,17 +49,25 @@
 </head>
 
 <body>
-    <div id="topnavbar">
-        <!-- Top Nav Bar -->
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="container-fluid">
-                <span>Rover Car Club Of Australia - Record Archive</span>
+    <!-- Top Nav Bar -->
+    <nav id="topnavbar">
+        <div class="navbar navbar-expand-lg navbar-light border-bottom border-danger">
+            <div class="container-fluid d-flex align-items-center px-4">
+                <a href="./home.html"><img src="../img/rcca-logo.png" class="hideInMobile pe-3" width="100px"
+                        alt=""></a>
+                <h5 class="flex-grow-1 primary-neutral-900 serif">Rover Car Club Of Australia - Record Archive</h5>
+
+                <!-- Responsive menu toggler -->
+                <button class="btn btn-primary navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                    aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
+                        <li class="nav-item primary-red">
                             <a class="nav-link" href="submit_records.html">Upload</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item hideInMobile">
                             <a class="nav-link">|</a>
                         </li>
                         <li class="nav-item">
@@ -68,8 +76,8 @@
                     </ul>
                 </div>
             </div>
-        </nav>
-    </div>
+        </div>
+    </nav>
 
     <!-- Search Bar -->
     <form class="row mx-0" action="search_results.html" method="GET">
@@ -180,19 +188,23 @@
                         </select>
                     </div>
                 </div>
-                <div class="search-result-item">
-                    <h3>Product 1</h3>
-                    <p>Description of Product 1</p>
-                    <p>Category: Books</p>
-                    <p>Price: $10</p>
-                    <p>Brand: Apple</p>
-                </div>
-                <div class="search-result-item">
-                    <h3>Product 2</h3>
-                    <p>Description of Product 2</p>
-                    <p>Category: Electronics</p>
-                    <p>Price: $50</p>
-                    <p>Brand: Samsung</p>
+                <!--Document Item-->
+                <div class="search-result-item row">
+                    <div class="col-2">
+                        <img src="../img/uploadFileDummy.png" class="img-thumbnail" alt="...">
+                    </div>
+                    <div class="col">
+                        <!--Document Type-->
+                        <div>Advertisement</div>
+                        <!--Document Title-->
+                        <div>Rover Regent Motors Advertred 2</div>
+                        <!--Document Description-->
+                        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                            ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                            laboris nisi ut aliquip ex ea commodo consequat...</div>
+                        <!--Publish Date-->
+                        <div>Published at Jun, 1999</div>
+                    </div>
                 </div>
             </div>
         </div>
