@@ -246,7 +246,7 @@ li.draggable-item.ui-sortable-placeholder {
   border-radius: 8px;
 }
 
-.templateIconSelect .btn-check:checked+label {
+.templateIconSelect .btn-check:checked + label {
   background-color: #f7a1a1;
 }
 
@@ -579,25 +579,31 @@ li.draggable-item.ui-sortable-placeholder {
 /* ---------------------------------------------------
   search result
 ----------------------------------------------------- */
+.searchForm {
+  background: #f3f3f3;
+}
+
+.search-options > .row {
+  background: #f3f3f3;
+}
+
 .search-area-2 {
-  background: #ffffff;
+  /* background: #f3f3f3; */
   border-radius: 5px;
   padding: 10px;
   box-shadow: 0 8px 6px -10px #b3c6ff;
   display: flex;
 }
 
+#search-result-content {
+  padding-top: 4vh;
+}
+
 /* Styles for filter section */
-.filter-section {
-  float: left;
-  width: 20%;
-  padding: 20px;
-  margin-right: 10px;
-  background-color: #f1f1f1;
-  height: 100%;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
+.filter-section .filterHeading {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 170%;
 }
 
 .filter-section ul {
@@ -610,15 +616,13 @@ li.draggable-item.ui-sortable-placeholder {
   margin-bottom: 5px;
 }
 
-.filter-section label {
-  display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
+.filter-section .list-group-item {
+  border: none;
 }
 
 .search-result-section {
-  padding: 20px;
-  background-color: #f1f1f1;
+  padding: 64px 20px 0 20px;
+  /* background-color: #f1f1f1; */
   height: 100%;
   box-sizing: border-box;
   display: flex;

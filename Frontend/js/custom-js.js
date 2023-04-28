@@ -63,16 +63,6 @@ $(function () {
 });
 
 // Template fields drag to order
-function renumber() {
-  var count = 1;
-
-  $("tbody tr").each(function () {
-    $(this).find(".js-sort-number").text(count);
-
-    count++;
-  });
-}
-
 function init() {
   $(".droppable-area1, .droppable-area2")
     .sortable({
@@ -84,6 +74,16 @@ function init() {
 
 $(init);
 
+function renumber() {
+  var count = 1;
+
+  $("tbody tr").each(function () {
+    $(this).find(".js-sort-number").text(count);
+
+    count++;
+  });
+}
+
 $("input.form-control").change(function () {
   var startNo = $(this).val();
 
@@ -93,4 +93,3 @@ $("input.form-control").change(function () {
 $(".connected-sortable").on("sortupdate", function (event, ui) {
   renumber();
 });
-
