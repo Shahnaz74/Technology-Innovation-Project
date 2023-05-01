@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap Icon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+
+    <!-- Font Awesome -->
+    <script src="https://use.fontawesome.com/releases/v6.4.0/js/all.js" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../css/bootstrap.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/custom-css.css">
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Bootstrap JS -->
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+
+    <!-- Custom JS -->
+    <script defer src="../js/custom-js.js"></script>
+
+    <script>
+        // search item click 
+        $(document).ready(function () {
+            $(".search-result-item").click(function () {
+                console.log("clicked");
+                // Redirect to another HTML page
+                window.location.href = "./record_detail.html";
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <!-- Top Nav Bar -->
+    <nav id="topnavbar">
+        <div class="navbar navbar-expand-lg navbar-light border-bottom border-danger">
+            <div class="container-fluid d-flex align-items-center px-4">
+                <a href="./home.html"><img src="../img/rcca-logo.png" class="hideInMobile pe-3" width="100px"
+                        alt=""></a>
+                <h5 class="flex-grow-1 primary-neutral-900 serif">Rover Car Club Of Australia - Record Archive</h5>
+
+                <!-- Responsive menu toggler -->
+                <button class="btn btn-primary navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                    aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item primary-red">
+                            <a class="nav-link" href="submit_records.html">Upload</a>
+                        </li>
+                        <li class="nav-item hideInMobile">
+                            <a class="nav-link">|</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="admin_portal_login.html">Admin Portal</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Search Bar -->
+    <form class="row mx-0" action="search_results.html" method="GET">
+        <!-- Search Bar -->
+        <div class="search-area-2">
+            <div class="search_field input-group">
+                <input id="uploaded-file-name" type="text" class="form-control" placeholder="" aria-label="">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block sans"><i
+                    class="bi bi-search pe-2"></i>Search</button>
+        </div>
+        <div class="search-options">
+            <!-- Radio buttons to replace the select element -->
+            <label>
+                <input type="radio" name="documentType" value="All Document Types">
+                All Document Types
+            </label>
+            <label>
+                <input type="radio" name="documentType" value="Advertisement Journal">
+                Advertisement Journal
+            </label>
+            <label>
+                <input type="radio" name="documentType" value="Advertisement Newspaper">
+                Advertisement Newspaper
+            </label>
+            <label>
+                <input type="radio" name="documentType" value="Article Journal">
+                Article Journal
+            </label>
+            <label>
+                <input type="radio" name="documentType" value="Article Newspaper">
+                Article Newspaper
+            </label>
+            <label>
+                <input type="radio" name="documentType" value="Book Historical">
+                Book Historical
+            </label>
+            <label>
+                <input type="radio" name="documentType" value="Book Technical">
+                Book Technical
+            </label>
+            <label>
+                <input type="radio" name="documentType" value="Photograph Commercial">
+                Photograph Commercial
+            </label>
+            <label>
+                <input type="radio" name="documentType" value="Photograph Personal">
+                Photograph Personal
+            </label>
+            <label>
+                <input type="radio" name="documentType" value="Sales Brochure">
+                Sales Brochure
+            </label>
+            <label>
+                <input type="radio" name="documentType" value="Sales Record">
+                Sales Record
+            </label>
+        </div>
+    </form>
+
+    <div class="row mx-0">
+        <div id="search-result-content" class="container-fluid d-flex">
+            <div class="filter-section">
+                <ul>
+                    <li>
+                        <label>Car Type</label>
+                        <input type="checkbox" name="car-type" value="Sedan">Sedan<br>
+                        <input type="checkbox" name="car-type" value="SUV">SUV<br>
+                        <input type="checkbox" name="car-type" value="Hatchback">Hatchback<br>
+                        <input type="checkbox" name="car-type" value="Sports Car">Sports Car<br>
+                    </li>
+                    <li>
+                        <p><label>Publish Date</label>From:
+                            <select name="year-from">
+                                <option value="2020">2020</option>
+                                <option value="2021">2021</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                            </select>
+                            To:
+                            <select name="year-to">
+                                <option value="2020">2020</option>
+                                <option value="2021">2021</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                            </select>
+                        </p>
+                    </li>
+                    <li>
+                        <label>Source</label>
+                        <input type="checkbox" name="source" value="Dealer">Dealer<br>
+                        <input type="checkbox" name="source" value="Private">Private<br>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="search-result-section flex-grow-1">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h2>Search Result</h2>
+                    <div class="sort-by">
+                        <label for="sort-by-select">Sort By:</label>
+                        <select id="sort-by-select" name="sort-by">
+                            <option value="relevance">Relevance</option>
+                            <option value="price-asc">Price: Low to High</option>
+                            <option value="price-desc">Price: High to Low</option>
+                            <option value="year-asc">Year: Old to New</option>
+                            <option value="year-desc">Year: New to Old</option>
+                        </select>
+                    </div>
+                </div>
+                <!--Document Item-->
+                <div class="search-result-item row">
+                    <div class="col-2">
+                        <img src="../img/uploadFileDummy.png" class="img-thumbnail" alt="...">
+                    </div>
+                    <div class="col">
+                        <!--Document Type-->
+                        <div>Advertisement</div>
+                        <!--Document Title-->
+                        <div>Rover Regent Motors Advertred 2</div>
+                        <!--Document Description-->
+                        <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+                            ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                            laboris nisi ut aliquip ex ea commodo consequat...</div>
+                        <!--Publish Date-->
+                        <div>Published at Jun, 1999</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- footer -->
+    <div class="footer">
+        &copy; 2023 Rover Car Club of Australia
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src=”https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js”
+        integrity=”sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo”
+        crossorigin=”anonymous”></script>
+</body>
+
+<!--
+    <div class="main-container">
+        <div class="filter-section">
+            <h2>Filter Results</h2>
+            <ul>
+                <li>
+                    <label>Car Type</label>
+                    <input type="checkbox" name="car-type" value="Sedan">Sedan<br>
+                    <input type="checkbox" name="car-type" value="SUV">SUV<br>
+                    <input type="checkbox" name="car-type" value="Hatchback">Hatchback<br>
+                    <input type="checkbox" name="car-type" value="Sports Car">Sports Car<br>
+                </li>
+                <li>
+                    <p><label>Publish Date</label>From:
+                        <select name="year-from">
+                            <option value="2020">2020</option>
+                            <option value="2021">2021</option>
+                            <option value="2022">2022</option>
+                            <option value="2023">2023</option>
+                        </select>
+                        To:
+                        <select name="year-to">
+                            <option value="2020">2020</option>
+                            <option value="2021">2021</option>
+                            <option value="2022">2022</option>
+                            <option value="2023">2023</option>
+                        </select>
+                    </p>
+                </li>
+                <li>
+                    <label>Source</label>
+                    <input type="checkbox" name="source" value="Dealer">Dealer<br>
+                    <input type="checkbox" name="source" value="Private">Private<br>
+                </li>
+            </ul>
+        </div>
+        <div class="search-result-section">
+            <h2>Search Result</h2>
+            <div class="sort-by">
+                <label for="sort-by-select">Sort By:</label>
+                <select id="sort-by-select" name="sort-by">
+                    <option value="relevance">Relevance</option>
+                    <option value="price-asc">Price: Low to High</option>
+                    <option value="price-desc">Price: High to Low</option>
+                    <option value="year-asc">Year: Old to New</option>
+                    <option value="year-desc">Year: New to Old</option>
+                </select>
+            </div>
+            <div class="search-result-item">
+                <h3>Product 1</h3>
+                <p>Description of Product 1</p>
+                <p>Category: Books</p>
+                <p>Price: $10</p>
+                <p>Brand: Apple</p>
+            </div>
+            <div class="search-result-item">
+                <h3>Product 2</h3>
+                <p>Description of Product 2</p>
+                <p>Category: Electronics</p>
+                <p>Price: $50</p>
+                <p>Brand: Samsung</p>
+            </div>
+        </div>
+    </div>
+ -->
+
+</html>
