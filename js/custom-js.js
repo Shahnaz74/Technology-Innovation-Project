@@ -12,13 +12,17 @@ $(document).ready(function () {
   $("#addRow").click(function () {
     //Add row
     row = "";
+    var row_count = $('row_count').val();
+    row_count++;
+    
     row +=
       // '<tr><td><input type="text" class="form-control"></td><td ><input type="date" class="form-control"></td><td><input type="date" class="form-control"></td><td><input type="number" class="form-control"></td>';
-      '<tr class="draggable-item"><td class="fixed-col"><i class="bi bi-arrows-move pe-2"></i>Row number</td><td><select class="form-select" aria-label="Default select example"><option selected>Select data field</option><option value="1">Data field 1</option><option value="2">Data field 2</option><option value="3">Data field 3</option></select></td><td><input class="form-check-input mt-0 me-2" type="checkbox" value="" id="flexCheckDefault"><label class="form-check-label" for="flexCheckDefault">Mandatory field</label></td>';
+      '<tr class="draggable-item"><td class="fixed-col"><i class="bi bi-arrows-move pe-2"></i>'+row_count+'</td><td><select class="form-select" aria-label="Default select example"><option selected>Select data field</option><option value="1">Data field 1</option><option value="2">Data field 2</option><option value="3">Data field 3</option></select></td><td><input class="form-check-input mt-0 me-2" type="checkbox" value="" id="flexCheckDefault"><label class="form-check-label" for="flexCheckDefault">Mandatory field</label></td>';
     row +=
       // '<td><button class="btn btn-outline-danger delete_row">remove</button></td></tr>';
       '<td><button type="button" class="btn neutral-outlin-btn deleteRow"><i class="bi bi-trash3-fill pe-2"></i>Delete field</button></td></tr>';
     $("tbody").append(row);
+    $('row_count').val(row_count);
   });
 
   $("#templateFieldTable").on("click", ".deleteRow", function () {

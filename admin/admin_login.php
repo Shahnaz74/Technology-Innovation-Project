@@ -13,6 +13,7 @@ if(isset($_POST['submit'])){
     $email = $_POST['email'];
     $password = $_POST['password'];
 }
+
 if(isset($_POST['email']) && isset($_POST['password'])){
 
 
@@ -60,7 +61,7 @@ if(empty($email_err) && empty($password_err)){
                 exit();
 
             }else{
-                die('1234');
+                // die('1234');
 
                 header("Location: admin_login.php?error=Incorect Email or Password");
 
@@ -146,12 +147,7 @@ if(empty($email_err) && empty($password_err)){
         </div>
     </section>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
+    <?php include 'script.php' ?>
 </body>
 
 </html>

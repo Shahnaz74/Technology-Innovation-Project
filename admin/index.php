@@ -10,7 +10,7 @@
             <div class="container-fluid homeHero">
 
                 <!-- Search Form -->
-                <form id="home-search-form" class="row mx-0" action="search_results.php" method="GET">
+                <form id="home-search-form" class="row mx-0" action="search_results.html" method="GET">
                     <!-- Search Bar -->
                     <!-- <div class="search-area">
                         <div class="search_field">

@@ -8,27 +8,32 @@
 
         <!-- Page Content  -->
         <div id="content">
-
+            <?php
+                if(isset($_POST['submit'])){
+                    echo "<pre>";
+                    print_r($_POST);
+                }
+            ?>
             <!-- Topnav -->
             <?php include 'header.php' ?>
             <div class="container-fluid">
-
+            <form class="needs-validation" method="POST" novalidate>
                 <!-- Page header -->
                 <header id="form-header" class="row mx-0 mb-4 sticky-top">
                     <div class="col-lg d-flex">
-                        <h1 class="h3 primary-red">Edit Template</h1>
+                        <h1 class="h3 primary-red">Add Template</h1>
                     </div>
                     <div class="col-lg-auto">
                         <button type="button" class="btn btn-outline-primary me-2"><i
                                 class="bi bi-trash3-fill pe-2"></i>Delete Template</button>
-                        <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle-fill pe-2"></i>Save &
+                        <button type="submit" name="submit" class="btn btn-primary"><i class="bi bi-check-circle-fill pe-2"></i>Save &
                             Publish</button>
                     </div>
                 </header>
 
                 <!-- Page content -->
                 <div class="row mx-0">
-                    <form class="needs-validation" novalidate>
+                   
 
                         <!-- Template name -->
                         <div class="mb-4">
@@ -41,7 +46,7 @@
                         </div>
 
                         <!-- Template icon -->
-                        <div class="row mb-4">
+                        <!-- <div class="row mb-4">
                             <p>Template icon</p>
 
                             <div class="col">
@@ -79,7 +84,7 @@
                                     </label>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="templateFields">
 
@@ -89,7 +94,7 @@
                                     <p>Template fields</p>
                                 </div>
                                 <div class="col-lg-auto px-0">
-                                    <button type="button" class="btn btn-outline-primary mb-4" id="addRow"
+                                    <button type="button" class="btn btn-outline-primary mb-4" id="addRow1"
                                         class="add"><i class="bi bi-plus-lg pe-2"></i>
                                         Add data
                                         field
@@ -105,20 +110,24 @@
                                         <tr class="draggable-item">
 
                                             <!-- Drag icon & row number -->
-                                            <td class="fixed-col"><i class="bi bi-arrows-move pe-2"></i>Row number</td>
+                                            <td class="fixed-col"><i class="bi bi-arrows-move pe-2"></i>1</td>
                                             <!-- <td><span class="js-sort-number">1</span>
                                             </td> -->
 
-                                            <!-- Data field selection -->
-                                            <td><select class="form-select" aria-label="Default select example">
-                                                    <option selected>Select data field</option>
-                                                    <option value="1">Data field 1</option>
-                                                    <option value="2">Data field 2</option>
-                                                    <option value="3">Data field 3</option>
+                                              <!-- Data field selection -->
+                                              <td><select class="form-select" name="type" aria-label="Default select example">
+                                                    <option value="" selected>Select Field Type</option>
+                                                    <option value="text">text</option>
+                                                    <option value="email">email</option>
+                                                    <option value="date">date</option>
                                                 </select></td>
 
+                                            <td><input type="text" class="form-control" name="title" placeholder="Enter Field Title"></td>
+
+                                            <td><input type="hidden" class="form-control" name="name[]" value="field1" readonly></td>
+
                                             <!-- Mandatory field -->
-                                            <td><input class="form-check-input mt-0 me-2" type="checkbox" value=""
+                                            <td><input class="form-check-input mt-0 me-2" name="is_required" type="checkbox" value="1"
                                                     id="flexCheckDefault">
                                                 <label class="form-check-label" for="flexCheckDefault">
                                                     Mandatory field
@@ -135,26 +144,32 @@
                                         <tr class="draggable-item">
 
                                             <!-- Drag icon & row number -->
-                                            <td class="fixed-col"><i class="bi bi-arrows-move pe-2"></i>Row number</td>
+                                            <td class="fixed-col"><i class="bi bi-arrows-move pe-2"></i>2</td>
                                             <!-- <td><span class="js-sort-number">1</span>
                                             </td> -->
 
-                                            <!-- Data field selection -->
-                                            <td><select class="form-select" aria-label="Default select example">
-                                                    <option selected>Select data field</option>
-                                                    <option value="1">Data field 1</option>
-                                                    <option value="2">Data field 2</option>
-                                                    <option value="3">Data field 3</option>
+                                        <!-- Data field selection -->
+                                        <td><select class="form-select" name="type" aria-label="Default select example">
+                                                    <option selected>Select Field Type</option>
+                                                    <option value="text">text</option>
+                                                    <option value="email">email</option>
+                                                    <option value="date">date</option>
                                                 </select></td>
+                                            
+                                           <td><input type="text" name="title" class="form-control" placeholder="Enter Field Title"></td>
+
+                                            <td><input type="hidden" class="form-control" name="name[]" value="field2" readonly></td>
+
+                                            
 
                                             <!-- Mandatory field -->
-                                            <td><input class="form-check-input mt-0 me-2" type="checkbox" value=""
+                                            <td><input class="form-check-input mt-0 me-2" name="is_required" type="checkbox" value="1"
                                                     id="flexCheckDefault">
                                                 <label class="form-check-label" for="flexCheckDefault">
                                                     Mandatory field
                                                 </label>
                                             </td>
-
+                                            <input type="hidden" id="row_count" value="2">
                                             <!-- Delete row -->
                                             <td>
                                                 <button type="button" class="btn btn-secondary disabled"><i
@@ -165,8 +180,9 @@
                                 </table>
                             </div>
                         </div>
-                    </form>
-                </div>
+                    
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -179,6 +195,24 @@
                 handle: 'span'
             });
         });
+    </script>
+    <script>
+        $("#addRow1").click(function () {
+    //Add row
+    row = "";
+    var row_count = $('#row_count').val();
+    row_count++;
+    var field_count = 'field'+row_count;
+    
+    row +=
+      // '<tr><td><input type="text" class="form-control"></td><td ><input type="date" class="form-control"></td><td><input type="date" class="form-control"></td><td><input type="number" class="form-control"></td>';
+      '<tr class="draggable-item"><td class="fixed-col"><i class="bi bi-arrows-move pe-2"></i>'+row_count+'</td><td><select class="form-select" name="type" aria-label="Default select example"><option selected>Select Field Type</option><option value="text">text</option><option value="email">email</option><option value="date">date</option></select></td><td><input type="text" class="form-control" name="title" placeholder="Enter Field Title"></td><td><input type="hidden" class="form-control" name="name[]" value="'+field_count+'" readonly></td><!-- Mandatory field --><td><input class="form-check-input mt-0 me-2" name="is_required" type="checkbox" value="1" id="flexCheckDefault"><label class="form-check-label" for="flexCheckDefault">Mandatory field</label></td>';
+    row +=
+      // '<td><button class="btn btn-outline-danger delete_row">remove</button></td></tr>';
+      '<td><button type="button" class="btn neutral-outlin-btn deleteRow"><i class="bi bi-trash3-fill pe-2"></i>Delete field</button></td></tr>';
+    $("tbody").append(row);
+    $('#row_count').val(row_count);
+  });
     </script>
 </body>
 

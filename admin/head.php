@@ -11,7 +11,7 @@ if(isset($_SESSION["email"]) && $_SESSION["loggedin"] === 1){
     exit;
 }
 
-include 'db.php'; 
+include 'db.php';
 ?>
 <html lang="en">
 

@@ -19,7 +19,7 @@
                             <a class="nav-link">|</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="admin/admin_portal_login.php">Admin Portal</a>
+                            <a class="nav-link" href="admin/admin_login.php">Admin Portal</a>
                         </li>
                     </ul>
                 </div>
