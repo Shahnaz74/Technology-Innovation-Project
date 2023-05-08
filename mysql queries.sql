@@ -48,7 +48,6 @@ CREATE TABLE upload_status (
 CREATE TABLE user_uploads (
   upload_id int(11) NOT NULL AUTO_INCREMENT,
   file_name char(50) NOT NULL,
-  document_type char(50) NOT NULL,
   file char(50) NOT NULL,
   contributor char(200) DEFAULT NULL,
   coverage char(200) DEFAULT NULL,
@@ -63,7 +62,6 @@ CREATE TABLE user_uploads (
   rights char(200) DEFAULT NULL,
   source char(200) DEFAULT NULL,
   title char(200) DEFAULT NULL,
-  type char(200) DEFAULT NULL,
   first_name char(50) NOT NULL,
   last_name char(50) NOT NULL,
   email char(50) NOT NULL,
@@ -94,12 +92,16 @@ INSERT INTO upload_status (id, name) VALUES
 -- Insert data into template table
 INSERT INTO template (template_name, template_icon, created, updated)
 VALUES 
-('advertisement', NULL, NOW(), NOW()),
-('article', NULL, NOW(), NOW()),
-('book', NULL, NOW(), NOW()),
-('photograph', NULL, NOW(), NOW()),
-('sale brochure', NULL, NOW(), NOW()),
-('sale record', NULL, NOW(), NOW());
+('Advertisement Journal', NULL, NOW(), NOW()),
+('Advertisement Newspaper', NULL, NOW(), NOW()),
+('Article Journal', NULL, NOW(), NOW()),
+('Article Newspaper', NULL, NOW(), NOW()),
+('Book Historical', NULL, NOW(), NOW()),
+('Book Technical', NULL, NOW(), NOW()),
+('Photograph Commercial', NULL, NOW(), NOW()),
+('Photograph Personal', NULL, NOW(), NOW()),
+('Sales Brochure', NULL, NOW(), NOW()),
+('Sales Record', NULL, NOW(), NOW());
 
 -- Insert data into fields table
 INSERT INTO fields (type, title, name, placeholder, is_required, template_id) VALUES
@@ -132,11 +134,11 @@ VALUES
 
 -- Insert data into user_uploads table
 INSERT INTO user_uploads 
-(file_name, document_type, file, contributor, coverage, creator, date, description, format, identifier, language, publisher, relation, rights, source, title, type, first_name, last_name, email, upload_status, template_id) 
+(file_name, file, contributor, coverage, creator, date, description, format, identifier, language, publisher, relation, rights, source, title, first_name, last_name, email, upload_status, template_id) 
 VALUES 
-('sample_file1', 'PDF', 'path/to/sample_file.pdf', 'Harry Potter', NULL, 'Harry Potter', '2022-01-01', NULL, 'PDF', '12345', 'English', 'Random Publishing', NULL, 'All Rights Reserved', 'https://example.com', 'Sample File', 'Document', 'Harry', 'Potter', 'harry@example.com', 1, 1),
-('sample_file2', 'PDF', 'path/to/sample_file.pdf', NULL, NULL, NULL, NULL, NULL, 'PDF', '12345', 'Mandarin', 'Random Publishing', NULL, 'All Rights Reserved', NULL, 'Sample File', 'Document', 'Creator2', 'Creator2', 'creator2@example.com', 1, 2),
-('sample_file3', 'PDF', 'path/to/sample_file.pdf', 'Contributor3', NULL, NULL, NULL, NULL, 'PDF', '12345', NULL, NULL, NULL, 'All Rights Reserved', NULL, 'Sample File', 'Document', 'Creator3', 'Creator3', 'harry@example.com', 2, 3);
+('sample_file1', 'path/to/sample_file.pdf', 'Harry Potter', NULL, 'Harry Potter', '2022-01-01', NULL, 'PDF', '12345', 'English', 'Random Publishing', NULL, 'All Rights Reserved', 'https://example.com', 'Sample File', 'Harry', 'Potter', 'harry@example.com', 1, 1),
+('sample_file2', 'path/to/sample_file.pdf', NULL, NULL, NULL, NULL, NULL, 'PDF', '12345', 'Mandarin', 'Random Publishing', NULL, 'All Rights Reserved', NULL, 'Sample File', 'Creator2', 'Creator2', 'creator2@example.com', 1, 2),
+('sample_file3', 'path/to/sample_file.pdf', 'Contributor3', NULL, NULL, NULL, NULL, 'PDF', '12345', NULL, NULL, NULL, 'All Rights Reserved', NULL, 'Sample File', 'Creator3', 'Creator3', 'harry@example.com', 2, 3);
 
 -- Insert data into keyword table
 INSERT INTO keyword (keyword, upload_id)
