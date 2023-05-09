@@ -1,71 +1,57 @@
 <?php
-
-  // Retrieve request body
-  $request_body = file_get_contents('php://input');
-
-  // Decode JSON data from request body
-  $data = json_decode($request_body, true);
-
   require_once("databaseConfig.php");
 
-  // Prepare SQL statement to insert new upload data
-  $sql = "INSERT INTO user_uploads (file_name, contributor, coverage, creator, date, description, format, identifier, language, publisher, relation, rights, source, title, first_name, last_name, email, upload_status, template_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+  // Get the request body
+  $request_body = file_get_contents('php://input');
 
-  $stmt = mysqli_prepare($conn, $sql);
+  // Decode the JSON data
+  $data = json_decode($request_body, true);
 
-  // Bind parameters with the data
-  mysqli_stmt_bind_param($stmt, "ssssssssssssssssssi", 
-                          $data['file_name'],
-                          $data['contributor'],
-                          $data['coverage'],
-                          $data['creator'],
-                          $data['date'],
-                          $data['description'],
-                          $data['format'],
-                          $data['identifier'],
-                          $data['language'],
-                          $data['publisher'],
-                          $data['relation'],
-                          $data['rights'],
-                          $data['source'],
-                          $data['title'],
-                          $data['first_name'],
-                          $data['last_name'],
-                          $data['email'],
-                          $data['upload_status'],
-                          $data['template_id']
-                         );
+  // Insert the upload data into the user_uploads table
+  $stmt = $mysqli->prepare("INSERT INTO user_uploads (first_name, last_name, email, upload_status, template_id) VALUES (?, ?, ?, ?, ?)");
+  $stmt->bind_param("sssii", $data["first_name"], $data["last_name"], $data["email"], $data["upload_status"], $data["template_id"]);
 
-  // Execute the statement
-  if (mysqli_stmt_execute($stmt)) {
-
-    // Retrieve the newly inserted upload data
-    $upload_id = mysqli_insert_id($conn);
-    $select_sql = "SELECT * FROM user_uploads WHERE upload_id = '$upload_id'";
-
-    $result = mysqli_query($conn, $select_sql);
-    $upload_data = mysqli_fetch_assoc($result);
-
-    // Insert the keywords
-    foreach ($data['subject'] as $keyword) {
-      $insert_keyword_sql = "INSERT INTO keyword (keyword, upload_id) VALUES ('$keyword', '$upload_id')";
-      mysqli_query($conn, $insert_keyword_sql);
-    }
-
-    // Return success response with the new upload data
-    header('Content-Type: application/json');
-    http_response_code(200);
-    echo json_encode(array(
-      "message" => "upload has been created successfully",
-      "data" => $upload_data
-    ));
-  } else {
-    // Return error response
-    http_response_code(400);
-    echo "Error: " . mysqli_error($conn);
+  if (!$stmt->execute()) {
+    // Handle the error
+    echo "Error creating upload: " . $stmt->error;
+    exit();
   }
 
-  // Close database connection
-  mysqli_close($conn);
+  // Get the upload ID
+  $upload_id = $mysqli->insert_id;
 
+  // Insert the keywords into the keyword table if they don't exist, and then insert the relationships into the keyword_upload table
+  if (!empty($data["subject"])) {
+    $keywords = $data["subject"];
+
+    // Prepare a statement to insert keywords
+    $insert_keyword_stmt = $mysqli->prepare("INSERT IGNORE INTO keyword (keyword) VALUES (?)");
+
+    // Prepare a statement to insert keyword-upload relationships
+    $insert_relationship_stmt = $mysqli->prepare("INSERT INTO keyword_upload (upload_id, keyword_id) VALUES (?, ?)");
+
+    foreach ($keywords as $keyword) {
+      // Insert the keyword if it doesn't exist
+      $insert_keyword_stmt->bind_param("s", $keyword);
+      $insert_keyword_stmt->execute();
+
+      // Get the keyword ID
+      $keyword_id = $mysqli->insert_id;
+
+      // Insert the keyword-upload relationship
+      $insert_relationship_stmt->bind_param("ii", $upload_id, $keyword_id);
+      $insert_relationship_stmt->execute();
+    }
+  }
+
+  // Return the success message and upload data
+  $response = array(
+    "message" => "upload has been created successfully",
+    "data" => array_merge(array("upload_id" => $upload_id), $data)
+  );
+
+  echo json_encode($response);
+
+  // Close database connection
+    $conn->close();
 ?>

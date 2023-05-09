@@ -1,38 +1,43 @@
 <?php
+
     require_once("databaseConfig.php");
 
-    // Check if template_id is provided
-    if (!isset($_GET['template_id'])) {
-        // Return error response
-        http_response_code(400);
-        echo json_encode(array('error' => 'template_id is required'));
-        exit();
+    // check if the template_name parameter was provided in the query string
+    if (!isset($_GET['template_name'])) {
+      http_response_code(400);
+      die("Error: missing template_name parameter");
     }
 
-    // Prepare and execute query to get fields for the given template_id
-    $sql = "SELECT * FROM fields WHERE template_id = " . $_GET['template_id'];
+    // prepare the SQL query to retrieve fields for the specified template
+    $template_name = $_GET['template_name'];
+    $sql = "SELECT field.type, field.title, field.name, field.placeholder, fields_in_template.is_required
+            FROM field
+            INNER JOIN fields_in_template ON field.field_id = fields_in_template.field_id
+            INNER JOIN template ON fields_in_template.template_id = template.template_id
+            WHERE template.template_name = '$template_name'";
+
+    // execute the query and check for errors
     $result = $conn->query($sql);
-
-    // Check if query returned any data
-    if ($result->num_rows > 0) {
-        // Initialize empty array to store data
-        $data = array();
-
-        // Loop through result and add data to array
-        while ($row = $result->fetch_assoc()) {
-            $data[] = $row;
-        }
-
-        // Return success response with data
-        http_response_code(200);
-        echo json_encode(array('data' => $data));
-    } else {
-        // Return error response if no data found
-        http_response_code(404);
-        echo json_encode(array('error' => 'No fields found for the given template_id'));
+    if (!$result) {
+      http_response_code(400);
+      die("Error: " . $conn->error);
     }
 
-    // Close database connection
+    // build the JSON response
+    $response = array();
+    $response['fields'] = array();
+    while ($row = $result->fetch_assoc()) {
+      $field = array(
+        'name' => $row['name'],
+        'title' => $row['title'],
+        'placeholder' => $row['placeholder'],
+        'is_required' => $row['is_required']
+      );
+      array_push($response['fields'], $field);
+    }
+    echo json_encode($response);
+
+    // close the database connection
     $conn->close();
 
 ?>

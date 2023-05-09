@@ -1,88 +1,77 @@
 <?php
-    require_once("databaseConfig.php");
+  require_once("databaseConfig.php");
 
-    // Get the template name from the URL parameter
-    $template_name = $_GET['template_name'];
+  // Check if the request method is PUT
+  if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
+    // Get the request body
+    $data = json_decode(file_get_contents("php://input"));
 
-    // Get the request body as JSON and decode it into an associative array
-    $request_body = file_get_contents('php://input');
-    $data = json_decode($request_body, true);
+    // Get the template name from the request body
+    $template_name = $data->template_name;
 
+    // Get the template icon from the request body
+    $template_icon = $data->template_icon;
 
-    // Prepare and execute the query to update the template
-    $stmt = $mysqli->prepare("UPDATE template SET template_icon = ? WHERE template_name = ?");
-    $stmt->bind_param('ss', $data['template_icon'], $template_name);
-    $result = $stmt->execute();
+    // Get the fields from the request body
+    $fields = $data->fields;
 
-    // If the query was successful, update the fields for the template
-    if ($result) {
-      // Get the template ID
-      $stmt = $mysqli->prepare("SELECT template_id FROM template WHERE template_name = ?");
-      $stmt->bind_param('s', $template_name);
-      $stmt->execute();
-      $result = $stmt->get_result();
-      $template_id = $result->fetch_assoc()['template_id'];
+    // Start a database transaction
+    mysqli_begin_transaction($conn);
 
-      // Delete all the fields for the template
-      $stmt = $mysqli->prepare("DELETE FROM fields WHERE template_id = ?");
-      $stmt->bind_param('i', $template_id);
-      $stmt->execute();
+    try {
+      // Update the template
+      $sql = "UPDATE template SET template_icon = '$template_icon', updated = NOW() WHERE template_name = '$template_name'";
+      $result = mysqli_query($conn, $sql);
 
-      // Insert the new fields for the template
-      $fields = $data['fields'];
+      // Delete all existing fields for this template
+      $sql = "DELETE FROM fields_in_template WHERE template_id = (SELECT template_id FROM template WHERE template_name = '$template_name')";
+      $result = mysqli_query($conn, $sql);
+
+      // Add the new fields for this template
       foreach ($fields as $field) {
-        $stmt = $mysqli->prepare("INSERT INTO fields (type, title, name, placeholder, is_required, template_id) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param('ssssii', $field['type'], $field['title'], $field['name'], $field['placeholder'], $field['is_required'], $template_id);
-        $stmt->execute();
+        // Get the field name from the request body
+        $field_name = $field->name;
+
+        // Get the is_required flag from the request body
+        $is_required = $field->is_required;
+
+        // Get the field ID
+        $sql = "SELECT field_id FROM field WHERE name = '$field_name'";
+        $result = mysqli_query($conn, $sql);
+        $field_id = mysqli_fetch_assoc($result)['field_id'];
+
+        // Add the field to the fields_in_template table
+        $sql = "INSERT INTO fields_in_template (is_required, template_id, field_id) VALUES ('$is_required', (SELECT template_id FROM template WHERE template_name = '$template_name'), '$field_id')";
+        $result = mysqli_query($conn, $sql);
       }
 
-      // Prepare the response JSON
+      // Commit the transaction
+      mysqli_commit($conn);
+
+      // Return a success message and the updated data
       $response = array(
-        'message' => 'Template updated successfully',
-        'template' => array(
-          'template_name' => $template_name,
-          'template_icon' => $data['template_icon'],
-          'fields' => $fields
+        "message" => "Template has been updated",
+        "data" => array(
+          "template_name" => $template_name,
+          "template_icon" => $template_icon,
+          "fields" => $fields
         )
       );
-    } else {
-      // If the query failed, prepare the response JSON with an error message
-      $response = array(
-        'message' => 'Failed to update template',
-        'template' => null
-      );
+      http_response_code(200);
+      header('Content-Type: application/json');
+      echo json_encode($response);
+    } catch (Exception $e) {
+      // Roll back the transaction on error
+      mysqli_rollback($conn);
+
+      // Return an error message
+      $response = array("message" => "An error occurred that prevented the page from loading.");
+      http_response_code(400);
+      header('Content-Type: application/json');
+      echo json_encode($response);
     }
+  }
 
-    // Send the response JSON
-    header('Content-Type: application/json');
-    echo json_encode($response);
-
+  // Close database connection
+  mysqli_close($conn);
 ?>
-
-//request body:
-{
-  "template_icon": "path/to/template_icon.png",
-  "fields": [
-    {
-      "type": "text",
-      "title": "First Name",
-      "name": "first_name",
-      "placeholder": "Enter your first name",
-      "is_required": true
-    },
-    {
-      "type": "text",
-      "title": "Last Name",
-      "name": "last_name",
-      "placeholder": "Enter your last name",
-      "is_required": true
-    },
-    {
-      "type": "email",
-      "title": "Email Address",
-      "name": "email",
-      "placeholder": "Enter your email address",
-      "is_required": true
-    }
-  ]
-}
