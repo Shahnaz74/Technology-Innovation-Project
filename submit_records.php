@@ -1,14 +1,53 @@
 <?php include "head.php" ?>
-
 <body>
     <!-- Top Nav Bar -->
     <?php include "header.php" ?>
+
+    <?php
+        if(isset($_POST['submit'])){
+            // print_r($_POST);die;
+            $post = $_POST['submit'];
+        }
+    ?>
 
     <section class="record-content">
         <div class="container px-5 py-5">
             <div class="row gx-5 justify-content-center mx-0">
 
                 <div class="col-lg-11 col-xl-9 col-xxl-8">
+                    <form method="GET" >
+                        <!-- Document type -->
+                        <div class="col-md-4x   col-xl-9x mb-4">
+                            <label for="documentType" class="form-label" required>Document type</label>
+                            <select class="form-select" name="document_type" id="documentType" required>
+                                <option value="">Select Document Type</option>
+                                <?php 
+                                    $select = "SELECT * FROM template";
+                                    // echo $select;die;
+                                    if(isset($_GET['document_type'])){
+                                        $document_type = $_GET['document_type'];
+                                    }
+                                        $runQuery = mysqli_query($conn, $select);
+                                        $rowcount=mysqli_num_rows($runQuery);
+                                    if($rowcount > 0){
+                                        while($row = mysqli_fetch_object($runQuery)){
+                                          $tid = $row->id;
+                                          $templatename = $row->template_name;  
+                                    ?>
+                                    <option value="<?php echo $tid; ?>" <?php echo !empty($_GET['document_type']) && $_GET['document_type'] == $tid ? "selected" :''; ?>><?php echo $templatename; ?></option>
+                                    <?php 
+                                            }
+                                        }
+                                    ?>
+                            </select>
+                        </div>
+                        <div class="col-md-4x   col-xl-9x mb-4">
+                            <button id="sumbitRecordBtn" type="submit" name="" class="btn btn-primary"><i class="bi bi-check-circle-fill pe-2"></i>Filter Data</button>
+                            <div class="invalid-feedback">
+                                Please select document type.
+                            </div>
+                        </div>    
+                    </form>
                     <!-- Upload Form Description-->
                     <h4 id="uploadFormTitle" class="primary-red serif">Submit Record</h4>
                     <div id="uploadFormDesc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -22,8 +61,9 @@
                         sunt
                         in culpa qui officia deserunt mollit anim id est laborum. </div>
                     <!-- File Details Form -->
+
                     <h4 id="fileFormTitle" class="primary-red serif mb-4">File Details</h4>
-                    <form class="needs-validation" novalidate>
+                    <form class="needs-validation" method="POST" enctype="multipart/form-data">
                         <!-- File name -->
                         <div class="mb-4">
                             <label for="fileName" class="form-label">File name <span
@@ -33,32 +73,14 @@
                                 File name is required
                             </div>
                         </div>
-                        <!-- Document type -->
-                        <div class="col-md-3 mb-4">
-                            <label for="documentType" class="form-label">Document type</label>
-                            <select class="form-select" id="documentType" required>
-                                <option selected disabled value="">Choose...</option>
-                                <option>Advertisement Journal</option>
-                                <option>Advertisement Newspaper</option>
-                                <option>Article Journal</option>
-                                <option>Article Newspaper
-                                </option>
-                                <option>Book Historical
-                                </option>
-                                <option>Book Technical</option>
-                                <option>Photograph Commercial
-                                </option>
-                                <option>Photograph Personal
-                                </option>
-                                <option>Sales Brochure
-                                </option>
-                                <option>Sales Record
-                                </option>
-                            </select>
-                            <div class="invalid-feedback">
-                                Please select document type.
-                            </div>
-                        </div>
+                        <?php 
+                            if(isset($_GET['document_type'])){
+                                $template_id = $_GET['document_type'];
+                                $select1 = "SELECT * FROM fields where `template_id` = ".$template_id;
+                                $runQuery1 = mysqli_query($conn, $select1);
+                                $rowcount1=mysqli_num_rows($runQuery1);
+                            if($rowcount1 > 0){
+                        ?>
                         <!-- File upload -->
                         <div class="fileUpload container mb-4 px-0">
                             <label for="documentType" class="form-label">File upload <span
@@ -89,18 +111,27 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-4">
-                            <!-- File source -->
-                            <div class="col-lg-6">
-                                <label for="fileSource" class="form-label">Source</label>
-                                <input type="text" class="form-control" id="fileSource" placeholder="">
+                        <?php 
+                        // $row = mysqli_fetch_object($runQuery1);
+                        // print_r($row);
+                         while($row = mysqli_fetch_object($runQuery1)){
+                        if($row->type == 'text' || $row->type == 'email' || $row->type == 'date'){ ?>
+                            <div class="row mb-4">
+                                <!-- File source -->
+                                <div class="col-lg-6">
+                                    <label for="fileSource" class="form-label"><?php echo !empty($row->title) ? $row->title :''; ?></label>
+                                    <input type="<?php echo !empty($row->type) ? $row->type :''; ?>" name="<?php echo !empty($row->name) ? $row->name :''; ?>" class="form-control" id="fileSource" placeholder="">
+                                </div>
                             </div>
-                        </div>
-                        <!-- File description -->
+                        <?php }else if($row->type = 'textarea') {?>
+                            <!-- File description -->
                         <div class="mb-4">
-                            <label for="fileDescription">Description</label>
-                            <textarea class="form-control" rows="10" id="fileDescription"></textarea>
+                            <label for="fileDescription"><?php echo !empty($row->title) ? $row->title :''; ?></label>
+                            <textarea class="form-control" name="<?php echo !empty($row->name) ? $row->name :''; ?>" rows="10" id="fileDescription"></textarea>
                         </div>
+                        <?php } ?>
+                        
+                        <?php } } } ?>
                         <!-- Uploader Details-->
                         <h4 id="uploaderDetailsTitle" class="primary-red serif mb-4">Uploader Details</h4>
                         <div class="row">
@@ -128,7 +159,7 @@
                             <input type="text" class="form-control" id="membershipField" placeholder="">
                         </div>
                         <div class="d-grid gap-2 col-6 mx-auto my-5">
-                            <button id="sumbitRecordBtn" type="submit" class="btn btn-primary">
+                            <button id="sumbitRecordBtn" type="submit" name="submit" class="btn btn-primary">
                                 <i class="bi bi-check-circle-fill pe-2"></i>Sumbit Record</button>
                         </div>
                     </form>

@@ -33,8 +33,8 @@ if(empty(trim($_POST["password"]))){
 
 // Validate credentials
 if(empty($email_err) && empty($password_err)){
-    $generated = md5($password);
-    $sql = "SELECT * FROM admin_user WHERE email='$email' AND password='$generated'";
+    // $generated = md5($password);
+    $sql = "SELECT * FROM admin_user WHERE email='$email' AND password='$password'";
 
         $result = mysqli_query($conn, $sql);
         // echo mysqli_num_rows($result);die;
@@ -44,7 +44,7 @@ if(empty($email_err) && empty($password_err)){
             // print_r($row);die;
 
 
-            if ($row['email'] === $email && $row['password'] === $generated) {
+            if ($row['email'] === $email && $row['password'] === $password) {
 
                 // echo "Logged in!";
 

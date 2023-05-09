@@ -1,3 +1,4 @@
+<?php include "admin/db.php"; ?>
 <!DOCTYPE html>
 <html lang="en">
 

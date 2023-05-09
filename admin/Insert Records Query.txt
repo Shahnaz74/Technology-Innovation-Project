@@ -1,0 +1,10 @@
+Insert Records Query
+
+Read / Fetch Records Query
+
+Edit / Update Records Query
+
+Delete Records Query
+
+Connect the database 
+$con  = mysqli_connect("localhost","root,"","API_DATA");
