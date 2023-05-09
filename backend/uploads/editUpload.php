@@ -40,7 +40,7 @@
     }
 
     // Get updated upload data
-    $sql = "SELECT user_uploads.*, template.template_name, GROUP_CONCAT(keyword.keyword SEPARATOR ',') AS source FROM user_uploads LEFT JOIN template ON user_uploads.template_id = template.template_id LEFT JOIN keyword ON user_uploads.upload_id = keyword.upload_id WHERE user_uploads.upload_id='$upload_id' GROUP BY user_uploads.upload_id";
+    $sql = "SELECT user_uploads.*, template.template_name, GROUP_CONCAT(keyword.keyword SEPARATOR ',') AS subject FROM user_uploads LEFT JOIN template ON user_uploads.template_id = template.template_id LEFT JOIN keyword ON user_uploads.upload_id = keyword.upload_id WHERE user_uploads.upload_id='$upload_id' GROUP BY user_uploads.upload_id";
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
       $row = $result->fetch_assoc();
@@ -66,7 +66,8 @@
           'last_name' => $row['last_name'],
           'email' => $row['email'],
           'upload_status' => $row['upload_status'],
-          'template_name' => $row['template_name']
+          'template_name' => $row['template_name'],
+          'subject' => $row['subject']
           )
       );
     } else {

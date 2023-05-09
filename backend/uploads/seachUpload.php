@@ -22,7 +22,7 @@
     }
 
     // Fetch data from database
-    $sql = "SELECT * FROM user_uploads WHERE upload_status = 1 AND (file_name LIKE '%".$providedKeyword."%' OR title LIKE '%".$providedKeyword."%')";
+    $sql = "SELECT * FROM user_uploads WHERE upload_status = 2 AND (file_name LIKE '%".$providedKeyword."%' OR title LIKE '%".$providedKeyword."%')";
 
     $result = mysqli_query($conn, $sql);
 
@@ -57,7 +57,7 @@
             "email" => $row["email"],
             "upload_status" => $row["upload_status"],
             "template_name" => "",
-            "source" => array()
+            "subject" => array()
         );
 
         // Fetch template name
@@ -75,7 +75,7 @@
 
         if ($keywordsResult) {
             while ($keywordRow = mysqli_fetch_assoc($keywordsResult)) {
-                array_push($upload["source"], $keywordRow["keyword"]);
+                array_push($upload["subject"], $keywordRow["keyword"]);
             }
         }
 

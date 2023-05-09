@@ -5,7 +5,7 @@
     require_once("databaseConfig.php");
 
     // Define the query
-    $sql = "SELECT user_uploads.*, template.template_name, GROUP_CONCAT(keyword.keyword) AS source
+    $sql = "SELECT user_uploads.*, template.template_name, GROUP_CONCAT(keyword.keyword) AS subject
             FROM user_uploads
             INNER JOIN template ON user_uploads.template_id = template.template_id
             LEFT JOIN keyword ON user_uploads.upload_id = keyword.upload_id
@@ -37,7 +37,8 @@
                 "publisher" => $row["publisher"],
                 "relation" => $row["relation"],
                 "rights" => $row["rights"],
-                "source" => explode(",", $row["source"]),
+                "source" => $row["source"]
+                "subject" => explode(",", $row["subject"]),
                 "title" => $row["title"],
                 "first_name" => $row["first_name"],
                 "last_name" => $row["last_name"],

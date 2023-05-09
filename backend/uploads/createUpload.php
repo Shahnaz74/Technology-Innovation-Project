@@ -47,7 +47,7 @@
     $upload_data = mysqli_fetch_assoc($result);
 
     // Insert the keywords
-    foreach ($data['source'] as $keyword) {
+    foreach ($data['subject'] as $keyword) {
       $insert_keyword_sql = "INSERT INTO keyword (keyword, upload_id) VALUES ('$keyword', '$upload_id')";
       mysqli_query($conn, $insert_keyword_sql);
     }
