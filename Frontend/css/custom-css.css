@@ -156,12 +156,6 @@ body {
 /* ---------------------------------------------------
   CUSTOM ELEMENTS
 ----------------------------------------------------- */
-.homeHero {
-  background-image: url("../img/hero-focus.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
-}
 
 /* Toast message */
 .neutral-outlin-btn {
@@ -172,119 +166,6 @@ body {
 .deleteFileUpload {
   background: #ec1414;
   color: #fff;
-}
-
-/* Record form header */
-header {
-  background-color: white;
-}
-
-header.active {
-  box-shadow: 0 8px 6px -6px hsla(0 0% 0% / 0.1);
-  transition-duration: 400ms;
-  border-bottom: 1px #e7e8e7;
-  padding: 20px 0 20px 0;
-}
-
-/* File upload preview */
-.fileUpload .img-thumbnail {
-  border: none;
-  box-shadow: hsla(0 0% 0% / 0.1) 0 0.5rem 1rem;
-}
-
-.uploaderDetailsCard {
-  background: #f3f3f3;
-  border: none;
-}
-
-.uploaderDetailsCard th,
-td {
-  height: 40px;
-  vertical-align: middle;
-}
-
-/* Template field */
-li.draggable-item {
-  width: inherit;
-  padding: 15px 20px;
-  background-color: #f5f5f5;
-  -webkit-transition: transform 0.25s ease-in-out;
-  -moz-transition: transform 0.25s ease-in-out;
-  -o-transition: transform 0.25s ease-in-out;
-  transition: transform 0.25s ease-in-out;
-
-  -webkit-transition: box-shadow 0.25s ease-in-out;
-  -moz-transition: box-shadow 0.25s ease-in-out;
-  -o-transition: box-shadow 0.25s ease-in-out;
-  transition: box-shadow 0.25s ease-in-out;
-
-  &:hover {
-    cursor: pointer;
-    background-color: #eaeaea;
-  }
-}
-
-li.draggable-item.ui-sortable-helper {
-  background-color: #e5e5e5;
-  -webkit-box-shadow: 0 0 8px rgba(53, 41, 41, 0.8);
-  -moz-box-shadow: 0 0 8px rgba(53, 41, 41, 0.8);
-  box-shadow: 0 0 8px rgba(53, 41, 41, 0.8);
-  transform: scale(1.015);
-  z-index: 100;
-}
-
-li.draggable-item.ui-sortable-placeholder {
-  background-color: #ddd;
-  -moz-box-shadow: inset 0 0 10px #000000;
-  -webkit-box-shadow: inset 0 0 10px #000000;
-  box-shadow: inset 0 0 10px #000000;
-}
-
-/* Template icon selector*/
-.templateIconSelect label {
-  border: 1px solid #c3c5c2;
-  border-radius: 8px;
-}
-
-.templateIconSelect .btn-check:checked + label {
-  background-color: #f7a1a1;
-}
-
-/* Home record categories */
-.recordCatAdv {
-  background-image: url("../img/recordCat_advertisment_bkg.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-.recordCatNews {
-  background-image: url("../img/recordCat_article_bkg.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-.recordCatBook {
-  background-image: url("../img/recordCat_book_bkg.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-.recordCatPhoto {
-  background-image: url("../img/recordCat_photos_bkg.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-.recordCatSalesBrochure {
-  background-image: url("../img/recordCat_sales_brochure_bkg.png");
-  background-size: cover;
-  background-repeat: no-repeat;
-}
-
-.recordCatSalesRecord {
-  background-image: url("../img/recordCat_sales_record_bkg.png");
-  background-size: cover;
-  background-repeat: no-repeat;
 }
 
 /* ---------------------------------------------------
@@ -411,6 +292,13 @@ li.draggable-item.ui-sortable-placeholder {
 /* ---------------------------------------------------
   home search
 ----------------------------------------------------- */
+.homeHero {
+  background-image: url("../img/hero-focus.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 #home-search-form {
   min-height: 61vh;
 }
@@ -500,9 +388,43 @@ li.draggable-item.ui-sortable-placeholder {
   cursor: pointer;
 }
 
-/* ---------------------------------------------------
-  home 6 equal areas
------------------------------------------------------ */
+/* Home record categories */
+.recordCatAdv {
+  background-image: url("../img/recordCat_advertisment_bkg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.recordCatNews {
+  background-image: url("../img/recordCat_article_bkg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.recordCatBook {
+  background-image: url("../img/recordCat_book_bkg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.recordCatPhoto {
+  background-image: url("../img/recordCat_photos_bkg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.recordCatSalesBrochure {
+  background-image: url("../img/recordCat_sales_brochure_bkg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.recordCatSalesRecord {
+  background-image: url("../img/recordCat_sales_record_bkg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
 .search-results {
   min-height: 25vh;
   /* width: 16.67vw;
@@ -627,4 +549,99 @@ li.draggable-item.ui-sortable-placeholder {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+}
+
+/* ---------------------------------------------------
+  Admin portal - Edit Template
+----------------------------------------------------- */
+/* Template field */
+li.draggable-item {
+  width: inherit;
+  padding: 15px 20px;
+  background-color: #f5f5f5;
+  -webkit-transition: transform 0.25s ease-in-out;
+  -moz-transition: transform 0.25s ease-in-out;
+  -o-transition: transform 0.25s ease-in-out;
+  transition: transform 0.25s ease-in-out;
+
+  -webkit-transition: box-shadow 0.25s ease-in-out;
+  -moz-transition: box-shadow 0.25s ease-in-out;
+  -o-transition: box-shadow 0.25s ease-in-out;
+  transition: box-shadow 0.25s ease-in-out;
+
+  &:hover {
+    cursor: pointer;
+    background-color: #eaeaea;
+  }
+}
+
+li.draggable-item.ui-sortable-helper {
+  background-color: #e5e5e5;
+  -webkit-box-shadow: 0 0 8px rgba(53, 41, 41, 0.8);
+  -moz-box-shadow: 0 0 8px rgba(53, 41, 41, 0.8);
+  box-shadow: 0 0 8px rgba(53, 41, 41, 0.8);
+  transform: scale(1.015);
+  z-index: 100;
+}
+
+li.draggable-item.ui-sortable-placeholder {
+  background-color: #ddd;
+  -moz-box-shadow: inset 0 0 10px #000000;
+  -webkit-box-shadow: inset 0 0 10px #000000;
+  box-shadow: inset 0 0 10px #000000;
+}
+
+/* Template icon selector*/
+.templateIconSelect label {
+  border: 1px solid #c3c5c2;
+  border-radius: 8px;
+}
+
+.templateIconSelect .btn-check:checked + label {
+  background-color: #f7a1a1;
+}
+
+/* ---------------------------------------------------
+  Admin portal - Edit Upload
+----------------------------------------------------- */
+/* Record form header */
+header {
+  background-color: white;
+}
+
+header.active {
+  box-shadow: 0 8px 6px -6px hsla(0 0% 0% / 0.1);
+  transition-duration: 400ms;
+  border-bottom: 1px #e7e8e7;
+  padding: 20px 0 20px 0;
+}
+
+/* File upload preview */
+.fileUpload .img-thumbnail {
+  border: none;
+  box-shadow: hsla(0 0% 0% / 0.1) 0 0.5rem 1rem;
+}
+
+.uploaderDetailsCard {
+  background: #f3f3f3;
+  border: none;
+}
+
+.uploaderDetailsCard th,
+td {
+  height: 40px;
+  vertical-align: middle;
+}
+
+/* ---------------------------------------------------
+  Admin portal - Edit Record
+----------------------------------------------------- */
+.checkbox-danger input[type="checkbox"]:checked + label::before,
+.checkbox-danger input[type="radio"]:checked + label::before {
+  background-color: #ec1414;
+  border-color: #ec1414;
+}
+.checkbox-danger input[type="checkbox"]:checked + label::after,
+.checkbox-danger input[type="radio"]:checked + label::after {
+  color: #fff;
 }

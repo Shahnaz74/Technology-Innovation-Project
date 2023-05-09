@@ -171,12 +171,57 @@
                         </div>
 
                         <!-- File upload -->
-                        <div class="container mb-4 px-0">
+                        <div class="fileUpload container mb-4 px-0">
+                            <label for="documentType" class="form-label">File upload <span
+                                    class="mandatoryField">*</span></label>
+                            <!-- Upload file area -->
+                            <div id="drop-area" class="col-md-6 col-md-offset-3 py-5">
+                                <img src="../img/fileUpload.svg" class="pb-2" alt="">
+                                <h5 id="drop-hint" class="serif pb-2">Drag & drop files or <a href="#"
+                                        id="browse-btn">Browse</a></h5>
+                                <p id="drop-subhint">Supported formats: JPEG, PNG, PDF</p>
+                                <input type="file" id="file-input" accept=".jpg, .jpeg, .png, .pdf"
+                                    style="display:none;">
+                                <p id="drop-subhint" class="primary-red">File size limit: 2MB</p>
+                                <!-- <div class="row" id="thumbnails"></div> -->
+                            </div>
+                            <!-- Uploaded file area -->
+                            <div id="uploaded-area">
+                                <div class="input-group mb-3">
+                                    <input id="uploaded-file-name" type="text" class="form-control" placeholder=""
+                                        aria-label="" aria-describedby="basic-addon2">
+                                    <button class="input-group-text deleteFileUpload" id="basic-addon2">
+                                        <i class="bi bi-trash3-fill pe-2"></i>
+                                        Delete file
+                                    </button>
+                                </div>
+                                <div class="col-6" id="thumbnails">
+                                    <!-- <img src="../img/uploadFileDummy.png" class="img-thumbnail" alt="..."> -->
+                                </div>
+                            </div>
+                        </div>
 
+                        <!-- File keyword -->
+                        <div class="mb-4">
+                            <label class="mb-2" for="fileKeyword">Topic subject</label>
+                            <p>
+                                <select id="fileKeyword" name="fileKeyword" class="selectpicker" multiple
+                                    multiselect-search="true">
+                                    <option>Keyword 1</option>
+                                    <option>Keyword 2</option>
+                                    <option>Keyword 3</option>
+                                    <option>Keyword 4</option>
+                                    <option>Keyword 5</option>
+                                    <option>Keyword 6</option>
+                                    <option>Keyword 7</option>
+                                    <option>Keyword 8</option>
+                                    <option>Keyword 9</option>
+                                    <option>Keyword 10</option>
+                                </select>
+                            </p>
                         </div>
 
                         <div class="row">
-
                             <!-- File publisher -->
                             <div class="col-lg-6 mb-4">
                                 <label for="filePublisher" class="form-label">Publisher</label>
@@ -218,6 +263,74 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
         crossorigin="anonymous"></script>
+    <!-- File keyword selector script -->
+    <script src="../js/multiselect-dropdown.js"></script>
+
+    <!--script for drag and drop-->
+    <script>
+        $(document).ready(function () {
+            $('#drop-area').show();
+            $('#uploaded-area').hide();
+
+            const dropZone = document.querySelector('#drop-area');
+            const browseBtn = document.querySelector('#browse-btn');
+            const fileInput = document.querySelector('#file-input');
+            const deleteBtn = document.querySelector('#basic-addon2');
+
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('drag-over');
+            });
+
+            dropZone.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('drag-over');
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('drag-over');
+                const file = e.dataTransfer.files[0];
+                handleFile(file);
+            });
+
+            browseBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                handleFile(file);
+            });
+
+            deleteBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                $('#drop-area').show();
+                $('#uploaded-area').hide();
+            });
+
+            function handleFile(file) {
+                // check file type
+                const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('Invalid file type. Please upload a JPEG, PNG, or PDF file.');
+                    return;
+                }
+                $('#drop-area').hide();
+                $('#uploaded-area').show();
+                // Do something with the file, like upload it to a server
+                console.log(file);
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    $('#uploaded-file-name').val(file.name);
+                    var thumbnail = '<div class="mb-4"><div class="card"><img class="card-img-top img-thumbnail" src="' + event.target.result + '"></div></div>';
+                    $('#thumbnails').html(thumbnail);
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
 </body>
 
 

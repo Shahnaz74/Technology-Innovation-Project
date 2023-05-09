@@ -30,9 +30,6 @@
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
         crossorigin="anonymous"></script>
 
-    <!-- File keyword selector JS -->
-    <script src="../js/multiselect-dropdown.js"></script>
-
     <!-- Custom JS -->
     <script defer src="../js/custom-js.js"></script>
 </head>
@@ -194,30 +191,24 @@
                         </div>
 
                         <!-- File keyword -->
-                        <div class="col-md-4 mb-4">
+                        <div class="mb-4">
                             <label class="mb-2" for="fileKeyword">Topic subject</label>
-                            <p>
-                                <select id="fileKeyword" name="fileKeyword" class="selectpicker" multiple
-                                    multiselect-search="true">
-                                    <option>Keyword 1</option>
-                                    <option>Keyword 2</option>
-                                    <option>Keyword 3</option>
-                                    <option>Keyword 4</option>
-                                    <option>Keyword 5</option>
-                                    <option>Keyword 6</option>
-                                    <option>Keyword 7</option>
-                                    <option>Keyword 8</option>
-                                    <option>Keyword 9</option>
-                                    <option>Keyword 10</option>
-                                </select>
-                            </p>
-
-
+                            <select id="fileKeyword" name="fileKeyword" class="selectpicker" multiple
+                                multiselect-search="true">
+                                <option>Keyword 1</option>
+                                <option>Keyword 2</option>
+                                <option>Keyword 3</option>
+                                <option>Keyword 4</option>
+                                <option>Keyword 5</option>
+                                <option>Keyword 6</option>
+                                <option>Keyword 7</option>
+                                <option>Keyword 8</option>
+                                <option>Keyword 9</option>
+                                <option>Keyword 10</option>
+                            </select>
                         </div>
 
-
                         <div class="row">
-
                             <!-- File publisher -->
                             <div class="col-lg-6 mb-4">
                                 <label for="filePublisher" class="form-label">Publisher</label>
@@ -228,7 +219,7 @@
                             <div class="col-lg-6 mb-4">
                                 <label for="fileIdentifier" class="form-label">Identifier <span
                                         class="mandatoryField">*</span></label>
-                                <input type="text" class="form-control" id="fileIdentifier" placeholder="DD/MM/YYYY">
+                                <input type="text" class="form-control" id="fileIdentifier" placeholder="">
                             </div>
                         </div>
 
@@ -238,7 +229,7 @@
                             <div class="col-lg-6">
                                 <label for="publishedDate" class="form-label">Published date <span
                                         class="mandatoryField">*</span></label>
-                                <input type="text" class="form-control" id="publishedDate" placeholder="">
+                                <input type="text" class="form-control" id="publishedDate" placeholder="DD/MM/YYYY">
                             </div>
                         </div>
 
@@ -259,6 +250,9 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
         crossorigin="anonymous"></script>
+
+    <!-- File keyword selector JS -->
+    <script src="../js/multiselect-dropdown.js"></script>
 </body>
 
 

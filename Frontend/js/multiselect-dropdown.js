@@ -14,6 +14,7 @@ style.innerHTML = `
   background-size: 16px 12px;
   width: 100%;
 }
+
 .multiselect-dropdown span.optext, .multiselect-dropdown span.placeholder{
   margin-right:0.5em; 
   margin-bottom:2px;
@@ -76,14 +77,16 @@ style.innerHTML = `
   width: 1.15em;
   margin-right: 0.35em;  
 }
-.multiselect-dropdown-list div.checked{
+.multiselect-dropdown-list div:checked{
 }
 .multiselect-dropdown-list div:hover{
   background-color: #ced4da;
 }
 .multiselect-dropdown span.maxselected {width:100%;}
 .multiselect-dropdown-all-selector {border-bottom:solid 1px #999;}
+
 `;
+
 document.head.appendChild(style);
 
 function MultiselectDropdown(options) {

@@ -31,16 +31,17 @@ $(document).ready(function () {
   });
 });
 
-// home search bar dropdown list
+// Dropdown list functionality
 $(document).ready(function () {
-  $(".default_option").click(function () {
-    $(".dropdown ul").addClass("active");
+  $(".dropdown .default_option").click(function () {
+    $(this).siblings("ul").addClass("active");
   });
 
   $(".dropdown ul li").click(function () {
     var text = $(this).text();
-    $(".default_option").text(text);
-    $(".dropdown ul").removeClass("active");
+    var dropdown = $(this).closest(".dropdown");
+    dropdown.find(".default_option").text(text);
+    dropdown.find("ul").removeClass("active");
   });
 });
 
