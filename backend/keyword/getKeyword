@@ -1,0 +1,25 @@
+<?php
+  //return all unique keywords in keyword table as an array
+
+  // Database connection
+  require_once("databaseConfig.php");
+
+  // Retrieve all unique keywords from the "keyword" table
+  $sql = "SELECT DISTINCT keyword FROM keyword";
+  $result = mysqli_query($conn, $sql);
+
+  // Store the keywords in an array
+  $keywords = array();
+  if (mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
+      array_push($keywords, $row["keyword"]);
+    }
+  }
+
+  // Close the database connection
+  mysqli_close($conn);
+
+  // Output the keywords array
+  print_r($keywords);
+
+?>
