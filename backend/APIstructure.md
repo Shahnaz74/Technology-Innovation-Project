@@ -601,6 +601,16 @@ E.g
 #### RETURN
 return a message notify that the upload has been approved
 
+## uploads/askMoreInfoUpload.php
+### PUT receive a user_upload_id and edit the upload_status of the upload to "archived" (3 in upload_status table) and send an email to ask for more information
+#### PARAMS user_upload_id
+#### STATUS CODE
+200 - Page Loaded Successfully 
+400 - An error occured that preveted the page from loading.
+#### RETURN
+edit the upload_status of the upload to "archived" (3 in upload_status table) and send an email to ask for more information, returns a message to notify the email has been sent
+
+
 ## keywords/getKeywords.php
 ### GET Display all keyword data.
 #### PARAMS 
