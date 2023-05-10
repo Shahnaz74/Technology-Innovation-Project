@@ -36,23 +36,4 @@
     <!-- Custom JS -->
     <script defer src="js/custom-js.js"></script>
 
-    <script>
-        // search item click 
-        // $(document).ready(function () {
-        //     $(".search-result-item").click(function () {
-        //         console.log("clicked");
-        //         // Redirect to another HTML page
-        //         window.location.href = "./record_detail.php";
-        //     });
-        // });
-
-        function redirectToDetailsPage($upload_id) {
-            // Store the data in session
-            $_SESSION['upload_id'] = $upload_id;
-            echo "<script>console.log(" . $upload_id . ");</script>";
-            // Redirect the user to the details page
-            window.location.href = "./record_detail.php";
-        }
-    </script>
-
 </head>

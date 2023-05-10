@@ -2,14 +2,6 @@
 // Start the session
 session_start();
 
-if (isset($_SESSION["errorString"])) {
-    $errorString = $_SESSION["errorString"];
-    $errorObj = json_decode($errorString);
-    echo "<script>console.log(" . json_encode($errorObj) . ");</script>";
-    // erase error message from session
-    unset($_SESSION["errorString"]);
-}
-
 ?>
 <?php include "head.php" ?>
 
@@ -31,7 +23,7 @@ if (isset($_SESSION["errorString"])) {
                                 <div class="flex-grow-1">
                                     <div class="input-group pe-2">
                                         <input type="text" class="form-control"
-                                            aria-label="Text input with dropdown button" name="provided_keyword">
+                                            aria-label="Text input with dropdown button" name="provided_keyword" required>
                                         <button class="btn btn-light pe-lg-5 dropdown-toggle default_option"
                                             type="button" data-bs-toggle="dropdown" aria-expanded="false">All Document
                                             Types</button>

@@ -2,14 +2,11 @@
 // Start the session
 session_start();
 
-if (isset($_SESSION["upload_id"])) {
-    $target = $_SESSION["upload_id"];
-    echo "<script>console.log(" . $target . ");</script>";
-    if (isset($_SESSION["upload_".$target])) {
-        echo "<script>console.log(" . $_SESSION["upload_".$target] . ");</script>";
-    }
-
-    // unset($_SESSION["errorString"]);
+$upload_id = $_GET['upload_id'];
+echo "<script>console.log(" . $upload_id . ");</script>";
+if (isset($_SESSION["upload_" . $upload_id])) {
+    $jsonObj = $_SESSION["upload_" . $upload_id];
+    echo "<script>console.log(" . json_encode($jsonObj) . ");</script>";
 }
 
 ?>
@@ -26,41 +23,40 @@ if (isset($_SESSION["upload_id"])) {
             <div class="row gx-5 justify-content-center mx-0">
                 <div class="col-lg-11 col-xl-9 col-xxl-8">
 
+                    <?php
+                    $docType = $jsonObj->template_name;
+                    $title = $jsonObj->file_name;
+                    $description = $jsonObj->description;
+                    $publishDate = $jsonObj->date;
+                    $previewImage = "img/uploadFileDummy.png";
+
+                    // Build the HTML structure
+                    $html = '
                     <!-- Document type -->
-                    <div id="doctypecontainer" class="d-flex align-items-center pb-2"><img
-                            src="img/recordCat_advertisment2.svg" class="me-2" alt="">Advertisement</div>
-
+                    <div id="doctypecontainer" class="d-flex align-items-center pb-2">
+                        <img src="img/recordCat_advertisment2.svg" class="me-2" alt="">
+                        ' . $docType . '
+                    </div>
+            
                     <!-- Document title -->
-                    <h4 id="titlecontainer" class="primary-red text-wrap text-break serif">Rover Regent Motors Advertred
-                        2</h4>
-
+                    <h4 id="titlecontainer" class="primary-red text-wrap text-break serif">' . $title . '</h4>
+            
                     <!-- Document description -->
-                    <div id="desccontainer">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                        tempor
-                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                        ullamco
-                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                        voluptate
-                        velit
-                        esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident,
-                        sunt in
-                        culpa
-                        qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur
-                        adipiscing
-                        elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-                        nostrud
-                        exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                        reprehenderit
-                        in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-                        cupidatat non
-                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+                    <div id="desccontainer">' . $description . '</div>
+            
                     <!-- Document publish date -->
-                    <div id="publishdatecontainer">Published at Jun, 1999</div>
+                    <div id="publishdatecontainer">Published at ' . $publishDate . '</div>
+            
                     <!-- Document preview -->
                     <div id="previewcontainer">
-                        <img src="img/uploadFileDummy.png" class="img-thumbnail" alt="...">
+                        <img src="' . $previewImage . '" class="img-thumbnail" alt="...">
                     </div>
+                ';
+
+                    // Output the HTML code
+                    echo $html;
+
+                    ?>
                 </div>
             </div>
         </div>

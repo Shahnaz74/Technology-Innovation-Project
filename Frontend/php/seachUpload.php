@@ -2,47 +2,40 @@
 // Start the session
 session_start();
 
-// Set header
-header('Content-Type: application/json');
 
-// Get provided keyword from GET request
-$providedKeyword = $_GET['provided_keyword'];
+require_once('databaseConfig.php');
 
-// Validate provided keyword
-if (!isset($providedKeyword) || empty($providedKeyword)) {
-    http_response_code(400);
-    $_SESSION["errorString"] = json_encode(array("message" => "An error occured that prevented the page from loading.2"));
-    header("location:index.php");
-    exit();
-}
+// Check if the provided keyword is set
+if (isset($_GET['provided_keyword'])) {
+  // Get the keyword from the query parameter
+  $provided_keyword = $_GET['provided_keyword'];
 
-require_once("databaseConfig.php");
+  echo "<script>console.log(" . ($provided_keyword) . ");</script>";
 
-// Check connection
-if (!$conn) {
-    http_response_code(400);
-    $_SESSION["errorString"] = json_encode(array("message" => "An error occured that prevented the page from loading.3"));
-    header("location:index.php");
-    exit();
-}
+  // Prepare the SQL statement to search for uploads
+  $sql = "SELECT * FROM user_uploads 
+            LEFT JOIN upload_status ON user_uploads.upload_status = upload_status.id
+            LEFT JOIN template ON user_uploads.template_id = template.template_id
+            LEFT JOIN (
+              SELECT upload_id, GROUP_CONCAT(keyword SEPARATOR ', ') as subject
+              FROM keyword_upload
+              JOIN keyword ON keyword_upload.keyword_id = keyword.keyword_id
+              GROUP BY upload_id
+            ) as keyword_subjects ON user_uploads.upload_id = keyword_subjects.upload_id
+            WHERE user_uploads.upload_status = 2 AND (user_uploads.file_name LIKE ? OR keyword_subjects.subject LIKE ?)";
+  $stmt = $conn->prepare($sql);
+  $search_query = "%" . $provided_keyword . "%";
+  $stmt->bind_param("ss", $search_query, $search_query);
+  $stmt->execute();
+  $result = $stmt->get_result();
 
-// Fetch data from database
-$sql = "SELECT * FROM user_uploads WHERE upload_status = 2 AND (file_name LIKE '%" . $providedKeyword . "%' OR title LIKE '%" . $providedKeyword . "%')";
-
-$result = mysqli_query($conn, $sql);
-
-if (!$result) {
-    http_response_code(400);
-    $_SESSION["errorString"] = json_encode(array("message" => "An error occured that prevented the page from loading.4"));
-    header("location:index.php");
-    exit();
-}
-
-// Store results in array
-$uploads = array();
-
-while ($row = mysqli_fetch_assoc($result)) {
-    $upload = array(
+  // Check if there are any results
+  if ($result->num_rows > 0) {
+    // Create an array to store the uploads
+    $uploads = array();
+    while ($row = $result->fetch_assoc()) {
+      // Create an array to store the upload data
+      $upload = array(
         "upload_id" => $row["upload_id"],
         "file_name" => $row["file_name"],
         "contributor" => $row["contributor"],
@@ -61,40 +54,33 @@ while ($row = mysqli_fetch_assoc($result)) {
         "first_name" => $row["first_name"],
         "last_name" => $row["last_name"],
         "email" => $row["email"],
-        "upload_status" => $row["upload_status"],
-        "template_name" => "",
-        "source" => array()
-    );
-
-    // Fetch template name
-    $templateSql = "SELECT template_name FROM template WHERE template_id = " . $row["template_id"];
-    $templateResult = mysqli_query($conn, $templateSql);
-
-    if ($templateResult) {
-        $templateRow = mysqli_fetch_assoc($templateResult);
-        $upload["template_name"] = $templateRow["template_name"];
+        "upload_status" => $row["name"],
+        "template_name" => $row["template_name"],
+        "subject" => explode(", ", $row["subject"])
+      );
+      // Add the upload to the uploads array
+      array_push($uploads, $upload);
     }
-
-    // Fetch keywords
-    $keywordsSql = "SELECT keyword FROM keyword WHERE upload_id = " . $row["upload_id"];
-    $keywordsResult = mysqli_query($conn, $keywordsSql);
-
-    if ($keywordsResult) {
-        while ($keywordRow = mysqli_fetch_assoc($keywordsResult)) {
-            array_push($upload["source"], $keywordRow["keyword"]);
-        }
-    }
-
-    // Add upload to array
-    array_push($uploads, $upload);
+    // Create the response array
+    $response = array("uploads" => $uploads);
+    // Set the status code to 200
+    http_response_code(200);
+  } else {
+    // If there are no results, create an error response
+    $response = array("message" => "No uploads found with provided keyword.");
+    // Set the status code to 400
+    http_response_code(400);
+  }
+} else {
+  // If the provided keyword is not set, create an error response
+  $response = array("message" => "Missing keyword parameter.");
+  // Set the status code to 400
+  http_response_code(400);
 }
 
-// Close connection
-mysqli_close($conn);
-
-// Return data
-http_response_code(200);
-$jsonString = json_encode(array("uploads" => $uploads));
-$_SESSION["jsonString"] = $jsonString;
+// Return the response
+$jsonString = json_encode($response);
+echo "<script>console.log(" . $jsonString . ");</script>";
+$_SESSION['jsonString'] = $jsonString;
 header("location:search_results.php");
 ?>

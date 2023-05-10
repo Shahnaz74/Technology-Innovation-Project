@@ -19,7 +19,7 @@ session_start();
                             <div class="flex-grow-1">
                                 <div class="dropdown input-group pe-2">
                                     <input type="text" class="form-control" aria-label="Text input with dropdown button"
-                                        name="provided_keyword">
+                                        name="provided_keyword" required>
                                     <button class="btn btn-secondary pe-lg-3 dropdown-toggle default_option"
                                         type="button" data-bs-toggle="dropdown" aria-expanded="false">All
                                         Document
@@ -161,7 +161,13 @@ session_start();
                             if (isset($_SESSION["jsonString"])) {
                                 $jsonString = $_SESSION["jsonString"];
                                 $jsonObj = json_decode($jsonString);
-                                echo "<p>" . count($jsonObj->uploads) . "<span> result(s)</span></p>";
+                                
+                                if (property_exists($jsonObj, "uploads")) {
+                                    echo "<p>" . count($jsonObj->uploads) . "<span> result(s)</span></p>";
+                                } else {
+                                    echo "<p>0<span> result(s)</span></p>";
+                                }
+                                
                             }
                             ?>
                         </div>
@@ -174,24 +180,28 @@ session_start();
                             $jsonString = $_SESSION["jsonString"];
                             $jsonObj = json_decode($jsonString);
                             echo "<script>console.log(" . json_encode($jsonObj) . ");</script>";
-
                             $html = "";
-                            foreach ($jsonObj->uploads as $upload) {
-                                // Create HTML element for each upload
-                                $html .= '<div class="search-result-item row align-items-center border-bottom py-md-5 onclick="redirectToDetailsPage(' . $upload->upload_id . ')">';
-                                $html .= '<div class="col-lg-3 pb-2">';
-                                $html .= '<img src="img/uploadFileDummy.png" class="img-thumbnail" alt="...">';
-                                $html .= '</div>';
-                                $html .= '<div class="col-lg-9">';
-                                $html .= '<div id="doctypecontainer" class="d-flex align-items-center primary-neutal-800 pb-2">';
-                                $html .= '<img src="img/recordCat_advertisment2.svg" class="me-2" alt="">' . $upload->template_name;
-                                $html .= '</div>';
-                                $html .= '<h4 id="titlecontainer" class="primary-red text-wrap text-break serif">' . $upload->file_name . '</h4>';
-                                $html .= '<p class="primary-neutal-800">' . $upload->description . '</p>';
-                                $html .= '<p class="primary-neutal-800">Published at ' . $upload->date . '</p>';
-                                $html .= '</div>';
-                                $html .= '</div>';
-                                $_SESSION["upload_" . $upload->upload_id] = $upload;
+                            if (property_exists($jsonObj, "uploads")) {
+                                foreach ($jsonObj->uploads as $upload) {
+                                    // Create HTML element for each upload
+                                    $html .= '<div class="search-result-item row align-items-center border-bottom py-md-5">';
+                                    $html .= '<div class="col-lg-3 pb-2">';
+                                    $html .= '<img src="img/uploadFileDummy.png" class="img-thumbnail" alt="...">';
+                                    $html .= '</div>';
+                                    $html .= '<div class="col-lg-9">';
+                                    $html .= '<div id="doctypecontainer" class="d-flex align-items-center primary-neutal-800 pb-2">';
+                                    $html .= '<img src="img/recordCat_advertisment2.svg" class="me-2" alt="">' . $upload->template_name;
+                                    $html .= '</div>';
+                                    $html .= '<h4 id="titlecontainer" class="primary-red text-wrap text-break serif">' . $upload->file_name . '</h4>';
+                                    $html .= '<p class="primary-neutal-800">' . $upload->description . '</p>';
+                                    $html .= '<p class="primary-neutal-800">Published at ' . $upload->date . '</p>';
+                                    $html .= '<div class="upload-id" style="display: none;">' . $upload->upload_id . '</div>';
+                                    $html .= '</div>';
+                                    $html .= '</div>';
+                                    $_SESSION["upload_" . $upload->upload_id] = $upload;
+                                }
+                            } else {
+                                $html .= $jsonObj->message;
                             }
                             echo $html;
                         }
@@ -203,75 +213,19 @@ session_start();
         </div>
     </section>
 
+    <script>
+        $(document).ready(function () {
+            $(".search-result-item").click(function () {
+                var upload_id = $(this).find(".upload-id").text();
+                // Redirect to another HTML page
+                window.location.href = "record_detail.php?upload_id=" + upload_id;
+            });
+        });
+    </script>
+
     <!-- footer -->
     <?php include "footer.php" ?>
     <?php include "scripts.php" ?>
 </body>
-
-<!--
-    <div class="main-container">
-        <div class="filter-section">
-            <h2>Filter Results</h2>
-            <ul>
-                <li>
-                    <label>Car Type</label>
-                    <input type="checkbox" name="car-type" value="Sedan">Sedan<br>
-                    <input type="checkbox" name="car-type" value="SUV">SUV<br>
-                    <input type="checkbox" name="car-type" value="Hatchback">Hatchback<br>
-                    <input type="checkbox" name="car-type" value="Sports Car">Sports Car<br>
-                </li>
-                <li>
-                    <p><label>Publish Date</label>From:
-                        <select name="year-from">
-                            <option value="2020">2020</option>
-                            <option value="2021">2021</option>
-                            <option value="2022">2022</option>
-                            <option value="2023">2023</option>
-                        </select>
-                        To:
-                        <select name="year-to">
-                            <option value="2020">2020</option>
-                            <option value="2021">2021</option>
-                            <option value="2022">2022</option>
-                            <option value="2023">2023</option>
-                        </select>
-                    </p>
-                </li>
-                <li>
-                    <label>Source</label>
-                    <input type="checkbox" name="source" value="Dealer">Dealer<br>
-                    <input type="checkbox" name="source" value="Private">Private<br>
-                </li>
-            </ul>
-        </div>
-        <div class="search-result-section">
-            <h2>Search Result</h2>
-            <div class="sort-by">
-                <label for="sort-by-select">Sort By:</label>
-                <select id="sort-by-select" name="sort-by">
-                    <option value="relevance">Relevance</option>
-                    <option value="price-asc">Price: Low to High</option>
-                    <option value="price-desc">Price: High to Low</option>
-                    <option value="year-asc">Year: Old to New</option>
-                    <option value="year-desc">Year: New to Old</option>
-                </select>
-            </div>
-            <div class="search-result-item">
-                <h3>Product 1</h3>
-                <p>Description of Product 1</p>
-                <p>Category: Books</p>
-                <p>Price: $10</p>
-                <p>Brand: Apple</p>
-            </div>
-            <div class="search-result-item">
-                <h3>Product 2</h3>
-                <p>Description of Product 2</p>
-                <p>Category: Electronics</p>
-                <p>Price: $50</p>
-                <p>Brand: Samsung</p>
-            </div>
-        </div>
-    </div>
- -->
 
 </html>
