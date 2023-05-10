@@ -1,5 +1,5 @@
 <?php
-  require_once('../databaseConfig.php');
+  require_once('databaseConfig.php');
 
   // Check if the provided keyword is set
   if(isset($_GET['provided_keyword'])) {
