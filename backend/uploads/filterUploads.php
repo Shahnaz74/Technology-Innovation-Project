@@ -30,7 +30,7 @@
             $sql .= " AND t.template_name = '$templateName'";
         }
         if (!empty($carType)) {
-            $sql .= " AND (uu.file_name LIKE '%$carType%' OR uu.title LIKE '%$carType%' OR uu.description LIKE '%$carType%')";
+            $sql .= " AND (uu.file_name LIKE '%$carType%' OR uu.title LIKE '%$carType%' OR uu.description LIKE '%$carType%' OR k.keyword LIKE '%$carType%')";
         }
 
         // Group the results by upload ID
