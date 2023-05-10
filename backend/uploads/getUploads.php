@@ -3,7 +3,7 @@
     header("Access-Control-Allow-Origin: *");
     header("Content-Type: application/json; charset=UTF-8");
 
-    require_once("databaseConfig.php");
+    require_once('../databaseConfig.php');
 
     // SQL query to fetch data from database
     $sql = "SELECT uu.upload_id, uu.file_name, uu.contributor, uu.coverage, uu.creator, uu.date, uu.description, uu.format, uu.identifier, uu.language, uu.publisher, uu.relation, uu.rights, uu.source, uu.title, uu.first_name, uu.last_name, uu.email, uu.upload_status, t.template_name, GROUP_CONCAT(DISTINCT k.keyword SEPARATOR ',') AS subject

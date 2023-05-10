@@ -1,6 +1,6 @@
 <?php
 
-    require_once("databaseConfig.php");
+    require_once('../databaseConfig.php');
 
     // Get template_name and field_name from request
     $template_name = $_GET['template_name'] ?? null;

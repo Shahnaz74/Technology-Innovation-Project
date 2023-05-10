@@ -1,6 +1,6 @@
 <?php
 
-	require_once("databaseConfig.php");
+	require_once('../databaseConfig.php');
 
 	// Check if required fields are set
 	if (!isset($_POST['template_name'], $_POST['field_name'], $_POST['is_required'])) {

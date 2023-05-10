@@ -1,5 +1,5 @@
 <?php
-    require_once 'databaseConfig.php';
+    require_once('../databaseConfig.php');
 
     function filterUploads($keyword, $dateRangeStart, $dateRangeEnd, $templateName, $carType) {
         global $conn;

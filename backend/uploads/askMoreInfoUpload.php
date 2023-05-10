@@ -1,5 +1,5 @@
 <?php
-    require_once("databaseConfig.php"); // include database connection
+    require_once('../databaseConfig.php'); // include database connection
 
     // check if user_upload_id parameter exists
     if (isset($_GET['user_upload_id'])) {

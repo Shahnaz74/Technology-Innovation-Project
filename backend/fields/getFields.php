@@ -1,6 +1,6 @@
 <?php
 
-    require_once("databaseConfig.php");
+    require_once('../databaseConfig.php');
 
     // check if the template_name parameter was provided in the query string
     if (!isset($_GET['template_name'])) {

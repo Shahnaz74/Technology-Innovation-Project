@@ -9,7 +9,7 @@
     // Get the upload_id parameter
     $upload_id = $_GET['upload_id'];
 
-    require_once("databaseConfig.php");
+    require_once('../databaseConfig.php');
 
     // Check if the connection was successful
     if ($conn->connect_error) {

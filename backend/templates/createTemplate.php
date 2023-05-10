@@ -1,5 +1,5 @@
 <?php
-    require_once("databaseConfig.php");
+    require_once('../databaseConfig.php');
 
     // Read the request data
     $request_data = file_get_contents('php://input');

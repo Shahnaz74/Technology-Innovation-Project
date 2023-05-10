@@ -1,6 +1,6 @@
 <?php
     // Include database configuration file
-    require_once("databaseConfig.php");
+    require_once('../databaseConfig.php');
 
     // Set headers to allow cross-origin resource sharing (CORS)
     header('Access-Control-Allow-Origin: *');

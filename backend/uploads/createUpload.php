@@ -1,5 +1,5 @@
 <?php
-  require_once("databaseConfig.php");
+  require_once('../databaseConfig.php');
 
   // Get the request body
   $request_body = file_get_contents('php://input');

@@ -1,5 +1,5 @@
 <?php
-    require_once('databaseConfig.php');
+    require_once('../databaseConfig.php');
 
     // Check if the keyword and user_upload_id were provided
     if (isset($_POST['keyword']) && isset($_POST['user_upload_id'])) {

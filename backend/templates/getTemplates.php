@@ -1,5 +1,5 @@
 <?php
-    require_once("databaseConfig.php");
+    require_once('../databaseConfig.php');
 
     // Creating an array to store templates data
     $templates = array();

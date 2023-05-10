@@ -1,5 +1,5 @@
 <?php
-  require_once("databaseConfig.php");
+  require_once('../databaseConfig.php');
 
   // Check if the request method is PUT
   if ($_SERVER['REQUEST_METHOD'] === 'PUT') {

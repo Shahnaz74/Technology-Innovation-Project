@@ -1,5 +1,5 @@
 <?php
-    require_once("databaseConfig.php");
+    require_once('../databaseConfig.php');
 
     // Get the keyword and user_upload_id from frontend
     $keyword = $_POST['keyword'];
