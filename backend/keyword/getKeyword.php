@@ -1,5 +1,5 @@
 <?php
-    require_once 'databaseConfig.php';
+    require_once("databaseConfig.php");
 
     // Initialize response array
     $response = array();
