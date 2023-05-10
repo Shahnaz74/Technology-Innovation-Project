@@ -611,6 +611,74 @@ return a message notify that the upload has been approved
 edit the upload_status of the upload to "archived" (3 in upload_status table) and send an email to ask for more information, returns a message to notify the email has been sent
 
 
+## uploads/filterUpload.php
+### GET Display all approved uploads data which is related to the provided keyword and reach the condition of template_name, date range and containing filter_cartype in file_name/title/description or keywords related.
+
+#### PARAMS provided_keyword, filter_date_range_start, filter_date_range_end, filter_template_name, filter_cartype
+
+#### STATUS CODE
+200 - Page Loaded Successfully 
+400 - An error occured that preveted the page from loading.
+
+#### RETURN
+returns all approved uploads data which is related to the provided keyword and reach the condition of template_name, date is in between filter_date_range_start and filter_date_range_end and containing filter_cartype in file_name/title/description or keywords related
+E.g
+```JSON
+{
+	"uploads": [
+		{
+			"upload_id": "2",
+			"file_name": "sample_file2",
+			"contributor":null,
+			"coverage":null,
+			"creator": null,
+			"date":null,
+			"description":null,
+			"format":"PDF",
+			"identifier":"12345",
+			"language":"English",
+			"publisher":"Random Publishing",
+			"relation":null,
+			"rights":"All rights Reserved",
+			"source":null,
+			"title":"Sample File",
+			"first_name":"Creator2",
+			"last_name":"Creator2",
+			"email":"creator2@example.com",
+			"upload_status":"1",
+			"template_name":"Advertisement Newspaper",
+			"subject": ["keyword3","keyword4"]
+		},
+		{
+			"upload_id": "3",
+			"file_name": "sample_file3",
+			"contributor":"contributor3",
+			"coverage":null,
+			"creator": null,
+			"date":null,
+			"description":null,
+			"format":"PDF",
+			"identifier":"123456",
+			"language":"English",
+			"publisher":"Random Publishing",
+			"relation":null,
+			"rights":"All rights Reserved",
+			"source":null,
+			"title":"Sample File",
+			"first_name":"Creator3",
+			"last_name":"Creator3",
+			"email":"creator3@example.com",
+			"upload_status":"1",
+			"template_name":"Article Journal",
+			"subject": ["keyword3","keyword4"]
+		}
+	]
+}
+```
+
+
+
+
 ## keywords/getKeywords.php
 ### GET Display all keyword data.
 #### PARAMS 
