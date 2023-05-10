@@ -28,30 +28,40 @@ if (isset($_SESSION["upload_" . $upload_id])) {
                     $title = $jsonObj->file_name;
                     $description = $jsonObj->description;
                     $publishDate = $jsonObj->date;
-                    $previewImage = "img/uploadFileDummy.png";
+                    $previewImageFormat = $jsonObj->format;
+                    $previewImage = "client-records/" . $title;
 
                     // Build the HTML structure
-                    $html = '
-                    <!-- Document type -->
-                    <div id="doctypecontainer" class="d-flex align-items-center pb-2">
-                        <img src="img/recordCat_advertisment2.svg" class="me-2" alt="">
-                        ' . $docType . '
-                    </div>
+                    $html = "";
+                    // Document type
+                    $html .= '<div id="doctypecontainer" class="d-flex align-items-center pb-2">' . $docType . '</div>';
             
-                    <!-- Document title -->
-                    <h4 id="titlecontainer" class="primary-red text-wrap text-break serif">' . $title . '</h4>
+                    // Document title
+                    $html .= '<h4 id="titlecontainer" class="primary-red text-wrap text-break serif">' . $title . '</h4>';
             
-                    <!-- Document description -->
-                    <div id="desccontainer">' . $description . '</div>
+                    // Document description
+                    $html .= '<div id="desccontainer">' . $description . '</div>';
             
-                    <!-- Document publish date -->
-                    <div id="publishdatecontainer">Published at ' . $publishDate . '</div>
+                    // Document publish date
+                    $html .= '<div id="publishdatecontainer">Published at ' . $publishDate . '</div>';
             
-                    <!-- Document preview -->
-                    <div id="previewcontainer">
-                        <img src="' . $previewImage . '" class="img-thumbnail" alt="...">
-                    </div>
-                ';
+                    // Document preview
+                    if (strtolower($previewImageFormat) === "jpg" || strtolower($previewImageFormat) === "png") {
+                        // JPG file preview
+                        $html .=  '<div class="preview-area id="previewcontainer"">';
+                        $html .=  '<img src="' . $previewImage . '" alt="Preview Image">';
+                        $html .=  '</div>';
+                    } elseif (strtolower($previewImageFormat) === "doc" || strtolower($previewImageFormat) === "docx") {
+                        // DOC or DOCX file preview
+                        $html .=  '<div class="preview-area" id="previewcontainer">';
+                        $html .=  '<iframe src="http://localhost/Technology-innovation/client-records/AN_P6_SydneyMorningHerald_21Jun1971.docx&embedded=true" width="100%" height="600" frameborder="0"></iframe>';
+                        $html .=  '</div>';
+                    } elseif (strtolower($previewImageFormat) === "pdf") {
+                        // PDF file preview
+                        $html .=  '<div class="preview-area" id="previewcontainer">';
+                        $html .=  '<iframe src="' . $previewImage . '" width="100%" height="600" frameborder="0"></iframe>';
+                        $html .=  '</div>';
+                    }
 
                     // Output the HTML code
                     echo $html;

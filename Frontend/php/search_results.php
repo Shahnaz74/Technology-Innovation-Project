@@ -179,23 +179,28 @@ session_start();
                         if (isset($_SESSION["jsonString"])) {
                             $jsonString = $_SESSION["jsonString"];
                             $jsonObj = json_decode($jsonString);
-                            echo "<script>console.log(" . json_encode($jsonObj) . ");</script>";
                             $html = "";
                             if (property_exists($jsonObj, "uploads")) {
                                 foreach ($jsonObj->uploads as $upload) {
                                     // Create HTML element for each upload
+                                    if (strtolower($upload->format) === "jpg" || strtolower($upload->format) === "png") {
+                                        $filePreviewPath = $upload->file_name;
+                                    } else {
+                                        $filenameWithoutExtension = pathinfo($upload->file_name, PATHINFO_FILENAME);
+                                        $filePreviewPath = $filenameWithoutExtension . "-thumb.png";
+                                    }
                                     $html .= '<div class="search-result-item row align-items-center border-bottom py-md-5">';
                                     $html .= '<div class="col-lg-3 pb-2">';
-                                    $html .= '<img src="img/uploadFileDummy.png" class="img-thumbnail" alt="...">';
+                                    $html .= '<img src="client-records/' . $filePreviewPath . '" class="img-thumbnail" alt="...">';
                                     $html .= '</div>';
                                     $html .= '<div class="col-lg-9">';
                                     $html .= '<div id="doctypecontainer" class="d-flex align-items-center primary-neutal-800 pb-2">';
-                                    $html .= '<img src="img/recordCat_advertisment2.svg" class="me-2" alt="">' . $upload->template_name;
+                                    $html .= $upload->template_name;
                                     $html .= '</div>';
                                     $html .= '<h4 id="titlecontainer" class="primary-red text-wrap text-break serif">' . $upload->file_name . '</h4>';
                                     $html .= '<p class="primary-neutal-800">' . $upload->description . '</p>';
                                     $html .= '<p class="primary-neutal-800">Published at ' . $upload->date . '</p>';
-                                    $html .= '<div class="upload-id" style="display: none;">' . $upload->upload_id . '</div>';
+                                    $html .= '<div class="upload-id" style="display: none;"><p>' . $upload->upload_id . '</p></div>';
                                     $html .= '</div>';
                                     $html .= '</div>';
                                     $_SESSION["upload_" . $upload->upload_id] = $upload;
