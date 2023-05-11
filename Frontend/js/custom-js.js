@@ -31,20 +31,6 @@ $(document).ready(function () {
   });
 });
 
-// Dropdown list functionality
-$(document).ready(function () {
-  $(".dropdown .default_option").click(function () {
-    $(this).siblings("ul").addClass("active");
-  });
-
-  $(".dropdown ul li").click(function () {
-    var text = $(this).text();
-    var dropdown = $(this).closest(".dropdown");
-    dropdown.find(".default_option").text(text);
-    dropdown.find("ul").removeClass("active");
-  });
-});
-
 // Sticky header
 const header = document.getElementById("form-header");
 const intercept = document.createElement("div");

@@ -19,30 +19,35 @@ session_start();
                             <div class="flex-grow-1">
                                 <div class="dropdown input-group pe-2">
                                     <input type="text" class="form-control" aria-label="Text input with dropdown button"
-                                        name="provided_keyword" required>
+                                        name="provided_keyword" required <?php
+                                        if (isset($_SESSION["provided_keyword"]) && !empty($_SESSION["provided_keyword"])) {
+                                            echo 'value="' . $_SESSION["provided_keyword"] . '"';
+                                        }
+                                        ?>>
                                     <button class="btn btn-secondary pe-lg-3 dropdown-toggle default_option"
-                                        type="button" data-bs-toggle="dropdown" aria-expanded="false">All
-                                        Document
-                                        Types</button>
-                                    <ul class="dropdown-menu dropdown-menu-end">
+                                        id="documentTypesButton" type="button" data-bs-toggle="dropdown"
+                                        aria-expanded="false">All Document Types</button>
+                                    <ul class="dropdown-menu dropdown-menu-end" name="filter_template_name">
+                                        <li><a class="dropdown-item" value="All Document Types"
+                                                onclick="updateButtonDisplay(this)">All Document Types</a></li>
                                         <li><a class="dropdown-item" value="Advertisement Journal"
-                                                href="#">Advertisement Journal</a></li>
+                                                onclick="updateButtonDisplay(this)">Advertisement Journal</a></li>
                                         <li><a class="dropdown-item" value="Advertisement Newspaper"
-                                                href="#">Advertisement Newspaper</a></li>
-                                        <li><a class="dropdown-item" value="Article Journal" href="#">Article
-                                                Journal</a></li>
-                                        <li><a class="dropdown-item" value="Article Newspaper" href="#">Article
-                                                Newspaper</a></li>
-                                        <li><a class="dropdown-item" value="Book Historical" href="#">Book
-                                                Historical</a></li>
-                                        <li><a class="dropdown-item" value="Photograph Commercial" href="#">Photograph
-                                                Commercial</a></li>
-                                        <li><a class="dropdown-item" value="Photograph Personal" href="#">Photograph
-                                                Personal</a></li>
-                                        <li><a class="dropdown-item" value="Sales Brochure" href="#">Sales Brochure</a>
-                                        </li>
-                                        <li><a class="dropdown-item" value="Sales Record" href="#">Sales Record</a></li>
-                                    </ul>
+                                                onclick="updateButtonDisplay(this)">Advertisement Newspaper</a></li>
+                                        <li><a class="dropdown-item" value="Article Journal"
+                                                onclick="updateButtonDisplay(this)">Article Journal</a></li>
+                                        <li><a class="dropdown-item" value="Article Newspaper"
+                                                onclick="updateButtonDisplay(this)">Article Newspaper</a></li>
+                                        <li><a class="dropdown-item" value="Book Historical"
+                                                onclick="updateButtonDisplay(this)">Book Historical</a></li>
+                                        <li><a class="dropdown-item" value="Photograph Commercial"
+                                                onclick="updateButtonDisplay(this)">Photograph Commercial</a></li>
+                                        <li><a class="dropdown-item" value="Photograph Personal"
+                                                onclick="updateButtonDisplay(this)">Photograph Personal</a></li>
+                                        <li><a class="dropdown-item" value="Sales Brochure"
+                                                onclick="updateButtonDisplay(this)">Sales Brochure</a></li>
+                                        <li><a class="dropdown-item" value="Sales Record"
+                                                onclick="updateButtonDisplay(this)">Sales Record</a></li>
                                 </div>
                             </div>
                             <button type="button" class="btn btn-primary homeSearchBtn"><i
@@ -62,33 +67,37 @@ session_start();
                 <!-- Search filter -->
                 <div class="filter-section col-lg-3">
 
-                    <!-- Car type -->
+                    <!-- Car Type Subject-->
                     <ul class="list-group list-group-flush border-bottom py-2">
-                        <p class="filterHeading primary-neutal-900">Car Type</p>
+                        <p class="filterHeading primary-neutal-900">Car Type Subject</p>
                         <li class="list-group-item px-0">
-                            <input class="form-check-input" type="checkbox" name="car-type" value="Sedan"
-                                id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                Sedan
-                            </label>
+                            <input class="form-check-input" type="checkbox" name="car-type" value="All" id="carTypeAll" checked>
+                            <label class="form-check-label" for="carTypeAll">All Car Type Subject</label>
                         </li>
                         <li class="list-group-item px-0">
-                            <input class="form-check-input" type="checkbox" name="car-type" value="SUV">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                SUV
-                            </label>
+                            <input class="form-check-input" type="checkbox" name="car-type" value="LR1" id="carTypeLR1">
+                            <label class="form-check-label" for="carTypeLR1">LR1</label>
                         </li>
                         <li class="list-group-item px-0">
-                            <input class="form-check-input" type="checkbox" name="car-type" value="Hatchback">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                Hatchback
-                            </label>
+                            <input class="form-check-input" type="checkbox" name="car-type" value="LR2" id="carTypeLR2">
+                            <label class="form-check-label" for="carTypeLR2">LR2</label>
                         </li>
                         <li class="list-group-item px-0">
-                            <input class="form-check-input" type="checkbox" name="car-type" value="Sports Car">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                Sports Car
-                            </label>
+                            <input class="form-check-input" type="checkbox" name="car-type" value="P3" id="carTypeP3">
+                            <label class="form-check-label" for="carTypeP3">P3</label>
+                        </li>
+                        <li class="list-group-item px-0">
+                            <input class="form-check-input" type="checkbox" name="car-type" value="P4" id="carTypeP4">
+                            <label class="form-check-label" for="carTypeP4">P4</label>
+                        </li>
+                        <li class="list-group-item px-0">
+                            <input class="form-check-input" type="checkbox" name="car-type" value="P6" id="carTypeP6">
+                            <label class="form-check-label" for="carTypeP6">P6</label>
+                        </li>
+                        <li class="list-group-item px-0">
+                            <input class="form-check-input" type="checkbox" name="car-type" value="Range Rover"
+                                id="carTypeRR">
+                            <label class="form-check-label" for="carTypeRR">Range Rover</label>
                         </li>
                     </ul>
 
@@ -97,41 +106,126 @@ session_start();
                         <p class=" filterHeading primary-neutal-900">Publish Date</p>
                         <div class=" dropdown year">
                             <button class="btn btn-outline-secondary dropdown-toggle default_option" type="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                All year
-                            </button>
+                                data-bs-toggle="dropdown" aria-expanded="false">All Year</button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" value="1960-1980">1960-1980</a></li>
-                                <li><a class="dropdown-item" href="#" value="1981-2000">1981-2000</a></li>
-                                <li><a class="dropdown-item" value="2001-2021">2001-2021</a></li>
+                                <li><a class="dropdown-item" value="All year">All year</a></li>
+                                <li><a class="dropdown-item" value="1940-1960">1940-1960</a></li>
+                                <li><a class="dropdown-item" value="1961-1980">1961-1980</a></li>
+                                <li><a class="dropdown-item" value="1981-2000">1981-2000</a></li>
+                                <li><a class="dropdown-item" value="2001-2023">2001-2023</a></li>
                             </ul>
                         </div>
                     </ul>
 
-                    <!-- File source -->
-                    <ul class="list-group list-group-flush border-bottom py-2"">
-                            <p class=" filterHeading primary-neutal-900">Source</p>
+                    <!-- File publisher -->
+                    <ul class="list-group list-group-flush border-bottom py-2">
+                        <p class=" filterHeading primary-neutal-900">Publisher</p>
                         <li class=" list-group-item px-0">
-                            <input class="form-check-input" type="checkbox" name="source" value="All Sources"
-                                id="flexCheckDefault">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                All Sources
+                            <input class="form-check-input" type="checkbox" name="publisher" value="All Publishers"
+                                id="publisherAll" checked>
+                            <label class="form-check-label" for="publisherAll">All Publishers</label>
+                        </li>
+                        <li class="list-group-item px-0">
+                            <input class="form-check-input" type="checkbox" name="publisher" value="The Motor"
+                                id="publisherMotor">
+                            <label class="form-check-label" for="publisherMotor">
+                                The Motor
                             </label>
                         </li>
                         <li class="list-group-item px-0">
-                            <input class="form-check-input" type="checkbox" name="source"
-                                value="Government publication">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                Government publication
+                            <input class="form-check-input" type="checkbox" name="publisher" value="Autocar"
+                                id="publisherAutocar">
+                            <label class="form-check-label" for="publisherAutocar">
+                                Autocar
                             </label>
                         </li>
                         <li class="list-group-item px-0">
-                            <input class="form-check-input" type="checkbox" name="source" value="Morning Bulletin ">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                Morning Bulletin
+                            <input class="form-check-input" type="checkbox" name="publisher" value="Weekly Times"
+                                id="publisherWeeklyTimes">
+                            <label class="form-check-label" for="publisherWeeklyTimes">
+                                Weekly Times
+                            </label>
+                        </li>
+                        <li class="list-group-item px-0">
+                            <input class="form-check-input" type="checkbox" name="publisher" value="Argus"
+                                id="publisherArgus">
+                            <label class="form-check-label" for="publisherArgus">
+                                Argus
+                            </label>
+                        </li>
+                        <li class="list-group-item px-0">
+                            <input class="form-check-input" type="checkbox" name="publisher" value="The Age"
+                                id="publisherAge">
+                            <label class="form-check-label" for="publisherAge">
+                                The Age
+                            </label>
+                        </li>
+                        <li class="list-group-item px-0">
+                            <input class="form-check-input" type="checkbox" name="publisher" value="The Herald"
+                                id="publisherHerald">
+                            <label class="form-check-label" for="publisherHerald">
+                                The Herald
+                            </label>
+                        </li>
+                        <li class="list-group-item px-0">
+                            <input class="form-check-input" type="checkbox" name="publisher" value="The Sun News"
+                                id="publisherSunNews">
+                            <label class="form-check-label" for="publisherSunNews">
+                                The Sun News
+                            </label>
+                        </li>
+                        <li class="list-group-item px-0">
+                            <input class="form-check-input" type="checkbox" name="publisher"
+                                value="The Sydney Morning Herald" id="publisherSydenyMorning">
+                            <label class="form-check-label" for="publisherSydenyMorning">
+                                The Sydney Morning Herald
+                            </label>
+                        </li>
+                        <li class="list-group-item px-0">
+                            <input class="form-check-input" type="checkbox" name="publisher"
+                                value="State Library Victoria" id="publisherStateLibrary">
+                            <label class="form-check-label" for="publisherStateLibrary">
+                                State Library Victoria
+                            </label>
+                        </li>
+                        <li class="list-group-item px-0">
+                            <input class="form-check-input" type="checkbox" name="publisher"
+                                value="Herald and Weekly Times" id="publisherHWT">
+                            <label class="form-check-label" for="publisherHWT">
+                                Herald and Weekly Times
+                            </label>
+                        </li>
+                        <li class="list-group-item px-0">
+                            <input class="form-check-input" type="checkbox" name="publisher" value="Land Rover Co"
+                                id="publisherLRC">
+                            <label class="form-check-label" for="publisherLRC">
+                                Land Rover Co
+                            </label>
+                        </li>
+                        <li class="list-group-item px-0">
+                            <input class="form-check-input" type="checkbox" name="publisher"
+                                value="British Motor Heritage" id="publisherBMH">
+                            <label class="form-check-label" for="publisherBMH">
+                                British Motor Heritage
+                            </label>
+                        </li>
+                        <li class="list-group-item px-0">
+                            <input class="form-check-input" type="checkbox" name="publisher" value="Rover Company"
+                                id="publisherRover">
+                            <label class="form-check-label" for="publisherRover">
+                                Rover Company
+                            </label>
+                        </li>
+                        <li class="list-group-item px-0">
+                            <input class="form-check-input" type="checkbox" name="publisher" value="Regent Motors"
+                                id="publisherRM">
+                            <label class="form-check-label" for="publisherRM">
+                                Regent Motors
                             </label>
                         </li>
                     </ul>
+
+                    <button id="applyFiltersBtn" class="btn btn-primary mt-3">Apply Filters</button>
                 </div>
 
                 <!-- Result listing -->
@@ -158,16 +252,24 @@ session_start();
                         </div>
                         <div class="col-lg-auto">
                             <?php
-                            if (isset($_SESSION["jsonString"])) {
-                                $jsonString = $_SESSION["jsonString"];
+                            if (isset($_SESSION["filteredResponse"])) {
+                                $jsonString = $_SESSION["filteredResponse"];
                                 $jsonObj = json_decode($jsonString);
-                                
-                                if (property_exists($jsonObj, "uploads")) {
+
+                                if ($jsonObj != null && property_exists($jsonObj, "uploads")) {
                                     echo "<p>" . count($jsonObj->uploads) . "<span> result(s)</span></p>";
                                 } else {
                                     echo "<p>0<span> result(s)</span></p>";
                                 }
-                                
+                            } else if (isset($_SESSION["jsonString"])) {
+                                $jsonString = $_SESSION["jsonString"];
+                                $jsonObj = json_decode($jsonString);
+
+                                if ($jsonObj != null && property_exists($jsonObj, "uploads")) {
+                                    echo "<p>" . count($jsonObj->uploads) . "<span> result(s)</span></p>";
+                                } else {
+                                    echo "<p>0<span> result(s)</span></p>";
+                                }
                             }
                             ?>
                         </div>
@@ -176,11 +278,11 @@ session_start();
                     <!--Document Item-->
                     <div id="itemContainer">
                         <?php
-                        if (isset($_SESSION["jsonString"])) {
-                            $jsonString = $_SESSION["jsonString"];
+                        if (isset($_SESSION["filteredResponse"])) {
+                            $jsonString = $_SESSION["filteredResponse"];
                             $jsonObj = json_decode($jsonString);
                             $html = "";
-                            if (property_exists($jsonObj, "uploads")) {
+                            if ($jsonObj != null && property_exists($jsonObj, "uploads")) {
                                 foreach ($jsonObj->uploads as $upload) {
                                     // Create HTML element for each upload
                                     if (strtolower($upload->format) === "jpg" || strtolower($upload->format) === "png") {
@@ -205,7 +307,40 @@ session_start();
                                     $html .= '</div>';
                                     $_SESSION["upload_" . $upload->upload_id] = $upload;
                                 }
-                            } else {
+                            } else if ($jsonObj != null) {
+                                $html .= $jsonObj->message;
+                            }
+                            echo $html;
+                        } else if (isset($_SESSION["jsonString"])) {
+                            $jsonString = $_SESSION["jsonString"];
+                            $jsonObj = json_decode($jsonString);
+                            $html = "";
+                            if ($jsonObj != null && property_exists($jsonObj, "uploads")) {
+                                foreach ($jsonObj->uploads as $upload) {
+                                    // Create HTML element for each upload
+                                    if (strtolower($upload->format) === "jpg" || strtolower($upload->format) === "png") {
+                                        $filePreviewPath = $upload->file_name;
+                                    } else {
+                                        $filenameWithoutExtension = pathinfo($upload->file_name, PATHINFO_FILENAME);
+                                        $filePreviewPath = $filenameWithoutExtension . "-thumb.png";
+                                    }
+                                    $html .= '<div class="search-result-item row align-items-center border-bottom py-md-5">';
+                                    $html .= '<div class="col-lg-3 pb-2">';
+                                    $html .= '<img src="client-records/' . $filePreviewPath . '" class="img-thumbnail" alt="...">';
+                                    $html .= '</div>';
+                                    $html .= '<div class="col-lg-9">';
+                                    $html .= '<div id="doctypecontainer" class="d-flex align-items-center primary-neutal-800 pb-2">';
+                                    $html .= $upload->template_name;
+                                    $html .= '</div>';
+                                    $html .= '<h4 id="titlecontainer" class="primary-red text-wrap text-break serif">' . $upload->title . '</h4>';
+                                    $html .= '<p class="primary-neutal-800">' . $upload->description . '</p>';
+                                    $html .= '<p class="primary-neutal-800">Published at ' . $upload->date . '</p>';
+                                    $html .= '<div class="upload-id" style="display: none;"><p>' . $upload->upload_id . '</p></div>';
+                                    $html .= '</div>';
+                                    $html .= '</div>';
+                                    $_SESSION["upload_" . $upload->upload_id] = $upload;
+                                }
+                            } else if ($jsonObj != null) {
                                 $html .= $jsonObj->message;
                             }
                             echo $html;
@@ -219,6 +354,154 @@ session_start();
     </section>
 
     <script>
+        function updateButtonDisplay(selectedItem) {
+            var selectedValue = $(selectedItem).attr('value');
+            var selectedText = $(selectedItem).text();
+
+            // Update the button's text with the selected value
+            $('#documentTypesButton').text(selectedText);
+
+            // Optionally, you can store the selected value in a hidden input field for form submission
+            $('input[name="filter_template_name"]').val(selectedValue);
+        }
+
+        document.getElementById('applyFiltersBtn').addEventListener('click', applyFilters);
+
+        // Get the dropdown button and menu
+        var dropdownButton = document.querySelector('.dropdown.year .dropdown-toggle');
+        var dropdownMenu = document.querySelector('.dropdown.year .dropdown-menu');
+
+        // Add click event listener to the dropdown button
+        dropdownButton.addEventListener('click', function () {
+            // Toggle the dropdown menu visibility
+            dropdownMenu.classList.toggle('show');
+        });
+
+        // Add click event listener to the dropdown menu items
+        var dropdownItems = dropdownMenu.querySelectorAll('.dropdown-item');
+        for (var i = 0; i < dropdownItems.length; i++) {
+            dropdownItems[i].addEventListener('click', function () {
+                // Get the selected value
+                var selectedValue = this.getAttribute('value');
+
+                // Update the dropdown button text
+                dropdownButton.textContent = this.textContent;
+
+                // Close the dropdown menu
+                dropdownMenu.classList.remove('show');
+            });
+        }
+
+        // Close the dropdown menu if user clicks outside of it
+        window.addEventListener('click', function (event) {
+            if (!dropdownButton.contains(event.target) && !dropdownMenu.contains(event.target)) {
+                dropdownMenu.classList.remove('show');
+            }
+        });
+
+        function applyFilters() {
+            // Get the selected filter values
+            var selectedCarTypes = getSelectedCheckboxValues('car-type');
+            var selectedPublishers = getSelectedCheckboxValues('publisher');
+            var selectedPublishDate = dropdownButton.textContent;
+
+            // Apply the filters to your search results
+            console.log('Selected Car Types:', selectedCarTypes);
+            console.log('Selected Publishers:', selectedPublishers);
+            console.log('Selected Publish Date:', selectedPublishDate);
+
+            // Retrieve the session JSON string 
+            var jsonString = <?php echo json_encode($_SESSION["jsonString"]); ?>;
+            // Check if the JSON string is empty or null
+            if (!jsonString) {
+                return;
+            }
+
+            // Parse the JSON string to an object
+            var jsonObj = JSON.parse(jsonString);
+            // Create an array to store the filtered uploads
+            var filteredUploads = [];
+
+            // Iterate over the uploads and apply filters
+            if (jsonObj.hasOwnProperty("uploads")) {
+                for (var i = 0; i < jsonObj.uploads.length; i++) {
+                    var upload = jsonObj.uploads[i];
+
+                    // Apply selectedCarTypes filter
+                    if (selectedCarTypes.length > 0) {
+                        if (selectedCarTypes.includes("All")) {
+                            // "All" keyword selected, no need to check other keywords
+                        } else if (!selectedCarTypes.some(keyword => upload.subject.includes(keyword))) {
+                            continue;
+                        }
+                    }
+
+                    // Apply selectedPublishDate filter
+                    if (selectedPublishDate !== "All Year") {
+                        var values = selectedPublishDate.split("-");
+                        var startYear = values[0];
+                        var endYear = values[1];
+
+                        var selectedPublishYear = upload.date.split("-")[0];  // Extract the year from the date string
+
+                        if (selectedPublishYear < startYear || selectedPublishYear > endYear) { // out of range{
+                            continue;
+                        }
+                    }
+
+                    // Apply selectedPublishers filter
+                    if (selectedPublishers.length > 0) {
+                        if (selectedPublishers.includes("All Publishers")) {
+                            // "All" keyword selected, no need to check other keywords
+                        } else if (!selectedPublishers.some(keyword => upload.publisher.toLowerCase().indexOf(keyword.toLowerCase()) !== -1)) {
+                            continue;
+                        }
+                    }
+
+                    // Add the upload to the filtered array
+                    filteredUploads.push(upload);
+                }
+            }
+
+            // Update the uploads array in the JSON object with the filtered uploads
+            jsonObj.uploads = filteredUploads;
+
+            // Convert the updated JSON object back to a string
+            var updatedJsonString = JSON.stringify(jsonObj);
+
+            console.log('Selected Publish Date:', updatedJsonString);
+
+            updateItemContainer(jsonString, updatedJsonString);
+        }
+
+        function updateItemContainer(jsonString, updatedJsonString) {
+            $.ajax({
+                url: 'set_session.php',
+                method: 'POST',
+                data: {
+                    response: jsonString,
+                    filteredResponse: updatedJsonString
+                },
+                success: function () {
+                    // Redirect to search_results.php
+                    window.location.href = 'search_results.php';
+                },
+                error: function (error) {
+                    // Handle the AJAX error
+                    console.error(error);
+                }
+            });
+        }
+
+        function getSelectedCheckboxValues(checkboxName) {
+            var checkboxes = document.querySelectorAll('input[name="' + checkboxName + '"]:checked');
+            var values = [];
+            for (var i = 0; i < checkboxes.length; i++) {
+                values.push(checkboxes[i].value);
+            }
+            return values;
+        }
+
         // home search button clicked event
         $(document).ready(function () {
             $('.homeSearchBtn').click(function () {
@@ -245,9 +528,9 @@ session_start();
                         $.ajax({
                             url: 'set_session.php',
                             method: 'POST',
-                            data: { 
+                            data: {
                                 provided_keyword: keyword,
-                                response: JSON.stringify(response) 
+                                response: JSON.stringify(response)
                             },
                             success: function () {
                                 // Redirect to search_results.php
@@ -278,7 +561,6 @@ session_start();
 
     <!-- footer -->
     <?php include "footer.php" ?>
-    <?php include "scripts.php" ?>
 </body>
 
 </html>
