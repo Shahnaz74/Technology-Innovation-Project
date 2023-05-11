@@ -239,7 +239,7 @@ session_start();
                             <form class="form-inline ms-4">
                                 <div class="dropdown sort-by">
                                     <button class="btn btn-outline-secondary dropdown-toggle default_option"
-                                        type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        type="button" data-bs-toggle="dropdown" aria-expanded="false" id="sortButton">
                                         Sort By: <span>Year - New to Old</span>
                                     </button>
                                     <ul class="dropdown-menu">
@@ -408,6 +408,14 @@ session_start();
             const sortButton = sortDropdown.querySelector('.dropdown-toggle');
             const sortOptions = sortDropdown.querySelectorAll('.dropdown-item');
 
+            const sorting = "<?php echo isset($_SESSION['sorting']) ? $_SESSION['sorting'] : ''; ?>";
+
+            if (sorting === 'year-asc') {
+                sortButton.innerHTML = `Sort By: <span>Year - Old to New</span>`; 
+            } else {
+                sortButton.innerHTML = `Sort By: <span>Year - New to Old</span>`; 
+            }
+
             // Add click event listener to each sort option
             sortOptions.forEach(option => {
                 option.addEventListener('click', function () {
@@ -416,13 +424,18 @@ session_start();
 
                     // Retrieve the session JSON string 
                     var jsonString = <?php echo json_encode($_SESSION["jsonString"]); ?>;
+                    var filteredResponse = <?php echo json_encode($_SESSION["filteredResponse"]); ?>;
                     // Check if the JSON string is empty or null
                     if (!jsonString) {
                         return;
                     }
 
-                    // Parse the JSON string to an object
-                    var jsonObj = JSON.parse(jsonString);
+                    if (!filteredResponse) {
+                        // Parse the JSON string to an object
+                        var jsonObj = JSON.parse(jsonString);
+                    } else {
+                        var jsonObj = JSON.parse(filteredResponse);
+                    }
 
                     // Perform sorting based on the selected option
                     if (selectedOption === 'year-asc') {
@@ -441,7 +454,7 @@ session_start();
 
                     console.log('Sorted:', updatedJsonString);
 
-                    updateItemContainer(jsonString, updatedJsonString);
+                    updateItemContainer(jsonString, updatedJsonString, selectedOption);
                 });
             });
         }
@@ -559,13 +572,14 @@ session_start();
             updateItemContainer(jsonString, updatedJsonString);
         }
 
-        function updateItemContainer(jsonString, updatedJsonString) {
+        function updateItemContainer(jsonString, updatedJsonString, sorting) {
             $.ajax({
                 url: 'set_session.php',
                 method: 'POST',
                 data: {
                     response: jsonString,
-                    filteredResponse: updatedJsonString
+                    filteredResponse: updatedJsonString,
+                    sorting: sorting
                 },
                 success: function () {
                     // Redirect to search_results.php
