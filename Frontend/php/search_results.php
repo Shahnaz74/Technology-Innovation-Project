@@ -13,7 +13,7 @@ session_start();
     <section class="searchForm py-4">
         <div class="container">
             <div class=" row justify-content-center mx-0">
-                <form class="row mx-0" action="seachUpload.php" method="GET">
+                <form class="row mx-0">
                     <div class="col-md-8 mx-0">
                         <div class="d-flex">
                             <div class="flex-grow-1">
@@ -45,7 +45,7 @@ session_start();
                                     </ul>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary homeSearchBtn"><i
+                            <button type="button" class="btn btn-primary homeSearchBtn"><i
                                     class="bi bi-search pe-2"></i>Search</button>
                         </div>
                     </div>
@@ -197,7 +197,7 @@ session_start();
                                     $html .= '<div id="doctypecontainer" class="d-flex align-items-center primary-neutal-800 pb-2">';
                                     $html .= $upload->template_name;
                                     $html .= '</div>';
-                                    $html .= '<h4 id="titlecontainer" class="primary-red text-wrap text-break serif">' . $upload->file_name . '</h4>';
+                                    $html .= '<h4 id="titlecontainer" class="primary-red text-wrap text-break serif">' . $upload->title . '</h4>';
                                     $html .= '<p class="primary-neutal-800">' . $upload->description . '</p>';
                                     $html .= '<p class="primary-neutal-800">Published at ' . $upload->date . '</p>';
                                     $html .= '<div class="upload-id" style="display: none;"><p>' . $upload->upload_id . '</p></div>';
@@ -219,6 +219,54 @@ session_start();
     </section>
 
     <script>
+        // home search button clicked event
+        $(document).ready(function () {
+            $('.homeSearchBtn').click(function () {
+                var keyword = $('input[name="provided_keyword"]').val();
+                var templateName = $('#documentTypesButton').text();
+                if (templateName === "All Document Types") {
+                    templateName = "";
+                }
+                console.log(keyword);
+                console.log(templateName);
+
+                // Make the AJAX request
+                $.ajax({
+                    url: 'filterUploads.php',
+                    method: 'GET',
+                    data: {
+                        provided_keyword: keyword,
+                        filter_template_name: templateName
+                    },
+                    success: function (response) {
+                        // Handle the AJAX success response
+                        console.log(response);
+                        // Make an additional AJAX request to set the session variable
+                        $.ajax({
+                            url: 'set_session.php',
+                            method: 'POST',
+                            data: { 
+                                provided_keyword: keyword,
+                                response: JSON.stringify(response) 
+                            },
+                            success: function () {
+                                // Redirect to search_results.php
+                                window.location.href = 'search_results.php';
+                            },
+                            error: function (error) {
+                                // Handle the AJAX error
+                                console.error(error);
+                            }
+                        });
+                    },
+                    error: function (error) {
+                        // Handle the AJAX error
+                        console.error(error);
+                    }
+                });
+            });
+        });
+
         $(document).ready(function () {
             $(".search-result-item").click(function () {
                 var upload_id = $(this).find(".upload-id").text();
