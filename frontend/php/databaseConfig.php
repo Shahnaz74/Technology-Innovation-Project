@@ -1,7 +1,7 @@
 <?php
     // Connect to the database
     $servername = "localhost";
-    $username = "localhost";
+    $username = "root";
     $password = "";
     $dbname = "document_management";
 

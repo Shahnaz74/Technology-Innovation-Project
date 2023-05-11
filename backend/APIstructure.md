@@ -378,6 +378,49 @@ E.g
 }
 ```
 
+## uploads/getUploads.php
+### GET Display user upload data based on upload_id.
+
+#### PARAMS upload_id
+
+#### STATUS CODE
+200 - Page Loaded Successfully 
+400 - An error occured that preveted the page from loading.
+
+#### RETURN
+returns data of a row which contain provided upload_id, including keywords related to it
+E.g
+```JSON
+{
+	"uploads": [
+		{
+			"upload_id": "3",
+			"file_name": "sample_file3",
+			"contributor":"contributor3",
+			"coverage":null,
+			"creator": null,
+			"date":null,
+			"description":null,
+			"format":"PDF",
+			"identifier":"123456",
+			"language":"English",
+			"publisher":"Random Publishing",
+			"relation":null,
+			"rights":"All rights Reserved",
+			"source":null,
+			"title":"Sample File",
+			"first_name":"Creator3",
+			"last_name":"Creator3",
+			"email":"creator3@example.com",
+			"upload_status":"2",
+			"template_name":"Article Journal",
+			"subject": ["keyword3","keyword5"]
+		}
+	]
+}
+```
+
+
 ## uploads/createUpload.php
 ### POST Create new data of upload. The upload created will be in suitable status and related to keywords in subject data which is existing in keyword table through keyword_upload tables
 
