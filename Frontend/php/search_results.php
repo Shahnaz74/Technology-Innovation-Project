@@ -71,7 +71,8 @@ session_start();
                     <ul class="list-group list-group-flush border-bottom py-2">
                         <p class="filterHeading primary-neutal-900">Car Type Subject</p>
                         <li class="list-group-item px-0">
-                            <input class="form-check-input" type="checkbox" name="car-type" value="All" id="carTypeAll" checked>
+                            <input class="form-check-input" type="checkbox" name="car-type" value="All" id="carTypeAll"
+                                checked>
                             <label class="form-check-label" for="carTypeAll">All Car Type Subject</label>
                         </li>
                         <li class="list-group-item px-0">
@@ -239,10 +240,10 @@ session_start();
                                 <div class="dropdown sort-by">
                                     <button class="btn btn-outline-secondary dropdown-toggle default_option"
                                         type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Sort By: <span>Relevance</span>
+                                        Sort By: <span>Year - New to Old</span>
                                     </button>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" value="relevance">Relevance</a></li>
+                                        <!-- <li><a class="dropdown-item" value="relevance">Relevance</a></li> -->
                                         <li><a class="dropdown-item" value="year-asc">Year - Old to New</a>
                                         </li>
                                         <li><a class="dropdown-item" value="year-desc">Year - New to Old</a></li>
@@ -365,6 +366,89 @@ session_start();
             $('input[name="filter_template_name"]').val(selectedValue);
         }
 
+        function sortByOldToNew(array) {
+            array.sort(function (a, b) {
+                // Convert the date strings to Date objects for comparison
+                const dateA = new Date(a.date);
+                const dateB = new Date(b.date);
+
+                // Compare the dates
+                if (dateA < dateB) {
+                    return -1; // dateA comes before dateB
+                } else if (dateA > dateB) {
+                    return 1; // dateA comes after dateB
+                }
+                return 0; // dates are equal
+            });
+
+            return array;
+        }
+
+        function sortByNewToOld(array) {
+            array.sort(function (a, b) {
+                // Convert the date strings to Date objects for comparison
+                const dateA = new Date(a.date);
+                const dateB = new Date(b.date);
+
+                if (dateA > dateB) {
+                    return -1; // dateA comes after dateB
+                } else if (dateA < dateB) {
+                    return 1; // dateA comes before dateB
+                }
+
+                return 0; // dates are equal
+            });
+
+            return array;
+        }
+
+        function initializeSortDropdown() {
+            // Get the necessary elements
+            const sortDropdown = document.querySelector('.dropdown.sort-by');
+            const sortButton = sortDropdown.querySelector('.dropdown-toggle');
+            const sortOptions = sortDropdown.querySelectorAll('.dropdown-item');
+
+            // Add click event listener to each sort option
+            sortOptions.forEach(option => {
+                option.addEventListener('click', function () {
+                    const selectedOption = this.getAttribute('value');
+                    sortButton.innerHTML = `Sort By: <span>${this.innerHTML}</span>`;
+
+                    // Retrieve the session JSON string 
+                    var jsonString = <?php echo json_encode($_SESSION["jsonString"]); ?>;
+                    // Check if the JSON string is empty or null
+                    if (!jsonString) {
+                        return;
+                    }
+
+                    // Parse the JSON string to an object
+                    var jsonObj = JSON.parse(jsonString);
+
+                    // Perform sorting based on the selected option
+                    if (selectedOption === 'year-asc') {
+                        // Call your year-asc sorting function or perform any other action for year-asc sorting
+                        console.log('Sorting by year - Old to New...');
+                        jsonObj.uploads = sortByOldToNew(jsonObj.uploads);
+
+                    } else if (selectedOption === 'year-desc') {
+                        // Call your year-desc sorting function or perform any other action for year-desc sorting
+                        console.log('Sorting by year - New to Old...');
+                        jsonObj.uploads = sortByNewToOld(jsonObj.uploads);
+                    }
+
+                    // Convert the updated JSON object back to a string
+                    var updatedJsonString = JSON.stringify(jsonObj);
+
+                    console.log('Sorted:', updatedJsonString);
+
+                    updateItemContainer(jsonString, updatedJsonString);
+                });
+            });
+        }
+
+        // Call the function to initialize the sort dropdown
+        initializeSortDropdown();
+
         document.getElementById('applyFiltersBtn').addEventListener('click', applyFilters);
 
         // Get the dropdown button and menu
@@ -400,6 +484,7 @@ session_start();
         });
 
         function applyFilters() {
+
             // Get the selected filter values
             var selectedCarTypes = getSelectedCheckboxValues('car-type');
             var selectedPublishers = getSelectedCheckboxValues('publisher');

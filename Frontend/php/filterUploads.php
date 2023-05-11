@@ -35,6 +35,9 @@
 
         // Group the results by upload ID
         $sql .= " GROUP BY uu.upload_id";
+        
+        // Group the results by date (New to Old)
+        $sql .= " ORDER BY uu.date DESC";
 
         // Execute the query
         $result = $conn->query($sql);
