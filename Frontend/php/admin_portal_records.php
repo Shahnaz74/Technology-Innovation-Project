@@ -69,100 +69,14 @@
                     <div class="tab-content px-0" id="myTabContent">
 
                         <!-- Published content -->
-                        <div class="tab-pane fade show active" id="published-tab-pane" role="tabpanel"
-                            aria-labelledby="published-tab" tabindex="0">
+                        <div id="tab-panel">
                             <table class="table table-striped table-hover">
-                                <!-- Table header -->
-                                <thead>
-                                    <tr>
-                                        <th scope="col">File name</th>
-                                        <th scope="col">Author</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                </thead> 
-                                <!-- Record listing content -->
-                                <tbody>
-                                    <?php
-                                    // Call getUpload.php script and get JSON response
-                                    $response = file_get_contents('getUploads.php');
-                                    $data = json_decode($response, true);
-
-                                    // Check if any uploads were found
-                                    if (!empty($data['uploads'])) {
-                                        // Loop through uploads and display each one
-                                        foreach ($data['uploads'] as $upload) {
-                                            // Check if upload_status is 2
-                                            if ($upload['upload_status'] == 2) {
-                                                echo '<tr>';
-                                                echo '<th scope="row" width="60%">';
-                                                echo '<p class="recordFileName mb-0">' . $upload['file_name'] . '</p>';
-                                                echo '<p>' . $upload['template_name'] . '</p>';
-                                                echo '</th>';
-                                                echo '<td>'.$upload['first_name'].' '.$upload['last_name'].'</td>';
-                                                echo '<td>';
-                                                echo '<button type="button" class="btn neutral-outlin-btn me-lg-2" onclick="editUpload(' . $upload['upload_id'] . ')"><i class="bi bi-pencil-fill pe-2"></i>Edit</button>';
-                                                echo '<button type="button" class="btn neutral-outlin-btn delete-upload-btn" data-upload-id="' . $upload['upload_id'] . '"><i class="bi bi-trash3-fill pe-2"></i>Delete</button>';
-                                                echo '</td>';
-                                                echo '</tr>';
-                                            }
-                                        }
-                                    } else {
-                                        // Display message if no uploads were found
-                                        echo 'No uploads found.';
-                                    }
-                                    ?>
+                                <tbody id="tab-panel-tbody">
 
                                 </tbody>
                             </table>
                         </div>
 
-                        <!-- Archive content -->
-                        <div class="tab-pane fade" id="archived-tab-pane" role="tabpanel" aria-labelledby="archived-tab"
-                            tabindex="0">
-                            <table class="table table-striped table-hover">
-                                <!-- Table header -->
-                                <thead>
-                                    <tr>
-                                        <th scope="col">File name</th>
-                                        <th scope="col">Author</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                </thead> 
-                                <!-- Record listing content -->
-                                <tbody>
-                                    <?php
-                                    // Call getUpload.php script and get JSON response
-                                    $response = file_get_contents('getUploads.php');
-                                    $data = json_decode($response, true);
-
-                                    // Check if any uploads were found
-                                    if (!empty($data['uploads'])) {
-                                        // Loop through uploads and display each one
-                                        foreach ($data['uploads'] as $upload) {
-                                            // Check if upload_status is 3
-                                            if ($upload['upload_status'] == 3) {
-                                                echo '<tr>';
-                                                echo '<th scope="row" width="60%">';
-                                                echo '<p class="recordFileName mb-0">' . $upload['file_name'] . '</p>';
-                                                echo '<p>' . $upload['template_name'] . '</p>';
-                                                echo '</th>';
-                                                echo '<td>'.$upload['first_name'].' '.$upload['last_name'].'</td>';
-                                                echo '<td>';
-                                                echo '<button type="button" class="btn neutral-outlin-btn me-lg-2" onclick="editUpload(' . $upload['upload_id'] . ')"><i class="bi bi-pencil-fill pe-2"></i>Edit</button>';
-                                                echo '<button type="button" class="btn neutral-outlin-btn delete-upload-btn" data-upload-id="' . $upload['upload_id'] . '"><i class="bi bi-trash3-fill pe-2"></i>Delete</button>';
-                                                echo '</td>';
-                                                echo '</tr>';
-                                            }
-                                        }
-                                    } else {
-                                        // Display message if no uploads were found
-                                        echo 'No uploads found.';
-                                    }
-                                    ?>
-
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -170,61 +84,104 @@
     </div>
 
     <script>
-    //script for delete button
-    document.addEventListener('DOMContentLoaded', () => {
-      // Add event listener to delete upload buttons
-      const deleteButtons = document.querySelectorAll('.delete-upload-btn');
-      deleteButtons.forEach(button => {
-        button.addEventListener('click', () => {
-          const uploadId = button.dataset.uploadId;
-          deleteUpload(uploadId);
-        });
-      });
+        $(document).ready(function () {
+            // Get the tab buttons
+            const publishedTabButton = document.getElementById('published-tab');
+            const archivedTabButton = document.getElementById('archived-tab');
 
-      // Function to delete an upload
-      function deleteUpload(uploadId) {
-        // Send a DELETE request to the removeUpload.php API
-        fetch(`http://localhost/TIP/backend/uploads/removeUpload.php?upload_id=${uploadId}`, {
-          method: 'DELETE'
-        })
-          .then(response => response.json())
-          .then(data => {
-            // Check if the deletion was successful
-            if (data.message) {
-              // Reload the page to reflect the updated upload list
-              location.reload();
-            } else {
-              console.error('Failed to delete upload:', data);
-            }
-          })
-          .catch(error => {
-            console.error('Failed to delete upload:', error);
-          });
-      }
-    });
-    </script>
+            loadPublishedData();
 
-    <script>
-    // Script to get upload by Id and pass the data to admin_portal_edit_record.php?data
-    function editUpload(uploadId) {
-        // Call getUploadById.php script and pass the upload_id parameter
-        fetch('http://localhost/TIP/backend/uploads/getUploadById.php?upload_id=' + uploadId)
-            .then(response => response.json())
-            .then(data => {
-                // Convert the upload data to a JSON string
-                const uploadData = JSON.stringify(data.uploads[0]);
-                
-                // Encode the upload data for URL
-                const encodedData = encodeURIComponent(uploadData);
-                
-                // Redirect to the admin_portal_edit_record.php page and pass the upload data as a parameter
-                window.location.href = './admin_portal_edit_record.php?data=' + encodedData;
-            })
-            .catch(error => {
-                console.error('Error:', error);
+            // Add click event listener to the Published tab button
+            publishedTabButton.addEventListener('click', function () {
+                // Handle click logic for the Published tab
+                console.log('Published tab clicked');
+                loadPublishedData();
             });
-    }
-</script>
+
+            // Add click event listener to the Archived tab button
+            archivedTabButton.addEventListener('click', function () {
+                // Handle click logic for the Archived tab
+                console.log('Archived tab clicked');
+                loadArchivedData();
+            });
+
+        });
+
+
+        function loadPublishedData() {
+            $.ajax({
+                url: 'getUploads.php',
+                method: 'GET',
+                success: function (response) {
+                    // Handle the AJAX success response
+                    console.log("published: " + response);
+
+                    // Clear the existing content of tab body
+                    $('#tab-panel-tbody').empty();
+
+                    // Loop through the uploads in the response
+                    response.uploads.forEach(function (upload) {
+                        // Create a new row element for published items
+                        if (upload.upload_status == 2) {
+                            var newRow = $('<tr></tr>');
+                            var rowContent = '';
+                            rowContent += '<th scope="row" width="80%">';
+                            rowContent += '<p class="recordFileName mb-0">' + upload.title + '</p>';
+                            rowContent += '<p>' + upload.template_name + '</p>';
+                            rowContent += '</th>';
+                            rowContent += '<td>';
+                            rowContent += '<button type="button" class="btn neutral-outlin-btn me-lg-2" onclick="editUpload(' + upload.upload_id + ')"><i class="bi bi-pencil-fill pe-2"></i>Edit</button>';
+                            rowContent += '<button type="button" class="btn neutral-outlin-btn delete-upload-btn" data-upload-id="' + upload.upload_id + '"><i class="bi bi-trash3-fill pe-2"></i>Delete</button>';
+                            rowContent += '</td>';
+                            newRow.html(rowContent);
+                            $('#tab-panel-tbody').append(newRow);
+                        }
+                    });
+                },
+                error: function (error) {
+                    // Handle the AJAX error
+                    console.log(error);
+                }
+            });
+        }
+
+        function loadArchivedData() {
+            $.ajax({
+                url: 'getUploads.php',
+                method: 'GET',
+                success: function (response) {
+                    // Handle the AJAX success response
+                    console.log("archived: " + response);
+
+                    // Clear the existing content of tab body
+                    $('#tab-panel-tbody').empty();
+
+                    // Loop through the uploads in the response
+                    response.uploads.forEach(function (upload) {
+                        // Create a new row element for published items
+                        if (upload.upload_status == 3) {
+                            var newRow = $('<tr></tr>');
+                            var rowContent = '';
+                            rowContent += '<th scope="row" width="80%">';
+                            rowContent += '<p class="recordFileName mb-0">' + upload.title + '</p>';
+                            rowContent += '<p>' + upload.template_name + '</p>';
+                            rowContent += '</th>';
+                            rowContent += '<td>';
+                            rowContent += '<button type="button" class="btn neutral-outlin-btn me-lg-2" onclick="editUpload(' + upload.upload_id + ')"><i class="bi bi-pencil-fill pe-2"></i>Edit</button>';
+                            rowContent += '<button type="button" class="btn neutral-outlin-btn delete-upload-btn" data-upload-id="' + upload.upload_id + '"><i class="bi bi-trash3-fill pe-2"></i>Delete</button>';
+                            rowContent += '</td>';
+                            newRow.html(rowContent);
+                            $('#tab-panel-tbody').append(newRow);
+                        }
+                    });
+                },
+                error: function (error) {
+                    // Handle the AJAX error
+                    console.log(error);
+                }
+            });
+        }
+    </script>
 </body>
 
 

@@ -75,6 +75,9 @@
             }
 
             $response = array("uploads" => $uploads);
+            if (!mb_check_encoding($response, 'UTF-8')) {
+                $response = mb_convert_encoding($response, 'UTF-8', 'UTF-8');
+            }
             return json_encode($response);
         } else {
             return false;

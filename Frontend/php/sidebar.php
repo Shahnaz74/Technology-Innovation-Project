@@ -17,7 +17,7 @@ $new_url = $new[3];
                     <a href="admin_portal_records.php">
                         <div class="d-flex w-100 justify-content-start align-items-center">
                             <i class="bi bi-file-earmark-text-fill me-2"></i>
-                            <span>Dashboard</span>
+                            <span>Records</span>
                         </div>
                     </a>
                 </li>
