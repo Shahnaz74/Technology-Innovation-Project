@@ -1,4 +1,11 @@
-<?php include 'head.php'; ?>
+<?php 
+include 'head.php';
+
+
+$upload_id = $_GET['upload_id'];
+echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
+
+?>
 
 <body id="page-top">
     <div class="wrapper">
@@ -149,7 +156,10 @@
         </div>
     </div>
 
-    <?php include 'script.php' ?>
+    <script>
+
+        
+    </script>
 </body>
 
 

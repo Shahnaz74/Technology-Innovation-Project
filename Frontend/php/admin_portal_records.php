@@ -1,7 +1,7 @@
 <?php include 'head.php'; ?>
 
 <!-- Toast message -->
-<div class="toast-container position-absolute bottom-0 end-0 p-3">
+<!-- <div class="toast-container position-absolute bottom-0 end-0 p-3">
     <div class=" toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
         <div class="toast-header">
             <i class="bi bi-check-circle-fill primary-green-darker pe-2"></i>
@@ -12,7 +12,7 @@
             Regent Motors Advertisment has been to the digital archive.
         </div>
     </div>
-</div>
+</div> -->
 
 <body id="page-top">
     <div class="wrapper">
@@ -161,7 +161,7 @@
                             rowContent += '</th>';
                             rowContent += '<td>';
                             rowContent += '<button type="button" class="btn neutral-outlin-btn me-lg-2" onclick="editUpload(' + upload.upload_id + ')"><i class="bi bi-pencil-fill pe-2"></i>Edit</button>';
-                            rowContent += '<button type="button" class="btn neutral-outlin-btn delete-upload-btn" data-upload-id="' + upload.upload_id + '"><i class="bi bi-trash3-fill pe-2"></i>Delete</button>';
+                            rowContent += '<button type="button" class="btn neutral-outlin-btn delete-upload-btn" data-upload-id="' + upload.upload_id + '" onclick="deleteUpload(\'published\',' + upload.upload_id + ')"><i class="bi bi-trash3-fill pe-2"></i>Delete</button>';
                             rowContent += '</td>';
                             newRow.html(rowContent);
                             $('#tab-panel-tbody').append(newRow);
@@ -188,7 +188,7 @@
 
                     // Loop through the uploads in the response
                     response.uploads.forEach(function (upload) {
-                        // Create a new row element for published items
+                        // Create a new row element for archived items
                         if (upload.upload_status == 3) {
                             var newRow = $('<tr></tr>');
                             var rowContent = '';
@@ -198,7 +198,7 @@
                             rowContent += '</th>';
                             rowContent += '<td>';
                             rowContent += '<button type="button" class="btn neutral-outlin-btn me-lg-2" onclick="editUpload(' + upload.upload_id + ')"><i class="bi bi-pencil-fill pe-2"></i>Edit</button>';
-                            rowContent += '<button type="button" class="btn neutral-outlin-btn delete-upload-btn" data-upload-id="' + upload.upload_id + '"><i class="bi bi-trash3-fill pe-2"></i>Delete</button>';
+                            rowContent += '<button type="button" class="btn neutral-outlin-btn me-lg-2" data-upload-id="' + upload.upload_id + '" onclick="deleteUpload(\'archived\',' + upload.upload_id + ')"><i class="bi bi-trash3-fill pe-2"></i>Delete</button>';
                             rowContent += '</td>';
                             newRow.html(rowContent);
                             $('#tab-panel-tbody').append(newRow);
@@ -211,6 +211,56 @@
                 }
             });
         }
+
+        function editUpload(upload_id) {
+            console.log("edit: " + upload_id);
+            window.location.href = "admin_portal_edit_record.php?upload_id=" + upload_id;
+        }
+
+        function deleteUpload(status, upload_id) {
+            console.log("delete: " + upload_id);
+
+            $.ajax({
+                url: 'removeUpload.php',
+                method: 'GET',
+                data: {
+                    upload_id: upload_id
+                },
+                success: function (response) {
+                    // Handle the AJAX success response
+                    console.log("deleted "+status +": " + response);
+
+                    // Parse the JSON response
+                    var jsonResponse = JSON.parse(response);
+
+                    // Check if the message matches a specific value
+                    if (jsonResponse.message === "Upload deleted successfully.") {
+                        // Code to execute when the message matches
+                        console.log("Upload deleted successfully.");
+                        // reload the data
+                        if (status === "published") {
+                            loadPublishedData();
+                        } else if (status === "archived") {
+                            loadArchivedData();
+                        }
+                        showDeleteSuccessPopup();
+                    } else {
+                        // Code to execute when the message does not match
+                        console.log("Unexpected response: " + response);
+                    }
+
+                },
+                error: function (error) {
+                    // Handle the AJAX error
+                    console.log(error);
+                }
+            });
+        }
+
+        function showDeleteSuccessPopup(){
+            
+        }
+
     </script>
 </body>
 
