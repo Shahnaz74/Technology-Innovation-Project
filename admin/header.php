@@ -16,7 +16,7 @@
                                 <a class="nav-link" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false">
                                     <span class="primary-neutal-800 mr-2"><?php if(isset($_SESSION['name'])){ echo $_SESSION['name']; } ?></span>
-                                    <img class="img-profile rounded-circle" src="../img/undraw_profile.svg"
+                                    <img class="img-profile rounded-circle" src="../../img/undraw_profile.svg"
                                         style="width: 32px; height: 32px;">
                                 </a>
 

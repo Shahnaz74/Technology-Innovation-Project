@@ -13,11 +13,11 @@
                         // print_r($_POST);
                         $tid = $_POST['template_id'];
                         $template_name = $_POST['templateName'];
-                        $select = "SELECT * FROM template where id = ".$tid;
+                        $select = "SELECT * FROM template where template_id = ".$tid;
                         $runQuery = mysqli_query($conn, $select);
                         $rowcount=mysqli_num_rows($runQuery);
                         if($rowcount > 0){
-                        $sql = "UPDATE `template` SET `template_name`='$template_name' WHERE id = ".$tid;
+                        $sql = "UPDATE `template` SET `template_name`='$template_name' WHERE template_id = ".$tid;
                         $update = mysqli_query($conn, $sql);
                             if($update){
                                 $_SESSION['message'] = "Templated Update Successfully";
@@ -95,7 +95,7 @@
         <?php if(isset($_GET['edit']) && $_GET['edit'] == "template_edit"){
                 $id = $_GET['id'];
             ?>
-            <?php $select = "SELECT * FROM template where `id` = ".$id;
+            <?php $select = "SELECT * FROM template where `template_id` = ".$id;
                         // echo $select;die;
                         $runQuery = mysqli_query($conn, $select);
                         $rowcount=mysqli_num_rows($runQuery);
@@ -120,7 +120,7 @@
                             File name is required
                         </div>
                     </div>
-                    <input type="hidden" name="template_id" value="<?php echo $row->id; ?>">
+                    <input type="hidden" name="template_id" value="<?php echo $row->template_id; ?>">
                     <div class="col-lg-auto">
                         <!-- <button type="button" class="btn btn-outline-primary me-2"><i class="bi bi-trash3-fill pe-2"></i>Delete Template</button> -->
                         <button type="submit" name="submit_template" value="Save Template" class="btn btn-primary"><i class="bi bi-check-circle-fill pe-2"></i>Update Template</button>
@@ -132,12 +132,12 @@
         <?php if(isset($_GET['edit']) && $_GET['edit'] == "field_edit"){
             $id = $_GET['id'];
             ?>
-            <?php $select = "SELECT * FROM template where `id` = ".$id;
+            <?php $select = "SELECT * FROM template where `template_id` = ".$id;
                         $runQuery = mysqli_query($conn, $select);
                         $rowcount=mysqli_num_rows($runQuery);
                         if($rowcount > 0){
                             $row = mysqli_fetch_object($runQuery);
-                            $select1 = "SELECT * FROM fields where `template_id` = ".$row->id;
+                            $select1 = "SELECT * FROM fields where `template_id` = ".$row->template_id;
                             $runQuery1 = mysqli_query($conn, $select1);
                             $rowcount1=mysqli_num_rows($runQuery1);
                             if($rowcount1 > 0){
@@ -169,10 +169,10 @@
                                             if($rowcount > 0){
                                                 // echo $row->id;
                                                 while($trow = mysqli_fetch_object($runQuery)){
-                                                  $tid = $trow->id;
+                                                  $tid = $trow->template_id;
                                                   $templatename = $trow->template_name;  
                                         ?>
-                                            <option value="<?php echo $tid; ?>" <?php echo $row->id == $tid ? "selected" :''; ?>><?php echo $templatename; ?></option>
+                                            <option value="<?php echo $tid; ?>" <?php echo $row->template_id == $tid ? "selected" :''; ?>><?php echo $templatename; ?></option>
                                         <?php 
                                                 }
                                             }

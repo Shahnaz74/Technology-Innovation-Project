@@ -103,10 +103,10 @@ if(empty($email_err) && empty($password_err)){
     <script src="https://use.fontawesome.com/releases/v6.4.0/js/all.js" crossorigin="anonymous"></script>
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../../css/bootstrap.css">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="../css/custom-css.css">
+    <link rel="stylesheet" href="../../css/custom-css.css">
 
     <!-- Bootstrap JS -->
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
@@ -114,7 +114,7 @@ if(empty($email_err) && empty($password_err)){
         crossorigin="anonymous"></script>
 
     <!-- Custom JS -->
-    <script defer src="../js/custom-js.js"></script>
+    <script defer src="../../js/custom-js.js"></script>
 </head>
 
 <body>
@@ -123,7 +123,7 @@ if(empty($email_err) && empty($password_err)){
             <div class="row justify-content-center">
                 <div class="col-lg-5 d-flex flex-column align-items-center">
                     <div class="mb-5 d-flex align-items-center">
-                        <img class="mb-0" src="../img/rcca-logo.png" alt="">
+                        <img class="mb-0" src="../../img/rcca-logo.png" alt="">
                     </div>
                     <?php //print_r($_GET); ?>
                     <span class="text-danger"><?php if(isset($_GET['error'])){ echo $_GET['error']; }?></span>

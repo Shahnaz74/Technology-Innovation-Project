@@ -35,10 +35,10 @@ include 'db.php';
     <script src="https://use.fontawesome.com/releases/v6.4.0/js/all.js" crossorigin="anonymous"></script>
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../../css/bootstrap.css">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="../css/custom-css.css">
+    <link rel="stylesheet" href="../../css/custom-css.css">
 
     <!-- Bootstrap JS -->
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
@@ -46,5 +46,5 @@ include 'db.php';
         crossorigin="anonymous"></script>
 
     <!-- Custom JS -->
-    <script defer src="../js/custom-js.js"></script>
+    <script defer src="../../js/custom-js.js"></script>
 </head>

@@ -85,7 +85,7 @@
                                     <tr class="align-middle">
                                         <th scope="row" width="60%">
                                             <p class="recordFileName mb-0">Rover Regent Motors Advertred 2</p>
-                                            <p class="recordCategory mb-0"><img src="../img/recordCat_advertisment.svg"
+                                            <p class="recordCategory mb-0"><img src="../../img/recordCat_advertisment.svg"
                                                     alt="Custom SVG" class="pe-1">Advertisement</p>
                                         </th>
                                         <td><span>10</span> Views</td>

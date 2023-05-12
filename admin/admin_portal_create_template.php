@@ -120,6 +120,11 @@
                 </div>
                     
             </form> 
+            <?php  if(isset($_GET['edit']) && $_GET['edit'] == 'add_fields'){
+                if(isset($_GET['id'])){
+                    $templateid = $_GET['id'];
+                
+             ?>
             <form method="POST" >   
 
                 <!-- Page header -->
@@ -139,16 +144,17 @@
                                     <select class="form-select" name="template_id" aria-label="Default select example" required>
                                         <option value="" selected>Select Template</option>
                                         <?php 
+                                            
                                             $select = "SELECT * FROM template";
                                             // echo $select;die;
                                             $runQuery = mysqli_query($conn, $select);
                                             $rowcount=mysqli_num_rows($runQuery);
                                             if($rowcount > 0){
                                                 while($row = mysqli_fetch_object($runQuery)){
-                                                  $tid = $row->id;
+                                                  $tid = $row->template_id;
                                                   $templatename = $row->template_name;  
                                         ?>
-                                            <option value="<?php echo $tid; ?>"><?php echo $templatename; ?></option>
+                                            <option value="<?php echo $tid; ?>" <?php echo $templateid == $tid ? 'selected' :'' ?>><?php echo $templatename; ?></option>
                                         <?php 
                                                 }
                                             }
@@ -300,6 +306,7 @@
                     
                     </div>
                 </form>
+                <?php } } ?>
             </div>
         </div>
     </div> 
