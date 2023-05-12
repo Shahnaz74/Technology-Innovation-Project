@@ -1,40 +1,39 @@
 <?php
-// Initialize the session
-session_start();
- 
+include 'head.php';
+
 // Check if the user is already logged in, if yes then redirect him to welcome page
-if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === 1){
-    header("location: dashboard.php");
+if (isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === 1) {
+    header("location: admin_portal_records.php");
     exit;
 }
 
-include 'databaseConfig.php'; 
-if(isset($_POST['submit'])){
+include 'databaseConfig.php';
+if (isset($_POST['submit'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 }
 
-if(isset($_POST['email']) && isset($_POST['password'])){
+if (isset($_POST['email']) && isset($_POST['password'])) {
 
 
-// Check if username is empty
-if(empty(trim($_POST["email"]))){
-    $email_err = "Please enter your email.";
-} else{
-    $email = trim($_POST["email"]);
-}
+    // Check if username is empty
+    if (empty(trim($_POST["email"]))) {
+        $email_err = "Please enter your email.";
+    } else {
+        $email = trim($_POST["email"]);
+    }
 
-// Check if password is empty
-if(empty(trim($_POST["password"]))){
-    $password_err = "Please enter your password.";
-} else{
-    $password = trim($_POST["password"]);
-}
+    // Check if password is empty
+    if (empty(trim($_POST["password"]))) {
+        $password_err = "Please enter your password.";
+    } else {
+        $password = trim($_POST["password"]);
+    }
 
-// Validate credentials
-if(empty($email_err) && empty($password_err)){
-    // $generated = md5($password);
-    $sql = "SELECT * FROM admin_user WHERE email='$email' AND password='$password'";
+    // Validate credentials
+    if (empty($email_err) && empty($password_err)) {
+        // $generated = md5($password);
+        $sql = "SELECT * FROM admin_user WHERE email='$email' AND password='$password'";
 
         $result = mysqli_query($conn, $sql);
         // echo mysqli_num_rows($result);die;
@@ -50,17 +49,17 @@ if(empty($email_err) && empty($password_err)){
 
                 $_SESSION['email'] = $row['email'];
 
-                $_SESSION['name'] = $row['first_name'].' '.$row['last_name'];
+                $_SESSION['name'] = $row['first_name'] . ' ' . $row['last_name'];
 
                 $_SESSION['id'] = $row['id'];
 
                 $_SESSION['loggedin'] = 1;
 
-                header("Location: dashboard.php");
+                header("Location: admin_portal_records.php");
 
                 exit();
 
-            }else{
+            } else {
                 // die('1234');
 
                 header("Location: admin_login.php?error=Incorect Email or Password");
@@ -69,16 +68,15 @@ if(empty($email_err) && empty($password_err)){
 
             }
 
-        }else{
+        } else {
 
-                header("Location: admin_login.php?error=Incorect Email or Password");
+            header("Location: admin_login.php?error=Incorect Email or Password");
 
-                exit();
+            exit();
 
         }
+    }
 }
-}
-
 
 ?>
 <html lang="en">
@@ -126,10 +124,14 @@ if(empty($email_err) && empty($password_err)){
                         <img class="mb-0" src="../img/rcca-logo.png" alt="">
                     </div>
                     <?php //print_r($_GET); ?>
-                    <span class="text-danger"><?php if(isset($_GET['error'])){ echo $_GET['error']; }?></span>
+                    <span class="text-danger">
+                        <?php if (isset($_GET['error'])) {
+                            echo $_GET['error'];
+                        } ?>
+                    </span>
                     <form class="w-100 d-flex flex-column" method="POST" action="">
-                            
-                    <div class="mb-3">
+
+                        <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label sans">Email address</label>
                             <input type="email" name="email" class="form-control" id="exampleInputEmail1"
                                 aria-describedby="emailHelp">
@@ -139,7 +141,8 @@ if(empty($email_err) && empty($password_err)){
                             <input type="password" name="password" class="form-control" id="exampleInputPassword1">
                         </div>
                         <div class="mx-auto">
-                            <button type="submit" name="submit" class="btn btn-primary btn-block sans">Login</a></button>
+                            <button type="submit" name="submit"
+                                class="btn btn-primary btn-block sans">Login</a></button>
                         </div>
                     </form>
                 </div>

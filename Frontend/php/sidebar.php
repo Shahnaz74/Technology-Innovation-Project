@@ -13,8 +13,8 @@ $new_url = $new[3];
                 <p class="primary-red serif">Admin Portal</p>
             </div>
             <ul class="list-group">
-                <li class="list-group-item list-group-item-action sidebar-list-group-item <?php echo $new_url == 'dashboard.php' ? 'active' :''; ?>"> 
-                    <a href="dashboard.php">
+                <li class="list-group-item list-group-item-action sidebar-list-group-item <?php echo $new_url == 'admin_portal_records.php' ? 'active' :''; ?>"> 
+                    <a href="admin_portal_records.php">
                         <div class="d-flex w-100 justify-content-start align-items-center">
                             <i class="bi bi-file-earmark-text-fill me-2"></i>
                             <span>Dashboard</span>
