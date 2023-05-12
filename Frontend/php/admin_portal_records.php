@@ -34,7 +34,7 @@
                         <h1 class="h3 primary-red mb-0">Records</h1>
                         <form class="form-inline ms-4">
                             <div class="input-group">
-                                <input class="form-control" type="text" placeholder="Search for..."
+                                <input class="form-control" id="searchInput" type="text" placeholder="Search for..."
                                     aria-label="Search for..." aria-describedby="btnNavbarSearch" />
                                 <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i
                                         class="bi bi-search pe-2"></i>Search</button>
@@ -67,8 +67,6 @@
 
                     <!-- Tab content -->
                     <div class="tab-content px-0" id="myTabContent">
-
-                        <!-- Published content -->
                         <div id="tab-panel">
                             <table class="table table-striped table-hover">
                                 <tbody id="tab-panel-tbody">
@@ -76,7 +74,6 @@
                                 </tbody>
                             </table>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -85,6 +82,17 @@
 
     <script>
         $(document).ready(function () {
+            // Get the search button
+            const searchInput = document.getElementById('searchInput');
+            const searchButton = document.getElementById('btnNavbarSearch');
+
+            // Add click event listener to the search button
+            searchButton.addEventListener('click', function () {
+                // Handle click logic for the search
+                console.log('Search clicked');
+                searchRecords();
+            });
+
             // Get the tab buttons
             const publishedTabButton = document.getElementById('published-tab');
             const archivedTabButton = document.getElementById('archived-tab');
@@ -104,8 +112,30 @@
                 console.log('Archived tab clicked');
                 loadArchivedData();
             });
-
         });
+
+        function searchRecords() {
+            // Get the search input value
+            var searchInput = document.getElementById("searchInput");
+            var keyword = searchInput.value.toLowerCase();
+
+            // Get all the rows in the table
+            var rows = document.getElementById("tab-panel-tbody").getElementsByTagName("tr");
+
+            // Loop through each row and hide/show based on the keyword
+            for (var i = 0; i < rows.length; i++) {
+                var rowData = rows[i].querySelector(".recordFileName").textContent.toLowerCase();
+
+                if (rowData.indexOf(keyword) > -1) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+
+            // Clear the search input field
+            searchInput.value = "";
+        }
 
 
         function loadPublishedData() {
