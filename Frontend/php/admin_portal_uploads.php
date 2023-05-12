@@ -49,8 +49,8 @@
                                 <tbody>
 
                                     <?php
-                                        // SQL query to fetch data from database
-                                        $getPendingUpload = "SELECT uu.upload_id, uu.file_name, uu.contributor, uu.coverage, uu.creator, uu.date, uu.description, uu.format, uu.identifier, uu.language, uu.publisher, uu.relation, uu.rights, uu.source, uu.title, uu.first_name, uu.last_name, uu.email, uu.upload_status,uu.created, t.template_name, GROUP_CONCAT(DISTINCT k.keyword SEPARATOR ',') AS subject
+                                    // SQL query to fetch data from database
+                                    $getPendingUpload = "SELECT uu.upload_id, uu.file_name, uu.contributor, uu.coverage, uu.creator, uu.date, uu.description, uu.format, uu.identifier, uu.language, uu.publisher, uu.relation, uu.rights, uu.source, uu.title, uu.first_name, uu.last_name, uu.email, uu.upload_status,uu.created, t.template_name, GROUP_CONCAT(DISTINCT k.keyword SEPARATOR ',') AS subject
                                         FROM user_uploads AS uu
                                         JOIN template AS t ON uu.template_id = t.template_id
                                         LEFT JOIN keyword_upload AS ku ON uu.upload_id = ku.upload_id
@@ -58,58 +58,58 @@
                                         WHERE upload_status = 1
                                         GROUP BY uu.upload_id";
 
-                                        // Execute query and get results
-                                        $getPendingUploadResult = $conn->query($getPendingUpload);
+                                    // Execute query and get results
+                                    $getPendingUploadResult = $conn->query($getPendingUpload);
 
-                                        // Check for errors
-                                        if (!$getPendingUploadResult) {
-                                            http_response_code(400);
-                                            die("An error occurred while retrieving data: " . $conn->error);
+                                    // Check for errors
+                                    if (!$getPendingUploadResult) {
+                                        http_response_code(400);
+                                        die("An error occurred while retrieving data: " . $conn->error);
+                                    }
+
+                                    // Check if there are any rows returned
+                                    if ($getPendingUploadResult->num_rows > 0) {
+                                        while ($row = $getPendingUploadResult->fetch_assoc()) {
+                                            // Extract individual row data
+                                            extract($row);
+
+                                            echo '<tr class="align-middle">';
+
+                                            // <!-- File name & document type -->
+                                            echo '<th scope="row" width="40%">';
+                                            echo '<p class="recordFileName mb-0">' . $title . '</p>';
+                                            echo '<p class="recordCategory mb-0">' . $template_name . '</p>';
+                                            echo '</th>';
+
+                                            // Upload date
+                                            $formatted_date = date('Y-m-d h:iA', strtotime($created));
+                                            echo '<td>' . $formatted_date . '</span></td>';
+
+                                            // Uploader details
+                                            echo '<td scope="row">';
+                                            echo '<p class="mb-0">' . $first_name . ' ' . $last_name . '</p>';
+                                            echo '<p class="mb-0">' . $row["email"] . '</p>';
+                                            echo '</td>';
+
+                                            // Action button
+                                            echo '<td>';
+                                            echo '<button type="button" class="btn neutral-outlin-btn me-lg-2">';
+                                            echo '<a href="./admin_portal_edit_upload.php?id=' . $upload_id . '">';
+                                            echo '<i class="bi bi-pencil-fill pe-2"></i>Edit';
+                                            echo '</a>';
+                                            echo '</button>';
+                                            echo '</td>';
+                                            echo '</tr>';
                                         }
+                                        // Set response code to 200 OK
+                                        http_response_code(200);
+                                    } else {
+                                        // Set response code to 400 Bad Request
+                                        http_response_code(400);
 
-                                        // Check if there are any rows returned
-                                        if ($getPendingUploadResult->num_rows > 0) {
-                                            while($row = $getPendingUploadResult->fetch_assoc()) {
-                                                // Extract individual row data
-                                                extract($row);
-
-                                                echo '<tr class="align-middle">';
-
-                                                    // <!-- File name & document type -->
-                                                    echo '<th scope="row" width="40%">';
-                                                    echo '<p class="recordFileName mb-0">'.$title.'</p>';
-                                                    echo '<p class="recordCategory mb-0">'.$template_name.'</p>';
-                                                    echo '</th>';
-
-                                                    // Upload date
-                                                    $formatted_date = date('Y-m-d h:iA', strtotime($created));
-                                                    echo '<td>'.$formatted_date.'</span></td>';
-
-                                                    // Uploader details
-                                                    echo '<td scope="row">';
-                                                        echo '<p class="mb-0">' . $first_name . ' ' . $last_name . '</p>';
-                                                        echo '<p class="mb-0">'.$row["email"].'</p>';
-                                                    echo '</td>';
-
-                                                    // Action button
-                                                    echo '<td>';
-                                                        echo '<button type="button" class="btn neutral-outlin-btn me-lg-2">';
-                                                        echo '<a href="./admin_portal_edit_upload.php?id=' . $upload_id . '">';
-                                                        echo '<i class="bi bi-pencil-fill pe-2"></i>Edit';
-                                                        echo '</a>';
-                                                        echo '</button>';
-                                                    echo '</td>';
-                                                echo '</tr>';
-                                            }
-                                            // Set response code to 200 OK
-                                            http_response_code(200);
-                                        } else {
-                                            // Set response code to 400 Bad Request
-                                            http_response_code(400);
-
-                                            // Output error message
-                                            echo "No uploads found.";
-                                        }
+                                        // Output error message
+                                        echo "No uploads found.";
+                                    }
                                     ?>
                                 </tbody>
                             </table>
@@ -142,7 +142,7 @@
 
                                     // Check if there are any rows returned
                                     if ($getArchivedUploadResult->num_rows > 0) {
-                                        while($row = $getArchivedUploadResult->fetch_assoc()) {
+                                        while ($row = $getArchivedUploadResult->fetch_assoc()) {
                                             // Extract individual row data
                                             extract($row);
 
@@ -150,18 +150,18 @@
 
                                             // <!-- File name & document type -->
                                             echo '<th scope="row" width="40%">';
-                                            echo '<p class="recordFileName mb-0">'.$title.'</p>';
-                                            echo '<p class="recordCategory mb-0">'.$template_name.'</p>';
+                                            echo '<p class="recordFileName mb-0">' . $title . '</p>';
+                                            echo '<p class="recordCategory mb-0">' . $template_name . '</p>';
                                             echo '</th>';
 
                                             // Upload date
                                             $formatted_date = date('Y-m-d h:iA', strtotime($created));
-                                            echo '<td>'.$formatted_date.'</td>';
+                                            echo '<td>' . $formatted_date . '</td>';
 
                                             // Uploader details
                                             echo '<td scope="row">';
                                             echo '<p class="mb-0">' . $first_name . ' ' . $last_name . '</p>';
-                                            echo '<p class="mb-0">'.$row["email"].'</p>';
+                                            echo '<p class="mb-0">' . $row["email"] . '</p>';
                                             echo '</td>';
 
                                             // Action button
