@@ -279,10 +279,10 @@ session_start();
                     <!--Document Item-->
                     <div id="itemContainer">
                         <?php
+                        $html = "";
                         if (isset($_SESSION["filteredResponse"])) {
                             $jsonString = $_SESSION["filteredResponse"];
-                            $jsonObj = json_decode($jsonString);
-                            $html = "";
+                            $jsonObj = json_decode($jsonString);                            
                             if ($jsonObj != null && property_exists($jsonObj, "uploads")) {
                                 foreach ($jsonObj->uploads as $upload) {
                                     // Create HTML element for each upload
@@ -311,11 +311,9 @@ session_start();
                             } else if ($jsonObj != null) {
                                 $html .= $jsonObj->message;
                             }
-                            echo $html;
                         } else if (isset($_SESSION["jsonString"])) {
                             $jsonString = $_SESSION["jsonString"];
                             $jsonObj = json_decode($jsonString);
-                            $html = "";
                             if ($jsonObj != null && property_exists($jsonObj, "uploads")) {
                                 foreach ($jsonObj->uploads as $upload) {
                                     // Create HTML element for each upload
@@ -344,8 +342,11 @@ session_start();
                             } else if ($jsonObj != null) {
                                 $html .= $jsonObj->message;
                             }
-                            echo $html;
                         }
+                        if (!$html) {
+                            $html .= "No uploads found with provided keyword.";
+                        }                        
+                        echo $html;
                         ?>
                     </div>
 

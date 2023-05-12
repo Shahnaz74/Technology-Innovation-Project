@@ -70,8 +70,7 @@ session_start();
             <section class="row">
                 <div class="col-sm-2 search-results recordCatAdv">
                     <h5 class="primary-neutal-100 serif"><img src="img/recordCat_advertisement_white.svg" width="64px"
-                            alt="Area 1" class="pb-2"><br>Advertisement
-                    </h5>
+                            alt="Area 1" class="pb-2"><br>Advertisement</h5>
                 </div>
                 <div class="col-sm-2 search-results recordCatNews">
                     <h5 class="primary-neutal-100 serif"><img src="img/recordCat_article_white.svg" width="64px"
