@@ -1,6 +1,5 @@
+<?php include "head.php" ?>
 <?php
-// Start the session
-session_start();
 
 $upload_id = $_GET['upload_id'];
 echo "<script>console.log(" . $upload_id . ");</script>";
@@ -10,8 +9,6 @@ if (isset($_SESSION["upload_" . $upload_id])) {
 }
 
 ?>
-<?php include "head.php" ?>
-
 <body>
 
     <!-- Top Nav Bar -->
@@ -25,11 +22,12 @@ if (isset($_SESSION["upload_" . $upload_id])) {
 
                     <?php
                     $docType = $jsonObj->template_name;
+                    $docTitle = $jsonObj->title;
                     $title = $jsonObj->file_name;
                     $description = $jsonObj->description;
                     $publishDate = $jsonObj->date;
                     $previewImageFormat = $jsonObj->format;
-                    $previewImage = "client-records/" . $title;
+                    $previewImage = "../client-records/" . $title;
 
                     // Build the HTML structure
                     $html = "";
@@ -37,7 +35,7 @@ if (isset($_SESSION["upload_" . $upload_id])) {
                     $html .= '<div id="doctypecontainer" class="d-flex align-items-center pb-2">' . $docType . '</div>';
             
                     // Document title
-                    $html .= '<h4 id="titlecontainer" class="primary-red text-wrap text-break serif">' . $title . '</h4>';
+                    $html .= '<h4 id="titlecontainer" class="primary-red text-wrap text-break serif">' . $docTitle . '</h4>';
             
                     // Document description
                     $html .= '<div id="desccontainer">' . $description . '</div>';
@@ -57,7 +55,7 @@ if (isset($_SESSION["upload_" . $upload_id])) {
                         $filePreviewPath = $filenameWithoutExtension . "-thumb.png";
 
                         $html .=  '<div class="preview-area id="previewcontainer"">';
-                        $html .=  '<img src="client-records/' . $filePreviewPath . '" alt="Preview Image">';
+                        $html .=  '<img src="../client-records/' . $filePreviewPath . '" alt="Preview Image">';
                         $html .=  '</div>';
 
                         // $html .=  '<div class="preview-area" id="previewcontainer">';
@@ -81,7 +79,6 @@ if (isset($_SESSION["upload_" . $upload_id])) {
 
     <!-- footer -->
     <?php include "footer.php" ?>
-    <?php include "scripts.php" ?>
 </body>
 
 </html>

@@ -1,8 +1,3 @@
-<?php
-// Start the session
-session_start();
-
-?>
 <?php include "head.php" ?>
 
 <body class="homePage">
@@ -69,28 +64,28 @@ session_start();
             <!-- Nav Boxes -->
             <section class="row">
                 <div class="col-sm-2 search-results recordCatAdv">
-                    <h5 class="primary-neutal-100 serif"><img src="img/recordCat_advertisement_white.svg" width="64px"
+                    <h5 class="primary-neutal-100 serif"><img src="../img/recordCat_advertisement_white.svg" width="64px"
                             alt="Area 1" class="pb-2"><br>Advertisement</h5>
                 </div>
                 <div class="col-sm-2 search-results recordCatNews">
-                    <h5 class="primary-neutal-100 serif"><img src="img/recordCat_article_white.svg" width="64px"
+                    <h5 class="primary-neutal-100 serif"><img src="../img/recordCat_article_white.svg" width="64px"
                             alt="Area 1" class="pb-2"><br>Article</h5>
                 </div>
                 <div class="col-sm-2 search-results recordCatBook">
-                    <h5 class="primary-neutal-100 serif"><img src="img/recordCat_book_white.svg" width="64px"
+                    <h5 class="primary-neutal-100 serif"><img src="../img/recordCat_book_white.svg" width="64px"
                             alt="Area 1" class="pb-2"><br>Book</h5>
                 </div>
                 <div class="col-sm-2 search-results recordCatPhoto">
-                    <h5 class="primary-neutal-100 serif"><img src="img/recordCat_photos_white.svg" width="64px"
+                    <h5 class="primary-neutal-100 serif"><img src="../img/recordCat_photos_white.svg" width="64px"
                             alt="Area 1" class="pb-2"><br>Photograph</h5>
                 </div>
                 <div class="col-sm-2 search-results recordCatSalesBrochure">
-                    <h5 class="primary-neutal-100 serif"><img src="img/recordCat_sales_brochure_white.svg" width="64px"
+                    <h5 class="primary-neutal-100 serif"><img src="../img/recordCat_sales_brochure_white.svg" width="64px"
                             alt="Area 1" class="pb-2"><br>Sales Brochure
                     </h5>
                 </div>
                 <div class="col-sm-2 search-results recordCatSalesRecord">
-                    <h5 class="primary-neutal-100 serif"><img src="img/recordCat_sales_records_white.svg" width="64px"
+                    <h5 class="primary-neutal-100 serif"><img src="../img/recordCat_sales_records_white.svg" width="64px"
                             alt="Area 1" class="pb-2"><br>Sales Record
                     </h5>
                 </div>

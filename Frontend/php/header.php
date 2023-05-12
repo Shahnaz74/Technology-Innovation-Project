@@ -1,7 +1,7 @@
 <nav id="topnavbar">
         <div class="navbar navbar-expand-lg navbar-light border-bottom border-danger">
             <div class="container-fluid d-flex align-items-center px-4">
-                <a href="index.php"><img src="img/rcca-logo.png" class="hideInMobile pe-3" width="100px"
+                <a href="index.php"><img src="../img/rcca-logo.png" class="hideInMobile pe-3" width="100px"
                         alt=""></a>
                 <h5 class="flex-grow-1 primary-neutral-900 serif">Rover Car Club Of Australia - Record Archive</h5>
 
@@ -19,7 +19,7 @@
                             <a class="nav-link">|</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="admin/admin_login.php">Admin Portal</a>
+                            <a class="nav-link" href="admin_login.php">Admin Portal</a>
                         </li>
                     </ul>
                 </div>

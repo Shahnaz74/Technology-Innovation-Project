@@ -1,8 +1,3 @@
-<?php
-// Start the session
-session_start();
-
-?>
 <?php include "head.php" ?>
 
 <body>
@@ -294,7 +289,7 @@ session_start();
                                     }
                                     $html .= '<div class="search-result-item row align-items-center border-bottom py-md-5">';
                                     $html .= '<div class="col-lg-3 pb-2">';
-                                    $html .= '<img src="client-records/' . $filePreviewPath . '" class="img-thumbnail" alt="...">';
+                                    $html .= '<img src="../client-records/' . $filePreviewPath . '" class="img-thumbnail" alt="...">';
                                     $html .= '</div>';
                                     $html .= '<div class="col-lg-9">';
                                     $html .= '<div id="doctypecontainer" class="d-flex align-items-center primary-neutal-800 pb-2">';
@@ -325,7 +320,7 @@ session_start();
                                     }
                                     $html .= '<div class="search-result-item row align-items-center border-bottom py-md-5">';
                                     $html .= '<div class="col-lg-3 pb-2">';
-                                    $html .= '<img src="client-records/' . $filePreviewPath . '" class="img-thumbnail" alt="...">';
+                                    $html .= '<img src="../client-records/' . $filePreviewPath . '" class="img-thumbnail" alt="...">';
                                     $html .= '</div>';
                                     $html .= '<div class="col-lg-9">';
                                     $html .= '<div id="doctypecontainer" class="d-flex align-items-center primary-neutal-800 pb-2">';

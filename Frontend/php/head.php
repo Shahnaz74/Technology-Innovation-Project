@@ -1,3 +1,18 @@
+<?php 
+// Initialize the session
+session_start();
+ 
+// Check if the user is already logged in, if yes then redirect him to welcome page
+// if(isset($_SESSION["email"]) && $_SESSION["loggedin"] === 1){
+//     // header("location: dashboard.php");
+//     // exit;
+// }else{
+//     header("location: admin_login.php");
+//     exit;
+// }
+
+include 'databaseConfig.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +20,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>RCCA Record Archive</title>
 
     <!-- Google Font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,10 +36,10 @@
     <script src="https://use.fontawesome.com/releases/v6.4.0/js/all.js" crossorigin="anonymous"></script>
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="../css/bootstrap.css">
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="css/custom-css.css">
+    <link rel="stylesheet" href="../css/custom-css.css">
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -34,6 +49,6 @@
         crossorigin="anonymous"></script>
 
     <!-- Custom JS -->
-    <script defer src="js/custom-js.js"></script>
+    <script defer src="../js/custom-js.js"></script>
 
 </head>
