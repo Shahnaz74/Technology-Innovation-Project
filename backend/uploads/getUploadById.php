@@ -17,7 +17,7 @@
     require_once('../databaseConfig.php');
 
     // Prepare the SQL query to retrieve upload data based on upload_id
-    $query = "SELECT * FROM user_uploads WHERE upload_id = ?";
+    $query = "SELECT user_uploads.*, template.template_name FROM user_uploads JOIN template ON user_uploads.template_id = template.template_id WHERE upload_id = ?";
     $stmt = $conn->prepare($query);
     $stmt->bind_param('i', $uploadId);
     $stmt->execute();
@@ -35,6 +35,8 @@
 
     // Fetch the upload data
     $upload = $result->fetch_assoc();
+
+    $stmt->close();
 
     // Prepare the SQL query to retrieve keywords related to the upload
     $query = "SELECT keyword FROM keyword_upload JOIN keyword ON keyword_upload.keyword_id = keyword.keyword_id WHERE upload_id = ?";
