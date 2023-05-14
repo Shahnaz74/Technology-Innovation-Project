@@ -525,9 +525,6 @@ E.g
 	"rights":"All rights Reserved",
 	"source":null,
 	"title":"Sample File",
-	"first_name":"Creator4",
-	"last_name":"Creator4",
-	"email":"creator4@example.com",
 	"upload_status":"1",
 	"template_name":"Article Journal",
 	"subject": ["keyword2","keyword6"]
