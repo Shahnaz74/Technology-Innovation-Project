@@ -2,15 +2,6 @@
 // Initialize the session
 session_start();
 
-// Check if the user is already logged in, if yes then redirect him to welcome page
-// if(isset($_SESSION["email"]) && $_SESSION["loggedin"] === 1){
-//     // header("location: dashboard.php");
-//     // exit;
-// }else{
-//     header("location: admin_login.php");
-//     exit;
-// }
-
 include 'databaseConfig.php';
 ?>
 <!DOCTYPE html>

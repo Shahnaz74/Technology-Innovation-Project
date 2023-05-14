@@ -12,7 +12,7 @@
         <div id="content">
             <?php if (isset($_GET['delete']) && $_GET['delete'] == true) {
                 $id = $_GET['id'];
-                $select = "DELETE FROM template where template_id=" . $id;
+                $select = "DELETE FROM template where id=" . $id;
                 $delete = mysqli_query($conn, $select);
                 if ($delete) {
                     $_SESSION['message'] = "Template Deleted Successfully";
@@ -66,7 +66,7 @@
                                 // print_r(mysqli_fetch_assoc($runQuery));
                                 while ($row1 = mysqli_fetch_assoc($runQuery2)) {
                                     $templatename = $row1['template_name'];
-                                    $select1 = "SELECT * FROM field where `template_id` =" . $row1['template_id'];
+                                    $select1 = "SELECT * FROM field where 'template_id' =" . $row1['template_id'];
                                     $runQuery1 = mysqli_query($conn, $select1);
                                     $rowcount1 = mysqli_num_rows($runQuery1);
                                     ?>
@@ -89,7 +89,7 @@
                                                     </a></button></td>
                                         <?php } else if ($rowcount1 == 0) { ?>
                                                 <td><button type="button" class="btn neutral-outlin-btn me-lg-2"><a
-                                                            href="admin_portal_create_template.php?id=<?php echo $row1['template_id']; ?>&edit=<?php echo 'field_edit'; ?>">
+                                                            href="admin_portal_create_template.php?id=<?php echo $row1['template_id']; ?>&edit=<?php echo 'add_fields'; ?>">
                                                             <i class="bi bi-pencil-fill pe-2"></i>Add Fields
                                                         </a></button></td>
                                         <?php } ?>

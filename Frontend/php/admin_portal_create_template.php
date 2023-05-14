@@ -30,6 +30,7 @@
                 }
             }
 
+
             if (isset($_POST['submit'])) {
                 // echo "<pre>";
                 // print_r($_POST);die;
@@ -122,193 +123,202 @@
                     </div>
 
                 </form>
-                <form method="POST">
+                <?php if (isset($_GET['edit']) && $_GET['edit'] == 'add_fields') {
+                    if (isset($_GET['id'])) {
+                        $templateid = $_GET['id'];
 
-                    <!-- Page header -->
-                    <header id="form-header" class="row mx-0 mb-4 sticky-top mt-5">
-                        <div class="col-lg d-flex">
-                            <h1 class="h3 primary-red">Add Fields</h1>
-                        </div>
-                    </header>
+                        ?>
+                        <form method="POST">
 
-                    <div class="row mx-0">
-                        <!-- Template icon -->
+                            <!-- Page header -->
+                            <header id="form-header" class="row mx-0 mb-4 sticky-top mt-5">
+                                <div class="col-lg d-flex">
+                                    <h1 class="h3 primary-red">Add Fields</h1>
+                                </div>
+                            </header>
 
-                        <div class="col">
-                            <div class="btn-group templateIconSelect" role="group"
-                                aria-label="Basic radio toggle button group">
-                                <select class="form-select" name="template_id" aria-label="Default select example"
-                                    required>
-                                    <option value="" selected>Select Template</option>
-                                    <?php
-                                    $select = "SELECT * FROM template";
-                                    // echo $select;die;
-                                    $runQuery = mysqli_query($conn, $select);
-                                    $rowcount = mysqli_num_rows($runQuery);
-                                    if ($rowcount > 0) {
-                                        while ($row = mysqli_fetch_object($runQuery)) {
-                                            $tid = $row->id;
-                                            $templatename = $row->template_name;
-                                            ?>
-                                            <option value="<?php echo $tid; ?>"><?php echo $templatename; ?></option>
+                            <div class="row mx-0">
+                                <!-- Template icon -->
+
+
+                                <div class="col">
+                                    <div class="btn-group templateIconSelect" role="group"
+                                        aria-label="Basic radio toggle button group">
+                                        <select class="form-select" name="template_id" aria-label="Default select example"
+                                            required>
+                                            <option value="" selected>Select Template</option>
                                             <?php
-                                        }
-                                    }
-                                    ?>
-                                </select>
-                            </div>
-                        </div>
 
-
-                        <div class="templateFields">
-
-                            <!-- Template field header -->
-                            <div class="row align-items-center mx-0 px-0">
-                                <div class="col-lg d-flex px-0 mt-4">
-                                    <label for="templatefileds" class="form-label">Template fields<span
-                                            class="mandatoryField">*</span></label>
+                                            $select = "SELECT * FROM template";
+                                            // echo $select;die;
+                                            $runQuery = mysqli_query($conn, $select);
+                                            $rowcount = mysqli_num_rows($runQuery);
+                                            if ($rowcount > 0) {
+                                                while ($row = mysqli_fetch_object($runQuery)) {
+                                                    $tid = $row->template_id;
+                                                    $templatename = $row->template_name;
+                                                    ?>
+                                                    <option value="<?php echo $tid; ?>" <?php echo $templateid == $tid ? 'selected' : '' ?>><?php echo $templatename; ?></option>
+                                                <?php
+                                                }
+                                            }
+                                            ?>
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="col-lg-auto px-0">
-                                    <button type="button" class="btn btn-outline-primary mb-4" id="addRow1"
-                                        class="add"><i class="bi bi-plus-lg pe-2"></i>
-                                        Add data
-                                        field
-                                    </button>
-                                </div>
-                            </div>
 
-                            <!-- Template field table -->
-                            <div class="table-responsive">
-                                <table id="templateFieldTable" class="table table-hover" data-toggle="table"
-                                    data-mobile-responsive="true">
-                                    <tbody class="connected-sortable droppable-area1">
-                                        <tr class="draggable-item">
 
-                                            <!-- Drag icon & row number -->
-                                            <td class="fixed-col"><i class="bi bi-arrows-move pe-2"></i>1</td>
-                                            <!-- <td><span class="js-sort-number">1</span>
+                                <div class="templateFields">
+
+                                    <!-- Template field header -->
+                                    <div class="row align-items-center mx-0 px-0">
+                                        <div class="col-lg d-flex px-0 mt-4">
+                                            <label for="templatefileds" class="form-label">Template fields<span
+                                                    class="mandatoryField">*</span></label>
+                                        </div>
+                                        <div class="col-lg-auto px-0">
+                                            <button type="button" class="btn btn-outline-primary mb-4" id="addRow1"
+                                                class="add"><i class="bi bi-plus-lg pe-2"></i>
+                                                Add data
+                                                field
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                    <!-- Template field table -->
+                                    <div class="table-responsive">
+                                        <table id="templateFieldTable" class="table table-hover" data-toggle="table"
+                                            data-mobile-responsive="true">
+                                            <tbody class="connected-sortable droppable-area1">
+                                                <tr class="draggable-item">
+
+                                                    <!-- Drag icon & row number -->
+                                                    <td class="fixed-col"><i class="bi bi-arrows-move pe-2"></i>1</td>
+                                                    <!-- <td><span class="js-sort-number">1</span>
                                             </td> -->
 
-                                            <!-- Data field selection -->
-                                            <td><select class="form-select" name="type[1]"
-                                                    aria-label="Default select example" required>
-                                                    <option value="" selected>Select Field Type</option>
-                                                    <option value="text">text</option>
-                                                    <option value="email">email</option>
-                                                    <option value="date">date</option>
-                                                    <option value="textarea">textarea</option>
-                                                </select></td>
+                                                    <!-- Data field selection -->
+                                                    <td><select class="form-select" name="type[1]"
+                                                            aria-label="Default select example" required>
+                                                            <option value="" selected>Select Field Type</option>
+                                                            <option value="text">text</option>
+                                                            <option value="email">email</option>
+                                                            <option value="date">date</option>
+                                                            <option value="textarea">textarea</option>
+                                                        </select></td>
 
-                                            <!-- Data field selection -->
-                                            <td>
-                                                <select class="form-select" name="title[1]"
-                                                    aria-label="Default select example" required>
-                                                    <option value="" selected>Select Field Title</option>
-                                                    <option value="Contributor">Contributor</option>
-                                                    <option value="Coverage">Coverage</option>
-                                                    <option value="Creator">Creator</option>
-                                                    <option value="Date">Date</option>
-                                                    <option value="Description">Description</option>
-                                                    <option value="Format">Format</option>
-                                                    <option value="Identifier">Identifier</option>
-                                                    <option value="Language">Language</option>
-                                                    <option value="Publisher">Publisher</option>
-                                                    <option value="Relation">Relation</option>
-                                                    <option value="Rights">Rights</option>
-                                                    <option value="Source">Source</option>
-                                                    <option value="Subject">Subject</option>
-                                                    <option value="Title">Title</option>
-                                                    <option value="Type">Type</option>
-                                                </select>
-                                            </td>
+                                                    <!-- Data field selection -->
+                                                    <td>
+                                                        <select class="form-select" name="title[1]"
+                                                            aria-label="Default select example" required>
+                                                            <option value="" selected>Select Field Title</option>
+                                                            <option value="Contributor">Contributor</option>
+                                                            <option value="Coverage">Coverage</option>
+                                                            <option value="Creator">Creator</option>
+                                                            <option value="Date">Date</option>
+                                                            <option value="Description">Description</option>
+                                                            <option value="Format">Format</option>
+                                                            <option value="Identifier">Identifier</option>
+                                                            <option value="Language">Language</option>
+                                                            <option value="Publisher">Publisher</option>
+                                                            <option value="Relation">Relation</option>
+                                                            <option value="Rights">Rights</option>
+                                                            <option value="Source">Source</option>
+                                                            <option value="Subject">Subject</option>
+                                                            <option value="Title">Title</option>
+                                                            <option value="Type">Type</option>
+                                                        </select>
+                                                    </td>
 
-                                            <td><input type="text" class="form-control" name="placeholder[1]"
-                                                    placeholder="Enter Placeholder" value="" required></td>
+                                                    <td><input type="text" class="form-control" name="placeholder[1]"
+                                                            placeholder="Enter Placeholder" value="" required></td>
 
-                                            <!-- Mandatory field -->
-                                            <td><input class="form-check-input mt-0 me-2" name="is_required[1]"
-                                                    type="checkbox" value="1" id="flexCheckDefault">
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    Mandatory field
-                                                </label>
-                                            </td>
+                                                    <!-- Mandatory field -->
+                                                    <td><input class="form-check-input mt-0 me-2" name="is_required[1]"
+                                                            type="checkbox" value="1" id="flexCheckDefault">
+                                                        <label class="form-check-label" for="flexCheckDefault">
+                                                            Mandatory field
+                                                        </label>
+                                                    </td>
 
-                                            <!-- Delete row -->
-                                            <td>
-                                                <button type="button" class="btn btn-secondary disabled"><i
-                                                        class="bi bi-trash3-fill pe-2"></i>Delete field</button>
-                                            </td>
-                                        </tr>
+                                                    <!-- Delete row -->
+                                                    <td>
+                                                        <button type="button" class="btn btn-secondary disabled"><i
+                                                                class="bi bi-trash3-fill pe-2"></i>Delete field</button>
+                                                    </td>
+                                                </tr>
 
-                                        <tr class="draggable-item">
+                                                <tr class="draggable-item">
 
-                                            <!-- Drag icon & row number -->
-                                            <td class="fixed-col"><i class="bi bi-arrows-move pe-2"></i>2</td>
-                                            <!-- <td><span class="js-sort-number">1</span>
+                                                    <!-- Drag icon & row number -->
+                                                    <td class="fixed-col"><i class="bi bi-arrows-move pe-2"></i>2</td>
+                                                    <!-- <td><span class="js-sort-number">1</span>
                                             </td> -->
 
-                                            <!-- Data field selection -->
-                                            <td><select class="form-select" name="type[2]"
-                                                    aria-label="Default select example" required>
-                                                    <option selected>Select Field Type</option>
-                                                    <option value="text">text</option>
-                                                    <option value="email">email</option>
-                                                    <option value="date">date</option>
-                                                    <option value="textarea">textarea</option>
-                                                </select></td>
+                                                    <!-- Data field selection -->
+                                                    <td><select class="form-select" name="type[2]"
+                                                            aria-label="Default select example" required>
+                                                            <option selected>Select Field Type</option>
+                                                            <option value="text">text</option>
+                                                            <option value="email">email</option>
+                                                            <option value="date">date</option>
+                                                            <option value="textarea">textarea</option>
+                                                        </select></td>
 
-                                            <td>
-                                                <select class="form-select" name="title[2]"
-                                                    aria-label="Default select example" required>
-                                                    <option value="" selected>Select Field Title</option>
-                                                    <option value="Contributor">Contributor</option>
-                                                    <option value="Coverage">Coverage</option>
-                                                    <option value="Creator">Creator</option>
-                                                    <option value="Date">Date</option>
-                                                    <option value="Description">Description</option>
-                                                    <option value="Format">Format</option>
-                                                    <option value="Identifier">Identifier</option>
-                                                    <option value="Language">Language</option>
-                                                    <option value="Publisher">Publisher</option>
-                                                    <option value="Relation">Relation</option>
-                                                    <option value="Rights">Rights</option>
-                                                    <option value="Source">Source</option>
-                                                    <option value="Subject">Subject</option>
-                                                    <option value="Title">Title</option>
-                                                    <option value="Type">Type</option>
-                                                </select>
-                                            </td>
+                                                    <td>
+                                                        <select class="form-select" name="title[2]"
+                                                            aria-label="Default select example" required>
+                                                            <option value="" selected>Select Field Title</option>
+                                                            <option value="Contributor">Contributor</option>
+                                                            <option value="Coverage">Coverage</option>
+                                                            <option value="Creator">Creator</option>
+                                                            <option value="Date">Date</option>
+                                                            <option value="Description">Description</option>
+                                                            <option value="Format">Format</option>
+                                                            <option value="Identifier">Identifier</option>
+                                                            <option value="Language">Language</option>
+                                                            <option value="Publisher">Publisher</option>
+                                                            <option value="Relation">Relation</option>
+                                                            <option value="Rights">Rights</option>
+                                                            <option value="Source">Source</option>
+                                                            <option value="Subject">Subject</option>
+                                                            <option value="Title">Title</option>
+                                                            <option value="Type">Type</option>
+                                                        </select>
+                                                    </td>
 
-                                            <td><input type="text" class="form-control" name="placeholder[2]"
-                                                    placeholder="Enter Placeholder" value="" required></td>
+                                                    <td><input type="text" class="form-control" name="placeholder[2]"
+                                                            placeholder="Enter Placeholder" value="" required></td>
 
-                                            <!-- Mandatory field -->
-                                            <td><input class="form-check-input mt-0 me-2" name="is_required[2]"
-                                                    type="checkbox" value="1" id="flexCheckDefault">
-                                                <label class="form-check-label" for="flexCheckDefault">
-                                                    Mandatory field
-                                                </label>
-                                            </td>
+                                                    <!-- Mandatory field -->
+                                                    <td><input class="form-check-input mt-0 me-2" name="is_required[2]"
+                                                            type="checkbox" value="1" id="flexCheckDefault">
+                                                        <label class="form-check-label" for="flexCheckDefault">
+                                                            Mandatory field
+                                                        </label>
+                                                    </td>
 
-                                            <!-- Delete row -->
-                                            <td>
-                                                <button type="button" class="btn btn-secondary disabled"><i
-                                                        class="bi bi-trash3-fill pe-2"></i>Delete field</button>
-                                            </td>
-                                        </tr>
-                                        <input type="hidden" name="row_count" id="row_count" value="2">
-                                    </tbody>
-                                </table>
-                                <div class="col-lg-auto">
-                                    <!-- <button type="button" class="btn btn-outline-primary me-2"><i class="bi bi-trash3-fill pe-2"></i>Delete Template</button> -->
-                                    <button type="submit" name="submit" class="btn btn-primary"><i
-                                            class="bi bi-check-circle-fill pe-2"></i>Save Fields</button>
+                                                    <!-- Delete row -->
+                                                    <td>
+                                                        <button type="button" class="btn btn-secondary disabled"><i
+                                                                class="bi bi-trash3-fill pe-2"></i>Delete field</button>
+                                                    </td>
+                                                </tr>
+                                                <input type="hidden" name="row_count" id="row_count" value="2">
+                                            </tbody>
+                                        </table>
+                                        <div class="col-lg-auto">
+                                            <!-- <button type="button" class="btn btn-outline-primary me-2"><i class="bi bi-trash3-fill pe-2"></i>Delete Template</button> -->
+                                            <button type="submit" name="submit" class="btn btn-primary"><i
+                                                    class="bi bi-check-circle-fill pe-2"></i>Save Fields</button>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
 
-                    </div>
-                </form>
+                            </div>
+                        </form>
+                    <?php }
+                } ?>
             </div>
         </div>
     </div>
@@ -331,7 +341,7 @@
             var field_count = 'field' + row_count;
 
             row +=
-                '<tr class="draggable-item"><td class="fixed-col"><i class="bi bi-arrows-move pe-2"></i>' + row_count + '</td><td><select class="form-select" name="type[' + row_count + ']" required aria-label="Default select example"><option selected>Select Field Type</option><option value="text">text</option><option value="email">email</option><option value="date">date</option><option value="textarea">textarea</option></select></td><td><select class="form-select" name="title[' + row_count + ']" aria-label="Default select example" required><option value="" selected>Select Field Title</option><option value="Contributor">Contributor</option><option value="Coverage">Coverage</option><option value="Creator">Creator</option><option value="Date">Date</option><option value="Description">Description</option><option value="Format">Format</option><option value="Identifier">Identifier</option><option value="Language">Language</option><option value="Publisher">Publisher</option><option value="Relation">Relation</option><option value="Rights">Rights</option><option value="Source">Source</option><option value="Subject">Subject</option><option value="Title">Title</option><option value="Type">Type</option></select></td><td><input type="text" class="form-control" name="placeholder[' + row_count + ']" placeholder="Enter Placeholder" value="" required></td><!-- Mandatory field --><td><input class="form-check-input mt-0 me-2" name="is_required[ '  +row_coun t  +']" type="checkbox" value="1" id="flexCheckDefault"><label class="form-check-label" for="flexCheckDefault">Mandatory field</label></td>';
+                '<tr class="draggable-item"><td class="fixed-col"><i class="bi bi-arrows-move pe-2"></i>' + row_count + '</td><td><select class="form-select" name="type[' + row_count + ']" required aria-label="Default select example"><option selected>Select Field Type</option><option value="text">text</option><option value="email">email</option><option value="date">date</option><option value="textarea">textarea</option></select></td><td><select class="form-select" name="title[' + row_count + ']" aria-label="Default select example" required><option value="" selected>Select Field Title</option><option value="Contributor">Contributor</option><option value="Coverage">Coverage</option><option value="Creator">Creator</option><option value="Date">Date</option><option value="Description">Description</option><option value="Format">Format</option><option value="Identifier">Identifier</option><option value="Language">Language</option><option value="Publisher">Publisher</option><option value="Relation">Relation</option><option value="Rights">Rights</option><option value="Source">Source</option><option value="Subject">Subject</option><option value="Title">Title</option><option value="Type">Type</option></select></td><td><input type="text" class="form-control" name="placeholder[' + row_count + ']" placeholder="Enter Placeholder" value="" required></td><!-- Mandatory field --><td><input class="form-check-input mt-0 me-2" name="is_required[ ' +row_coun t +']" type="checkbox" value="1" id="flexCheckDefault"><label class="form-check-label" for="flexCheckDefault">Mandatory field</label></td>';
             row +=
                 '<td><button type="button" class="btn neutral-outlin-btn deleteRow"><i class="bi bi-trash3-fill pe-2"></i>Delete field</button></td></tr>';
             $("tbody").append(row);
