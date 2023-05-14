@@ -144,6 +144,9 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
             archiveButton.addEventListener('click', function () {
                 // Handle click logic for the button
                 console.log('move to archive clicked');
+                // Form Validation
+                var validateStatus = validateForm();
+                console.log(validateStatus);
 
             });
 
@@ -151,7 +154,46 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
             publishButton.addEventListener('click', function () {
                 // Handle click logic for the button
                 console.log('publish clicked');
+                // Form Validation
+                var validateStatus = validateForm();
+                console.log(validateStatus);
 
+                if (validateStatus) {
+                    var selectElement = document.getElementById('subjectKeyword');
+                    var selectedValues = Array.from(selectElement.selectedOptions).map(option => option.value);
+
+                    $.ajax({
+                        url: 'editUpload.php',
+                        method: 'POST',
+                        data: {
+                            upload_id: uploadId,
+                            file_name: document.getElementById("uploaded-file-name")?.value || "",
+                            contributor: document.getElementById("contributor")?.value || "",
+                            coverage: document.getElementById("coverage")?.value || "",
+                            creator: document.getElementById("creator")?.value || "",
+                            date: document.getElementById("date")?.value || "",
+                            description: document.getElementById("description")?.value || "",
+                            format: document.getElementById("format")?.value || "",
+                            identifier: document.getElementById("identifier")?.value || "",
+                            language: document.getElementById("language")?.value || "",
+                            publisher: document.getElementById("publisher")?.value || "",
+                            relation: document.getElementById("relation")?.value || "",
+                            rights: document.getElementById("rights")?.value || "",
+                            source: document.getElementById("source")?.value || "",
+                            title: document.getElementById("recordName")?.value || "",
+                            upload_status: 2,
+                            template_name: document.getElementById("documentType")?.value || "",
+                            subject: selectedValues,
+                        },
+                        success: function (response) {
+                            // Handle the AJAX success response
+                            console.log(response);
+                        }, error: function (error) {
+                            // Handle the AJAX error
+                            console.log(error);
+                        }
+                    });
+                }
             });
 
             const dropZone = document.querySelector('#drop-area');
@@ -677,6 +719,86 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
             };
             reader.readAsDataURL(file);
         }
+
+        function validateForm() {
+            var recordName = document.getElementById("recordName").value;
+            var documentType = document.getElementById("documentType").value;
+            var fileInput = document.getElementById("uploaded-file-name").value;
+            var subjectKeywords = document.getElementById("subjectKeyword").options;
+            var container = document.getElementById('container');
+            var mandatoryFields = container.getElementsByClassName('mandatoryField');
+            var isValid = true;
+
+            // Check if record name is empty
+            if (recordName.trim() === "") {
+                alert("Record name is required");
+                isValid = false;
+                console.log("invalid7");
+            }
+
+            // Check if document type is not selected
+            if (documentType === "") {
+                alert("Please select document type");
+                isValid = false;
+                console.log("invalid6");
+            }
+
+            // Check if file input is empty
+            if (fileInput === "") {
+                alert("File upload is required");
+                isValid = false;
+                console.log("invalid5");
+            }
+
+            // Check if at least one subject keyword is selected
+            var selectedKeywords = Array.from(subjectKeywords)
+                .filter((option) => option.selected)
+                .map((option) => option.value);
+            if (selectedKeywords.length === 0) {
+                alert("Please select at least one subject keyword");
+                isValid = false;
+                console.log("invalid4");
+            }
+
+            for (var i = 0; i < mandatoryFields.length; i++) {
+                var field = mandatoryFields[i];
+                var inputElement = field.parentNode.nextElementSibling;
+
+                console.log(field);
+                console.log(inputElement);
+
+                // Check if the inputElement exists before accessing its properties
+                if (inputElement) {
+                    // Check if the input element is a textarea or a text input
+                    if (inputElement.tagName.toLowerCase() === 'textarea' || inputElement.type === 'text') {
+                        if (!inputElement.value) {
+                            isValid = false;
+                            console.log("invalid1");
+                        }
+                    }
+
+                    // Check if the input element is a date input
+                    if (inputElement.type === 'date') {
+                        if (!inputElement.valueAsDate) {
+                            isValid = false;
+                            console.log("invalid2");
+                        }
+                    }
+
+                    // Check if the input element is a select element
+                    if (inputElement.tagName.toLowerCase() === 'select') {
+                        if (!inputElement.value) {
+                            isValid = false;
+                            console.log("invalid3");
+                        }
+                    }
+                }
+            }
+
+
+            return isValid;
+        }
+
     </script>
 </body>
 
