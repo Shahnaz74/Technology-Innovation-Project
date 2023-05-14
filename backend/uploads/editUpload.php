@@ -51,7 +51,7 @@
           $select_query = "SELECT * FROM user_uploads WHERE upload_id = $upload_id";
           $result = $conn->query($select_query);
           if ($result->num_rows > 0) {
-              $row = $result->fetch_assoc();
+              $row $result->fetch_assoc();
 
               // Fetch the keywords related to the upload
               $keyword_query = "SELECT keyword FROM keyword_upload JOIN keyword ON keyword_upload.keyword_id = keyword.keyword_id WHERE upload_id = $upload_id";
@@ -60,6 +60,11 @@
               while ($keyword_row = $keyword_result->fetch_assoc()) {
                   $keywords[] = $keyword_row['keyword'];
               }
+
+              // Fetch the template name
+              $template_query = "SELECT template_name FROM template WHERE template_id = " . $row['template_id'];
+              $template_result = $conn->query($template_query);
+              $template_name = $template_result->fetch_assoc()['template_name'];
 
               // Build the response data
               $response_data = array(
