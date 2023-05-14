@@ -716,13 +716,6 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
         }
 
         function prefillForm(data) {
-            function setValue(elementId, value) {
-                var element = document.getElementById(elementId);
-                if (element) {
-                    element.value = value || '';
-                }
-            }
-
             setValue('contributor', data.contributor);
             setValue('coverage', data.coverage);
             setValue('creator', data.creator);
@@ -735,6 +728,13 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
             setValue('relation', data.relation);
             setValue('rights', data.rights);
             setValue('source', data.source);
+        }
+
+        function setValue(elementId, value) {
+            var element = document.getElementById(elementId);
+            if (element) {
+                element.value = value || '';
+            }
         }
 
         function handleFile(file) {
