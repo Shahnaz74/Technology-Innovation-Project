@@ -1,24 +1,24 @@
 <?php
   // Retrieve the input data
-  $input = json_decode(file_get_contents("php://input"), true);
+  parse_str(file_get_contents("php://input"), $_PUT);
 
   // Validate the input
-  if (!isset($input['upload_id'])) {
+  if (!isset($_PUT['upload_id'])) {
       $response_data = array(
           "message" => "Invalid input. Missing upload_id."
       );
   } else {
-      $upload_id = $input['upload_id'];
+      $upload_id = $_PUT['upload_id'];
 
-      require_once('../databaseConfig.php');
+      require_once('databaseConfig.php');
 
       // Prepare the update query
       $sql = "UPDATE user_uploads SET ";
 
       // Iterate through the fields in the input
-      foreach ($input as $field => $value) {
+      foreach ($_PUT as $field => $value) {
           // Skip the upload_id field as it is used in the WHERE clause
-          if ($field !== 'upload_id' && $field !== 'subject') {
+          if ($field !== 'upload_id' && $field !== 'subject' && $field !=='template_name') {
               // Consider empty string as null
               $value = ($value === '') ? null : $value;
               $sql .= "$field = " . ($value === null ? "NULL" : "'$value'") . ",";
@@ -38,8 +38,8 @@
           $conn->query($delete_keywords_query);
 
           // Insert the new keywords related to the upload
-          if (isset($input['subject']) && is_array($input['subject'])) {
-              $keywords = $input['subject'];
+          if (isset($_PUT['subject']) && is_array($_PUT['subject'])) {
+              $keywords = $_PUT['subject'];
               foreach ($keywords as $keyword) {
                   $keyword = $conn->real_escape_string($keyword);
                   $insert_keyword_query = "INSERT INTO keyword_upload (upload_id, keyword_id) VALUES ($upload_id, (SELECT keyword_id FROM keyword WHERE keyword = '$keyword'))";
@@ -51,7 +51,7 @@
           $select_query = "SELECT * FROM user_uploads WHERE upload_id = $upload_id";
           $result = $conn->query($select_query);
           if ($result->num_rows > 0) {
-              $row $result->fetch_assoc();
+              $row = $result->fetch_assoc();
 
               // Fetch the keywords related to the upload
               $keyword_query = "SELECT keyword FROM keyword_upload JOIN keyword ON keyword_upload.keyword_id = keyword.keyword_id WHERE upload_id = $upload_id";
@@ -89,7 +89,7 @@
                       "last_name" => $row['last_name'],
                       "email" => $row['email'],
                       "upload_status" => $row['upload_status'],
-                      "template_name" => $row['template_name'],
+                      "template_name" => $template_name,
                       "subject" => $keywords
                   )
               );
