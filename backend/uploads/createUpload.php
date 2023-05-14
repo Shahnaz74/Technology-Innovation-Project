@@ -6,7 +6,7 @@
     parse_str(file_get_contents("php://input"), $_POST);
 
     // Validate required fields
-    $requiredFields = ["file", "file_name", "first_name", "last_name", "email", "upload_status", "template_name", "subject"];
+    $requiredFields = ["file", "file_name", "upload_status", "template_name", "subject"];
     $missingFields = [];
     foreach ($requiredFields as $field) {
         if (!isset($_POST[$field]) || $_POST[$field] === '') {
@@ -36,9 +36,9 @@
     $rights = $_POST["rights"] ?? null;
     $source = $_POST["source"] ?? null;
     $title = $_POST["title"] ?? null;
-    $first_name = $_POST["first_name"];
-    $last_name = $_POST["last_name"];
-    $email = $_POST["email"];
+    $first_name = $_POST["first_name"] ?? null;
+    $last_name = $_POST["last_name"] ?? null;
+    $email = $_POST["email"] ?? null;
     $upload_status = $_POST["upload_status"];
     $template_name = $_POST["template_name"];
     $subject = $_POST["subject"];
