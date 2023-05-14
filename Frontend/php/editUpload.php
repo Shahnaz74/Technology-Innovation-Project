@@ -1,126 +1,114 @@
 <?php
-require_once('../databaseConfig.php');
+  // Retrieve the input data
+  parse_str(file_get_contents("php://input"), $_PUT);
 
-// Read the request body
-$request_body = file_get_contents('php://input');
-
-// Decode the request body
-$data = json_decode($request_body, true);
-
-// Extract the data
-$upload_id = $data['upload_id'];
-$file_name = $data['file_name'];
-$contributor = $data['contributor'];
-$coverage = $data['coverage'];
-$creator = $data['creator'];
-$date = $data['date'];
-$description = $data['description'];
-$format = $data['format'];
-$identifier = $data['identifier'];
-$language = $data['language'];
-$publisher = $data['publisher'];
-$relation = $data['relation'];
-$rights = $data['rights'];
-$source = $data['source'];
-$title = $data['title'];
-$first_name = $data['first_name'];
-$last_name = $data['last_name'];
-$email = $data['email'];
-$upload_status = $data['upload_status'];
-$template_name = $data['template_name'];
-$subject = $data['subject'];
-
-// Start a database transaction
-$conn->begin_transaction();
-
-// Update the user_upload table
-$sql = "UPDATE user_uploads SET
-        file_name = '$file_name',
-        contributor = '$contributor',
-        coverage = '$coverage',
-        creator = '$creator',
-        date = '$date',
-        description = '$description',
-        format = '$format',
-        identifier = '$identifier',
-        language = '$language',
-        publisher = '$publisher',
-        relation = '$relation',
-        rights = '$rights',
-        source = '$source',
-        title = '$title',
-        first_name = '$first_name',
-        last_name = '$last_name',
-        email = '$email',
-        upload_status = $upload_status
-        WHERE upload_id = $upload_id";
-
-$conn->query($sql);
-
-// Update the keyword_upload table
-// First, delete all the existing keywords for the upload
-$sql = "DELETE FROM keyword_upload WHERE upload_id = $upload_id";
-$conn->query($sql);
-
-// Then, insert the new keywords
-foreach ($subject as $keyword) {
-  // Check if the keyword already exists in the keyword table
-  $sql = "SELECT keyword_id FROM keyword WHERE keyword = '$keyword'";
-  $result = $conn->query($sql);
-
-  if ($result->num_rows == 0) {
-    // The keyword does not exist, so insert it into the keyword table
-    $sql = "INSERT INTO keyword (keyword) VALUES ('$keyword')";
-    $conn->query($sql);
-
-    // Get the newly inserted keyword ID
-    $keyword_id = $conn->insert_id;
+  // Validate the input
+  if (!isset($_PUT['upload_id'])) {
+      $response_data = array(
+          "message" => "Invalid input. Missing upload_id."
+      );
   } else {
-    // The keyword already exists, so get its ID
-    $row = $result->fetch_assoc();
-    $keyword_id = $row['keyword_id'];
+      $upload_id = $_PUT['upload_id'];
+
+      require_once('databaseConfig.php');
+
+      // Prepare the update query
+      $sql = "UPDATE user_uploads SET ";
+
+      // Iterate through the fields in the input
+      foreach ($_PUT as $field => $value) {
+          // Skip the upload_id field as it is used in the WHERE clause
+          if ($field !== 'upload_id' && $field !== 'subject' && $field !=='template_name') {
+              // Consider empty string as null
+              $value = ($value === '') ? null : $value;
+              $sql .= "$field = " . ($value === null ? "NULL" : "'$value'") . ",";
+          }
+      }
+
+      // Remove the trailing comma from the query
+      $sql = rtrim($sql, ",");
+
+      // Add the WHERE clause to specify the upload_id
+      $sql .= " WHERE upload_id = $upload_id";
+
+      // Execute the update query
+      if ($conn->query($sql) === TRUE) {
+          // Delete existing keywords related to the upload
+          $delete_keywords_query = "DELETE FROM keyword_upload WHERE upload_id = $upload_id";
+          $conn->query($delete_keywords_query);
+
+          // Insert the new keywords related to the upload
+          if (isset($_PUT['subject']) && is_array($_PUT['subject'])) {
+              $keywords = $_PUT['subject'];
+              foreach ($keywords as $keyword) {
+                  $keyword = $conn->real_escape_string($keyword);
+                  $insert_keyword_query = "INSERT INTO keyword_upload (upload_id, keyword_id) VALUES ($upload_id, (SELECT keyword_id FROM keyword WHERE keyword = '$keyword'))";
+                  $conn->query($insert_keyword_query);
+              }
+          }
+
+          // Fetch the updated upload data
+          $select_query = "SELECT * FROM user_uploads WHERE upload_id = $upload_id";
+          $result = $conn->query($select_query);
+          if ($result->num_rows > 0) {
+              $row = $result->fetch_assoc();
+
+              // Fetch the keywords related to the upload
+              $keyword_query = "SELECT keyword FROM keyword_upload JOIN keyword ON keyword_upload.keyword_id = keyword.keyword_id WHERE upload_id = $upload_id";
+              $keyword_result = $conn->query($keyword_query);
+              $keywords = array();
+              while ($keyword_row = $keyword_result->fetch_assoc()) {
+                  $keywords[] = $keyword_row['keyword'];
+              }
+
+              // Fetch the template name
+              $template_query = "SELECT template_name FROM template WHERE template_id = " . $row['template_id'];
+              $template_result = $conn->query($template_query);
+              $template_name = $template_result->fetch_assoc()['template_name'];
+
+              // Build the response data
+              $response_data = array(
+                  "message" => "Upload has been edited successfully",
+                  "data" => array(
+                      "upload_id" => $row['upload_id'],
+                      "file_name" => $row['file_name'],
+                      "contributor" => $row['contributor'],
+                      "coverage" => $row['coverage'],
+                      "creator" => $row['creator'],
+                      "date" => $row['date'],
+                      "description" => $row['description'],
+                      "format" => $row['format'],
+                      "identifier" => $row['identifier'],
+                      "language" => $row['language'],
+                      "publisher" => $row['publisher'],
+                      "relation" => $row['relation'],
+                      "rights" => $row['rights'],
+                      "source" => $row['source'],
+                      "title" => $row['title'],
+                      "first_name" => $row['first_name'],
+                      "last_name" => $row['last_name'],
+                      "email" => $row['email'],
+                      "upload_status" => $row['upload_status'],
+                      "template_name" => $template_name,
+                      "subject" => $keywords
+                  )
+              );
+          } else {
+              $response_data = array(
+                  "message" => "Failed to fetch the updated upload data."
+              );
+          }
+      } else {
+          $response_data = array(
+              "message" => "Failed to edit the upload."
+          );
+      }
+
+      // Close the database connection
+      $conn->close();
   }
 
-  // Insert the keyword-upload association into the keyword_upload table
-  $sql = "INSERT INTO keyword_upload (upload_id, keyword_id) VALUES ($upload_id, $keyword_id)";
-  $conn->query($sql);
-}
-
-// Commit the transaction
-$conn->commit();
-
-// Return the response
-$response = [
-  'message' => 'Upload has been edited successfully',
-  'data' => [
-    'upload_id' => $upload_id,
-    'file_name' => $file_name,
-    'contributor' => $contributor,
-    'coverage' => $coverage,
-    'creator' => $creator,
-    'date' => $date,
-    'description' => $description,
-    'format' => $format,
-    'identifier' => $identifier,
-    'language' => $language,
-    'publisher' => $publisher,
-    'relation' => $relation,
-    'rights' => $rights,
-    'source' => $source,
-    'title' => $title,
-    'first_name' => $first_name,
-    'last_name' => $last_name,
-    'email' => $email,
-    'upload_status' => $upload_status,
-    'template_name' => $template_name,
-    'subject' => $subject
-  ]
-];
-
-// Close the database connection
-mysqli_close($conn);
-
-header('Content-Type: application/json');
-// Return the response
-echo json_encode($response);
+  // Send the response as JSON
+  header('Content-Type: application/json');
+  echo json_encode($response_data);
 ?>
