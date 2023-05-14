@@ -5,21 +5,37 @@
     // Retrieve the input data
     parse_str(file_get_contents("php://input"), $_POST);
 
+    // Validate required fields
+    $requiredFields = ["file", "file_name", "first_name", "last_name", "email", "upload_status", "template_name", "subject"];
+    $missingFields = [];
+    foreach ($requiredFields as $field) {
+        if (!isset($_POST[$field]) || $_POST[$field] === '') {
+            $missingFields[] = $field;
+        }
+    }
+
+    if (!empty($missingFields)) {
+        http_response_code(400);
+        echo json_encode(["message" => "The following fields are required: " . implode(", ", $missingFields)]);
+        exit();
+    }
+
     // Extract data from the input
     $file_name = $_POST["file_name"];
-    $contributor = $_POST["contributor"];
-    $coverage = $_POST["coverage"];
-    $creator = $_POST["creator"];
-    $date = $_POST["date"];
-    $description = $_POST["description"];
-    $format = $_POST["format"];
-    $identifier = $_POST["identifier"];
-    $language = $_POST["language"];
-    $publisher = $_POST["publisher"];
-    $relation = $_POST["relation"];
-    $rights = $_POST["rights"];
-    $source = $_POST["source"];
-    $title = $_POST["title"];
+    $file = $_POST["file"];
+    $contributor = $_POST["contributor"] ?? null;
+    $coverage = $_POST["coverage"] ?? null;
+    $creator = $_POST["creator"] ?? null;
+    $date = $_POST["date"] ?? null;
+    $description = $_POST["description"] ?? null;
+    $format = $_POST["format"] ?? null;
+    $identifier = $_POST["identifier"] ?? null;
+    $language = $_POST["language"] ?? null;
+    $publisher = $_POST["publisher"] ?? null;
+    $relation = $_POST["relation"] ?? null;
+    $rights = $_POST["rights"] ?? null;
+    $source = $_POST["source"] ?? null;
+    $title = $_POST["title"] ?? null;
     $first_name = $_POST["first_name"];
     $last_name = $_POST["last_name"];
     $email = $_POST["email"];
@@ -38,7 +54,7 @@
 
     // Insert data into user_uploads table
     $insertQuery = "INSERT INTO user_uploads (file_name, file, contributor, coverage, creator, date, description, format, identifier, language, publisher, relation, rights, source, title, first_name, last_name, email, upload_status, template_id)
-        VALUES ('$file_name', '', '$contributor', '$coverage', '$creator', '$date', '$description', '$format', '$identifier', '$language', '$publisher', '$relation', '$rights', '$source', '$title', '$first_name', '$last_name', '$email', '$upload_status', '$template_id')";
+        VALUES ('$file_name', '$file', '$contributor', '$coverage', '$creator', '$date', '$description', '$format', '$identifier', '$language', '$publisher', '$relation', '$rights', '$source', '$title', '$first_name', '$last_name', '$email', '$upload_status', '$template_id')";
 
     if ($conn->query($insertQuery) === true) {
         // Get the upload_id of the newly inserted record

@@ -430,6 +430,7 @@ E.g
 ```JSON
 {
 	"file_name": "sample_file4",
+	"file":"path/to/sample_file.pdf",
 	"contributor":"contributor4",
 	"coverage":null,
 	"creator": "creator4",
@@ -467,6 +468,7 @@ E.g
 	{
 		"upload_id":"4",
 		"file_name": "sample_file4",
+		"file":"path/to/sample_file.pdf",
 		"contributor":"contributor4",
 		"coverage":null,
 		"creator": "creator4",
@@ -512,6 +514,7 @@ E.g
 {
 	"upload_id":"4",
 	"file_name": "sample_file4",
+	"file":"path/to/sample_file.pdf",
 	"contributor":"contributor4",
 	"coverage":null,
 	"creator": "creator4",
