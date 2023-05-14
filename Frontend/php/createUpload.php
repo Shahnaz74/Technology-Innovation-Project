@@ -1,117 +1,126 @@
 <?php
-    // Read the JSON data from the request body
-    $requestPayload = file_get_contents('php://input');
-    $data = json_decode($requestPayload, true);
+header("Content-Type: application/json; charset=UTF-8");
+// Connect to the database
+require_once('databaseConfig.php');
 
-    // Extract the data from the JSON payload
-    $file_name = $data['file_name'];
-    $contributor = $data['contributor'];
-    $coverage = $data['coverage'];
-    $creator = $data['creator'];
-    $date = $data['date'];
-    $description = $data['description'];
-    $format = $data['format'];
-    $identifier = $data['identifier'];
-    $language = $data['language'];
-    $publisher = $data['publisher'];
-    $relation = $data['relation'];
-    $rights = $data['rights'];
-    $source = $data['source'];
-    $title = $data['title'];
-    $first_name = $data['first_name'];
-    $last_name = $data['last_name'];
-    $email = $data['email'];
-    $upload_status = $data['upload_status'];
-    $template_name = $data['template_name'];
-    $subject = $data['subject'];
+// Retrieve the input data
+parse_str(file_get_contents("php://input"), $_POST);
 
-    require_once('../databaseConfig.php');
+// Validate required fields
+$requiredFields = ["file", "file_name", "upload_status", "template_name", "subject"];
+$missingFields = [];
+foreach ($requiredFields as $field) {
+    if (!isset($_POST[$field]) || $_POST[$field] === '') {
+        $missingFields[] = $field;
+    }
+}
 
-    // Insert the data into the user_uploads table
-    $insertUploadQuery = "INSERT INTO user_uploads (file_name, contributor, coverage, creator, date, description, format, identifier, language, publisher, relation, rights, source, title, first_name, last_name, email, upload_status, template_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-    $stmt = $conn->prepare($insertUploadQuery);
-    $stmt->bind_param("sssssssssssssssssi", $file_name, $contributor, $coverage, $creator, $date, $description, $format, $identifier, $language, $publisher, $relation, $rights, $source, $title, $first_name, $last_name, $email, $upload_status);
-    $stmt->execute();
+if (!empty($missingFields)) {
+    http_response_code(400);
+    echo json_encode(["message" => "The following fields are required: " . implode(", ", $missingFields)]);
+    exit();
+}
 
-    // Get the generated upload ID
-    $upload_id = $stmt->insert_id;
+// Extract data from the input
+$file_name = $_POST["file_name"];
+$file = $_POST["file"];
+$contributor = $_POST["contributor"] ?? null;
+$coverage = $_POST["coverage"] ?? null;
+$creator = $_POST["creator"] ?? null;
+$date = $_POST["date"] ?? null;
+$description = $_POST["description"] ?? null;
+$format = $_POST["format"] ?? null;
+$identifier = $_POST["identifier"] ?? null;
+$language = $_POST["language"] ?? null;
+$publisher = $_POST["publisher"] ?? null;
+$relation = $_POST["relation"] ?? null;
+$rights = $_POST["rights"] ?? null;
+$source = $_POST["source"] ?? null;
+$title = $_POST["title"] ?? null;
+$first_name = $_POST["first_name"] ?? null;
+$last_name = $_POST["last_name"] ?? null;
+$email = $_POST["email"] ?? null;
+$upload_status = $_POST["upload_status"];
+$template_name = $_POST["template_name"];
+$subject = $_POST["subject"];
 
-    // Prepare the SQL statements for inserting keywords
-    $insertKeywordQuery = "INSERT INTO keyword (keyword) VALUES (?)";
-    $selectKeywordQuery = "SELECT keyword_id FROM keyword WHERE keyword = ?";
-    $insertKeywordStmt = $conn->prepare($insertKeywordQuery);
-    $selectKeywordStmt = $conn->prepare($selectKeywordQuery);
-    $keywordUploadQuery = "INSERT INTO keyword_upload (upload_id, keyword_id) VALUES (?, ?)";
-    $keywordUploadStmt = $conn->prepare($keywordUploadQuery);
+// Find the template_id based on template_name
+$template_id = null;
+$templateQuery = "SELECT template_id FROM template WHERE template_name = '$template_name'";
+$templateResult = $conn->query($templateQuery);
+if ($templateResult->num_rows > 0) {
+    $templateRow = $templateResult->fetch_assoc();
+    $template_id = $templateRow["template_id"];
+}
 
-    // Loop through each subject keyword and insert into the database
+// Insert data into user_uploads table
+$insertQuery = "INSERT INTO user_uploads (file_name, file, contributor, coverage, creator, date, description, format, identifier, language, publisher, relation, rights, source, title, first_name, last_name, email, upload_status, template_id)
+        VALUES ('$file_name', '$file', '$contributor', '$coverage', '$creator', '$date', '$description', '$format', '$identifier', '$language', '$publisher', '$relation', '$rights', '$source', '$title', '$first_name', '$last_name', '$email', '$upload_status', '$template_id')";
+
+if ($conn->query($insertQuery) === true) {
+    // Get the upload_id of the newly inserted record
+    $upload_id = $conn->insert_id;
+
+    // Insert keywords into keyword table and associate them with the upload
     foreach ($subject as $keyword) {
-        $keyword = sanitize($keyword);
-
-        // Check if the keyword already exists
-        $selectKeywordStmt->bind_param("s", $keyword);
-        $selectKeywordStmt->execute();
-        $selectKeywordResult = $selectKeywordStmt->get_result();
-
-        if ($selectKeywordResult->num_rows > 0) {
-            // Keyword already exists, retrieve the keyword ID
-            $keyword_id = $selectKeywordResult->fetch_assoc()['keyword_id'];
+        // Check if the keyword already exists in the keyword table
+        $keyword_id = null;
+        $keywordQuery = "SELECT keyword_id FROM keyword WHERE keyword = '$keyword'";
+        $keywordResult = $conn->query($keywordQuery);
+        if ($keywordResult->num_rows > 0) {
+            $keywordRow = $keywordResult->fetch_assoc();
+            $keyword_id = $keywordRow["keyword_id"];
         } else {
             // Keyword doesn't exist, insert it into the keyword table
-            $insertKeywordStmt->bind_param("s", $keyword);
-            $insertKeywordStmt->execute();
-
-           
-            // Get the generated keyword ID
-            $keyword_id = $insertKeywordStmt->insert_id;
+            $keywordInsertQuery = "INSERT INTO keyword (keyword) VALUES ('$keyword')";
+            if ($conn->query($keywordInsertQuery) === true) {
+                $keyword_id = $conn->insert_id;
+            } else {
+                // Error occurred while inserting keyword
+                http_response_code(400);
+                echo json_encode(["message" => "An error occurred while inserting the keyword."]);
+                $conn->close();
+                exit();
+            }
         }
 
         // Associate the keyword with the upload in the keyword_upload table
-        $keywordUploadStmt->bind_param("ii", $upload_id, $keyword_id);
-        $keywordUploadStmt->execute();
+        $keywordUploadInsertQuery = "INSERT INTO keyword_upload (upload_id, keyword_id) VALUES ('$upload_id', '$keyword_id')";
+        if ($conn->query($keywordUploadInsertQuery) !== true) {
+            // Error occurred while associating keyword with upload
+            http_response_code(400);
+            echo json_encode(["message" => "An error occurred while associating the keyword with the upload."]);
+            $conn->close();
+            exit();
+        }
     }
 
-    // Close the prepared statements
-    $stmt->close();
-    $insertKeywordStmt->close();
-    $selectKeywordStmt->close();
-    $keywordUploadStmt->close();
+    // Fetch the complete data of the newly created upload
+    $selectQuery = "SELECT * FROM user_uploads WHERE upload_id = '$upload_id'";
+    $selectResult = $conn->query($selectQuery);
+    if ($selectResult->num_rows > 0) {
+        $uploadData = $selectResult->fetch_assoc();
 
-    // Close the database connection
-    $conn->close();
+        // Prepare the response
+        $response = [
+            "message" => "Upload has been created successfully",
+            "data" => $uploadData
+        ];
 
-    // Prepare the response JSON
-    $response = array(
-        'message' => 'Upload has been created successfully',
-        'data' => array(
-            'upload_id' => $upload_id,
-            'file_name' => $file_name,
-            'contributor' => $contributor,
-            'coverage' => $coverage,
-            'creator' => $creator,
-            'date' => $date,
-            'description' => $description,
-            'format' => $format,
-            'identifier' => $identifier,
-            'language' => $language,
-            'publisher' => $publisher,
-            'relation' => $relation,
-            'rights' => $rights,
-            'source' => $source,
-            'title' => $title,
-            'first_name' => $first_name,
-            'last_name' => $last_name,
-            'email' => $email,
-            'upload_status' => $upload_status,
-            'template_name' => $template_name,
-            'subject' => $subject
-        )
-    );
+        // Return the response
+        http_response_code(200);
+        echo json_encode($response);
+    } else {
+        // Error occurred while fetching the upload data
+        http_response_code(400);
+        echo json_encode(["message" => "An error occurred while fetching the upload data."]);
+    }
+} else {
+    // Error occurred while inserting the upload
+    http_response_code(400);
+    echo json_encode(["message" => "An error occurred while creating the upload."]);
+}
 
-    // Set the response headers
-    header('Content-Type: application/json');
-    http_response_code(200);
-
-    // Send the JSON response
-    echo json_encode($response);
+// Close the database connection
+$conn->close();
 ?>
