@@ -1,6 +1,5 @@
-<?php 
+<?php
 include 'head.php';
-
 
 $upload_id = $_GET['upload_id'];
 echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
@@ -27,11 +26,10 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                         <h1 class="h3 primary-red">Edit Record</h1>
                     </div>
                     <div class="col-lg-auto">
-                        <button type="button" class="btn btn-outline-primary me-2"><i
-                                class="bi bi-archive-fill pe-2 "></i>Move to
-                            Archive</button>
-                        <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle-fill pe-2"></i>Save &
-                            Publish</button>
+                        <button type="button" id="moveToArchiveButton" class="btn btn-outline-primary me-2"><i
+                                class="bi bi-archive-fill pe-2 "></i>Move to Archive</button>
+                        <button type="button" id="publishButton" class="btn btn-primary"><i
+                                class="bi bi-check-circle-fill pe-2"></i>Save & Publish</button>
                     </div>
                 </header>
 
@@ -39,20 +37,20 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                 <div class="row mx-0">
                     <form class="needs-validation" novalidate>
 
-                        <!-- File name -->
+                        <!-- Record name -->
                         <div class="mb-4">
-                            <label for="fileName" class="form-label">File name <span
+                            <label for="recordName" class="form-label">Record name <span
                                     class="mandatoryField">*</span></label>
-                            <input type="text" class="form-control" id="fileName" placeholder=""
-                                value="Rover Regent Motors Advertred 2" required>
+                            <input type="text" class="form-control" id="recordName" placeholder="" required>
                             <div class="invalid-feedback">
-                                File name is required
+                                Record name is required
                             </div>
                         </div>
 
                         <!-- Document type -->
-                        <div class="col-md-3 mb-4">
-                            <label for="documentType" class="form-label">Document type</label>
+                        <div class="col-md-6 mb-4">
+                            <label for="documentType" class="form-label">Document type <span
+                                    class="mandatoryField">*</span></label>
                             <select class="form-select" id="documentType" required>
                                 <option selected disabled value="">Choose...</option>
                                 <option>Advertisement Journal</option>
@@ -81,75 +79,49 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                         <div class="fileUpload container mb-4 px-0">
                             <label for="documentType" class="form-label">File upload <span
                                     class="mandatoryField">*</span></label>
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="" aria-label=""
-                                    aria-describedby="basic-addon2">
-                                <button class="input-group-text deleteFileUpload" id="basic-addon2">
-                                    <i class="bi bi-trash3-fill pe-2"></i>
-                                    Delete file
-                                </button>
-                            </div>
+                            <div id="uploadFileContainer">
+                                <!-- Drag and drop file upload area -->
+                                <div id="drop-area" class="col-md-6 col-md-offset-3 py-5">
+                                    <img src="../img/fileUpload.svg" class="pb-2" alt="">
+                                    <h5 id="drop-hint" class="serif pb-2">Drag & drop files or <a href="#"
+                                            id="browse-btn">Browse</a></h5>
+                                    <p id="drop-subhint">Supported formats: JPEG, PNG, PDF</p>
+                                    <input type="file" id="file-input" accept=".jpg, .jpeg, .png, .pdf"
+                                        style="display:none;">
+                                    <p id="drop-subhint" class="primary-red">File size limit: 2MB</p>
+                                    <!-- <div class="row" id="thumbnails"></div> -->
+                                </div>
 
-                            <!-- Uploaad file preview -->
-                            <div class="col-lg-4">
-                                <img src="../img/uploadFileDummy.png" class="img-thumbnail" alt="...">
+                                <!-- Uploaded file preview -->
+                                <div id="uploaded-area">
+                                    <div class="input-group mb-3">
+                                        <input id="uploaded-file-name" type="text" class="form-control" placeholder=""
+                                            aria-label="" aria-describedby="basic-addon2">
+                                        <button class="input-group-text deleteFileUpload" id="basic-addon2">
+                                            <i class="bi bi-trash3-fill pe-2"></i>
+                                            Delete file
+                                        </button>
+                                    </div>
+                                    <div class="col-4" id="filePreview">
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         <!-- File keyword -->
-                        <div class="col-md-4 mb-4">
-                            <label class="mb-2" for="fileKeyword">Topic subject</label>
+                        <div class="mb-4">
+                            <label class="mb-2" for="subjectKeyword">Topic subject</label>
+                            <span class="mandatoryField">*</span></label>
                             <p>
-                                <select id="fileKeyword" name="fileKeyword" class="selectpicker" multiple
-                                    multiselect-search="true">
-                                    <option>Keyword 1</option>
-                                    <option>Keyword 2</option>
-                                    <option>Keyword 3</option>
-                                    <option>Keyword 4</option>
-                                    <option>Keyword 5</option>
-                                    <option>Keyword 6</option>
-                                    <option>Keyword 7</option>
-                                    <option>Keyword 8</option>
-                                    <option>Keyword 9</option>
-                                    <option>Keyword 10</option>
+                                <select id="subjectKeyword" name="subjectKeyword[]" multiple>
                                 </select>
                             </p>
 
-
                         </div>
 
+                        <!-- Form fields -->
+                        <div id="container"> </div>
 
-                        <div class="row">
-
-                            <!-- File publisher -->
-                            <div class="col-lg-6 mb-4">
-                                <label for="filePublisher" class="form-label">Publisher</label>
-                                <input type="text" class="form-control" id="filePublisher" placeholder="">
-                            </div>
-
-                            <!-- File identifier -->
-                            <div class="col-lg-6 mb-4">
-                                <label for="fileIdentifier" class="form-label">Identifier <span
-                                        class="mandatoryField">*</span></label>
-                                <input type="text" class="form-control" id="fileIdentifier" placeholder="DD/MM/YYYY">
-                            </div>
-                        </div>
-
-                        <div class="row mb-4">
-
-                            <!-- File publish date -->
-                            <div class="col-lg-6">
-                                <label for="publishedDate" class="form-label">Published date <span
-                                        class="mandatoryField">*</span></label>
-                                <input type="text" class="form-control" id="publishedDate" placeholder="">
-                            </div>
-                        </div>
-
-                        <!-- File description -->
-                        <div class="mb-4">
-                            <label for="fileDescription">Description</label>
-                            <textarea class="form-control" rows="10" id="fileDescription"></textarea>
-                        </div>
                     </form>
                 </div>
             </div>
@@ -157,8 +129,554 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
     </div>
 
     <script>
+        $(document).ready(function () {
+            // Get upload_id
+            var uploadId = "<?php echo $upload_id; ?>";
 
-        
+            // Get record detail by id
+            getRecordDetail(uploadId);
+
+            // Get the buttons
+            const archiveButton = document.getElementById('moveToArchiveButton');
+            const publishButton = document.getElementById('publishButton');
+
+            // Add click event listener to the move to archive button
+            archiveButton.addEventListener('click', function () {
+                // Handle click logic for the button
+                console.log('move to archive clicked');
+
+            });
+
+            // Add click event listener to the publish button
+            publishButton.addEventListener('click', function () {
+                // Handle click logic for the button
+                console.log('publish clicked');
+
+            });
+
+            const dropZone = document.querySelector('#drop-area');
+            const browseBtn = document.querySelector('#browse-btn');
+            const fileInput = document.querySelector('#file-input');
+            const deleteBtn = document.querySelector('#basic-addon2');
+
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('drag-over');
+            });
+
+            dropZone.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('drag-over');
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('drag-over');
+                const file = e.dataTransfer.files[0];
+                handleFile(file);
+            });
+
+            browseBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                handleFile(file);
+            });
+
+            deleteBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                $('#drop-area').show();
+                $('#uploaded-area').hide();
+                filePreview.firstChild.setAttribute('src', '');
+            });
+
+        });
+
+        function getRecordDetail(uploadId) {
+            $.ajax({
+                url: 'getUploadById.php',
+                method: 'GET',
+                data: {
+                    upload_id: uploadId
+                },
+                success: function (response) {
+                    // Handle the AJAX success response
+                    console.log(response);
+
+                    // Set the record name
+                    var recordName = document.getElementById("recordName");
+                    recordName.value = response.uploads[0].title;
+
+                    // Set the selected option based on the document type value
+                    var selectedValue = response.uploads[0].template_name;
+                    var selectElement = document.getElementById("documentType");
+                    for (var i = 0; i < selectElement.options.length; i++) {
+                        if (selectElement.options[i].text === selectedValue) {
+                            selectElement.selectedIndex = i;
+                            break;
+                        }
+                    }
+                    // Disable the select element
+                    selectElement.disabled = true;
+
+                    // Set the record name
+                    // var fileName = document.getElementById("fileName");
+                    // fileName.value = response.uploads[0].file_name;
+
+                    // Get uploaded file name
+                    var uploadedFile = document.getElementById("filePreview");
+                    var uploadFilePath = response.uploads[0].file;
+                    if (uploadedFile.src !== "") {
+                        $('#drop-area').hide();
+                        $('#uploaded-area').show();
+
+                        // File name element
+                        var uploadedFileName = document.getElementById("uploaded-file-name");
+                        var inputElement = document.querySelector('#uploaded-area input[type="text"]');
+                        inputElement.value = uploadFilePath;
+
+                        // File preview element
+                        var filePreview = document.getElementById("filePreview")
+
+                        // Create a new img element with class "img-thumbnail" and set its src attribute
+                        var imgElement = document.createElement("img");
+                        imgElement.className = "img-thumbnail";
+                        imgElement.alt = "Uploaded Image";
+                        imgElement.setAttribute('src', uploadFilePath);
+
+                        // Replace the existing img element with the new one
+                        filePreview.removeChild(filePreview.firstChild); // Remove the existing img element
+                        filePreview.appendChild(imgElement);
+
+                        // Append the div element to an existing container element with ID "uploadFileContainer"
+                        var containerElement = document.getElementById("uploadFileContainer");
+
+                    } else {
+                        $('#drop-area').show();
+                        $('#uploaded-area').hide();
+                    }
+
+                    // Get keyword
+                    getKeywordListSelectKeyword(response.uploads[0]);
+
+                    // Based on the response's document type, generate other fields in the form
+                    generateForm(selectedValue, response.uploads[0]);
+
+                },
+                error: function (error) {
+                    // Handle the AJAX error
+                    console.log(error);
+                }
+            });
+        }
+
+        function getKeywordListSelectKeyword(uploadResponse) {
+            var keywordList = document.getElementById("subjectKeyword");
+
+            var getKeywordList = $.ajax({
+                url: 'getKeyword.php',
+                method: 'GET',
+                success: function (response) {
+                    // Handle the AJAX success response
+                    console.log(response);
+
+                    // Get the subjectKeyword and create dropdown options
+                    var keywordListOptions = response.data;
+
+                    for (var i = 0; i < keywordListOptions.length; i++) {
+                        var keywordListOption = document.createElement("option");
+                        keywordListOption.text = keywordListOptions[i];
+                        keywordListOption.value = keywordListOptions[i];
+                        keywordList.add(keywordListOption);
+                    }
+
+                    var selectedKeywordOptions = uploadResponse.subject;
+                    for (var i = 0; i < selectedKeywordOptions.length; i++) {
+                        var selectedKeywordOption = selectedKeywordOptions[i];
+                        console.log(selectedKeywordOption);
+                        for (var j = 0; j < keywordListOptions.length; j++) {
+                            var keywordListOption = keywordListOptions[j];
+                            if (selectedKeywordOption === keywordListOption) {
+                                var option = keywordList.options[j];
+                                option.selected = true;
+                            }
+                        }
+                    }
+
+                    MultiselectDropdown(window.MultiselectDropdownOptions);
+                },
+                error: function (error) {
+                    // Handle the AJAX error
+                    console.log(error);
+                }
+            });
+        }
+
+        function generateForm(templateName, upload) {
+            $.ajax({
+                url: 'getFields.php',
+                method: 'GET',
+                data: {
+                    template_name: templateName
+                },
+                success: function (response) {
+                    // Handle the AJAX success response
+                    console.log(response);
+                    var container = document.getElementById('container');
+
+                    response.fields.forEach(field => {
+                        var divElement = document.createElement('div');
+                        divElement.classList.add('mb-4');
+
+                        switch (field.name) {
+                            case 'contributor':
+                                divElement.classList.add('col-lg-6', 'mb-4');
+                                var labelElement = document.createElement('label');
+                                labelElement.setAttribute('for', 'contributor');
+                                labelElement.classList.add('form-label');
+                                labelElement.textContent = field.title + ' ';
+
+                                if (field.is_required == 1) {
+                                    var spanElement = document.createElement('span');
+                                    spanElement.classList.add('mandatoryField');
+                                    spanElement.textContent = '*';
+
+                                    labelElement.appendChild(spanElement);
+                                }
+
+                                var inputElement = document.createElement('input');
+                                inputElement.setAttribute('type', 'text');
+                                inputElement.classList.add('form-control');
+                                inputElement.setAttribute('id', 'contributor');
+                                inputElement.setAttribute('placeholder', '');
+
+                                divElement.appendChild(labelElement);
+                                divElement.appendChild(inputElement);
+                                break;
+                            case 'coverage':
+                                divElement.classList.add('col-lg-6', 'mb-4');
+                                var labelElement = document.createElement('label');
+                                labelElement.setAttribute('for', 'coverage');
+                                labelElement.classList.add('form-label');
+                                labelElement.textContent = field.title + ' ';
+
+                                if (field.is_required == 1) {
+                                    var spanElement = document.createElement('span');
+                                    spanElement.classList.add('mandatoryField');
+                                    spanElement.textContent = '*';
+
+                                    labelElement.appendChild(spanElement);
+                                }
+
+                                var inputElement = document.createElement('input');
+                                inputElement.setAttribute('type', 'text');
+                                inputElement.classList.add('form-control');
+                                inputElement.setAttribute('id', 'coverage');
+                                inputElement.setAttribute('placeholder', '');
+
+                                divElement.appendChild(labelElement);
+                                divElement.appendChild(inputElement);
+                                break;
+                            case 'creator':
+                                divElement.classList.add('col-lg-6', 'mb-4');
+                                var labelElement = document.createElement('label');
+                                labelElement.setAttribute('for', 'creator');
+                                labelElement.classList.add('form-label');
+                                labelElement.textContent = field.title + ' ';
+
+                                if (field.is_required == 1) {
+                                    var spanElement = document.createElement('span');
+                                    spanElement.classList.add('mandatoryField');
+                                    spanElement.textContent = '*';
+
+                                    labelElement.appendChild(spanElement);
+                                }
+
+                                var inputElement = document.createElement('input');
+                                inputElement.setAttribute('type', 'text');
+                                inputElement.classList.add('form-control');
+                                inputElement.setAttribute('id', 'creator');
+                                inputElement.setAttribute('placeholder', '');
+
+                                divElement.appendChild(labelElement);
+                                divElement.appendChild(inputElement);
+                                break;
+                            case 'date':
+                                divElement.classList.add('col-lg-6', 'mb-4');
+                                var labelElement = document.createElement('label');
+                                labelElement.setAttribute('for', 'date');
+                                labelElement.classList.add('form-label');
+                                labelElement.textContent = field.title + ' ';
+
+                                if (field.is_required == "1") {
+                                    var spanElement = document.createElement('span');
+                                    spanElement.classList.add('mandatoryField');
+                                    spanElement.textContent = '*';
+
+                                    labelElement.appendChild(spanElement);
+                                }
+
+                                var inputElement = document.createElement('input');
+                                inputElement.setAttribute('type', 'date');
+                                inputElement.classList.add('form-control');
+                                inputElement.setAttribute('id', 'date');
+                                inputElement.setAttribute('placeholder', 'DD/MM/YYYY');
+
+                                divElement.appendChild(labelElement);
+                                divElement.appendChild(inputElement);
+                                break;
+                            case 'description':
+                                divElement.classList.add('col-lg-12', 'mb-4');
+                                var labelElement = document.createElement('label');
+                                labelElement.setAttribute('for', 'description');
+                                labelElement.classList.add('form-label');
+                                labelElement.textContent = field.title + ' ';
+
+                                if (field.is_required == "1") {
+                                    var spanElement = document.createElement('span');
+                                    spanElement.classList.add('mandatoryField');
+                                    spanElement.textContent = '*';
+
+                                    labelElement.appendChild(spanElement);
+                                }
+
+                                var textareaElement = document.createElement('textarea');
+                                textareaElement.classList.add('form-control');
+                                textareaElement.setAttribute('id', 'description');
+                                textareaElement.setAttribute('placeholder', '');
+                                textareaElement.setAttribute('rows', '10');
+
+                                divElement.appendChild(labelElement);
+                                divElement.appendChild(textareaElement);
+                                break;
+                            case 'format':
+                                divElement.classList.add('col-lg-6', 'mb-4');
+                                var labelElement = document.createElement('label');
+                                labelElement.setAttribute('for', 'format');
+                                labelElement.classList.add('form-label');
+                                labelElement.textContent = field.title + ' ';
+
+                                if (field.is_required == "1") {
+                                    var spanElement = document.createElement('span');
+                                    spanElement.classList.add('mandatoryField');
+                                    spanElement.textContent = '*';
+
+                                    labelElement.appendChild(spanElement);
+                                }
+
+                                var inputElement = document.createElement('input');
+                                inputElement.setAttribute('type', 'text');
+                                inputElement.classList.add('form-control');
+                                inputElement.setAttribute('id', 'format');
+                                inputElement.setAttribute('placeholder', '');
+
+                                divElement.appendChild(labelElement);
+                                divElement.appendChild(inputElement);
+                                break;
+                            case 'identifier':
+                                divElement.classList.add('col-lg-6', 'mb-4');
+                                var labelElement = document.createElement('label');
+                                labelElement.setAttribute('for', 'identifier');
+                                labelElement.classList.add('form-label');
+                                labelElement.textContent = field.title + ' ';
+
+                                if (field.is_required == "1") {
+                                    var spanElement = document.createElement('span');
+                                    spanElement.classList.add('mandatoryField');
+                                    spanElement.textContent = '*';
+
+                                    labelElement.appendChild(spanElement);
+                                }
+
+                                var inputElement = document.createElement('input');
+                                inputElement.setAttribute('type', 'text');
+                                inputElement.classList.add('form-control');
+                                inputElement.setAttribute('id', 'identifier');
+                                inputElement.setAttribute('placeholder', '');
+
+                                divElement.appendChild(labelElement);
+                                divElement.appendChild(inputElement);
+                                break;
+                            case 'language':
+                                divElement.classList.add('col-lg-6', 'mb-4');
+                                var labelElement = document.createElement('label');
+                                labelElement.setAttribute('for', 'language');
+                                labelElement.classList.add('form-label');
+                                labelElement.textContent = field.title + ' ';
+
+                                if (field.is_required == "1") {
+                                    var spanElement = document.createElement('span');
+                                    spanElement.classList.add('mandatoryField');
+                                    spanElement.textContent = '*';
+
+                                    labelElement.appendChild(spanElement);
+                                }
+
+                                var inputElement = document.createElement('input');
+                                inputElement.setAttribute('type', 'text');
+                                inputElement.classList.add('form-control');
+                                inputElement.setAttribute('id', 'language');
+                                inputElement.setAttribute('placeholder', '');
+
+                                divElement.appendChild(labelElement);
+                                divElement.appendChild(inputElement);
+                                break;
+                            case 'publisher':
+                                divElement.classList.add('col-lg-6', 'mb-4');
+                                var labelElement = document.createElement('label');
+                                labelElement.setAttribute('for', 'publisher');
+                                labelElement.classList.add('form-label');
+                                labelElement.textContent = field.title + ' ';
+
+                                if (field.is_required == "1") {
+                                    var spanElement = document.createElement('span');
+                                    spanElement.classList.add('mandatoryField');
+                                    spanElement.textContent = '*';
+
+                                    labelElement.appendChild(spanElement);
+                                }
+
+                                var inputElement = document.createElement('input');
+                                inputElement.setAttribute('type', 'text');
+                                inputElement.classList.add('form-control');
+                                inputElement.setAttribute('id', 'publisher');
+                                inputElement.setAttribute('placeholder', '');
+
+                                divElement.appendChild(labelElement);
+                                divElement.appendChild(inputElement);
+                                break;
+                            case 'relation':
+                                divElement.classList.add('col-lg-6', 'mb-4');
+                                var labelElement = document.createElement('label');
+                                labelElement.setAttribute('for', 'relation');
+                                labelElement.classList.add('form-label');
+                                labelElement.textContent = field.title + ' ';
+
+                                if (field.is_required == "1") {
+                                    var spanElement = document.createElement('span');
+                                    spanElement.classList.add('mandatoryField');
+                                    spanElement.textContent = '*';
+
+                                    labelElement.appendChild(spanElement);
+                                }
+
+                                var inputElement = document.createElement('input');
+                                inputElement.setAttribute('type', 'text');
+                                inputElement.classList.add('form-control');
+                                inputElement.setAttribute('id', 'relation');
+                                inputElement.setAttribute('placeholder', '');
+
+                                divElement.appendChild(labelElement);
+                                divElement.appendChild(inputElement);
+                                break;
+                            case 'rights':
+                                divElement.classList.add('col-lg-6', 'mb-4');
+                                var labelElement = document.createElement('label');
+                                labelElement.setAttribute('for', 'rights');
+                                labelElement.classList.add('form-label');
+                                labelElement.textContent = field.title + ' ';
+
+                                if (field.is_required == "1") {
+                                    var spanElement = document.createElement('span');
+                                    spanElement.classList.add('mandatoryField');
+                                    spanElement.textContent = '*';
+
+                                    labelElement.appendChild(spanElement);
+                                }
+
+                                var inputElement = document.createElement('input');
+                                inputElement.setAttribute('type', 'text');
+                                inputElement.classList.add('form-control');
+                                inputElement.setAttribute('id', 'rights');
+                                inputElement.setAttribute('placeholder', '');
+
+                                divElement.appendChild(labelElement);
+                                divElement.appendChild(inputElement);
+                                break;
+                            case 'source':
+                                divElement.classList.add('col-lg-6', 'mb-4');
+                                var labelElement = document.createElement('label');
+                                labelElement.setAttribute('for', 'source');
+                                labelElement.classList.add('form-label');
+                                labelElement.textContent = field.title + ' ';
+
+                                if (field.is_required == "1") {
+                                    var spanElement = document.createElement('span');
+                                    spanElement.classList.add('mandatoryField');
+                                    spanElement.textContent = '*';
+
+                                    labelElement.appendChild(spanElement);
+                                }
+
+                                var inputElement = document.createElement('input');
+                                inputElement.setAttribute('type', 'text');
+                                inputElement.classList.add('form-control');
+                                inputElement.setAttribute('id', 'source');
+                                inputElement.setAttribute('placeholder', '');
+
+                                divElement.appendChild(labelElement);
+                                divElement.appendChild(inputElement);
+                                break;
+                            default: break;
+                        }
+                        container.appendChild(divElement);
+
+                        // Prefill other fields after generated
+                        prefillForm(upload);
+                    });
+
+                },
+                error: function (error) {
+                    // Handle the AJAX error
+                    console.log(error);
+                }
+            });
+        }
+
+        function prefillForm(data) {
+            function setValue(elementId, value) {
+                var element = document.getElementById(elementId);
+                if (element) {
+                    element.value = value || '';
+                }
+            }
+
+            setValue('contributor', data.contributor);
+            setValue('coverage', data.coverage);
+            setValue('creator', data.creator);
+            setValue('date', data.date);
+            setValue('description', data.description);
+            setValue('format', data.format);
+            setValue('identifier', data.identifier);
+            setValue('language', data.language);
+            setValue('publisher', data.publisher);
+            setValue('relation', data.relation);
+            setValue('rights', data.rights);
+            setValue('source', data.source);
+        }
+
+        function handleFile(file) {
+            // check file type
+            const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+            if (!allowedTypes.includes(file.type)) {
+                alert('Invalid file type. Please upload a JPEG, PNG, or PDF file.');
+                return;
+            }
+            $('#drop-area').hide();
+            $('#uploaded-area').show();
+            // Do something with the file, like upload it to a server
+            console.log(file);
+            var reader = new FileReader();
+            reader.onload = function (event) {
+                $('#uploaded-file-name').val(file.name);
+                var thumbnail = '<div class="col-lg-4 mb-4"><div class="card"><img class="card-img-top" src="' + event.target.result + '"></div></div>';
+                $('#filePreview').html(thumbnail);
+            };
+            reader.readAsDataURL(file);
+        }
     </script>
 </body>
 

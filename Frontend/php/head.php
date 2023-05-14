@@ -1,7 +1,7 @@
-<?php 
+<?php
 // Initialize the session
 session_start();
- 
+
 // Check if the user is already logged in, if yes then redirect him to welcome page
 // if(isset($_SESSION["email"]) && $_SESSION["loggedin"] === 1){
 //     // header("location: dashboard.php");
@@ -47,6 +47,9 @@ include 'databaseConfig.php';
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
         crossorigin="anonymous"></script>
+
+    <!-- Keyword list JS -->
+    <script defer src="../js/multiselect-dropdown.js"></script>
 
     <!-- Custom JS -->
     <script defer src="../js/custom-js.js"></script>

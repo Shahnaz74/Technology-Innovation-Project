@@ -155,9 +155,9 @@
                         if (upload.upload_status == 2) {
                             var newRow = $('<tr></tr>');
                             var rowContent = '';
-                            rowContent += '<th scope="row" width="80%">';
+                            rowContent += '<th scope="row" width="70%">';
                             rowContent += '<p class="recordFileName mb-0">' + upload.title + '</p>';
-                            rowContent += '<p>' + upload.template_name + '</p>';
+                            rowContent += '<p class="recordCategory mb-0">' + upload.template_name + '</p>';
                             rowContent += '</th>';
                             rowContent += '<td>';
                             rowContent += '<button type="button" class="btn neutral-outlin-btn me-lg-2" onclick="editUpload(' + upload.upload_id + ')"><i class="bi bi-pencil-fill pe-2"></i>Edit</button>';
@@ -192,9 +192,9 @@
                         if (upload.upload_status == 3) {
                             var newRow = $('<tr></tr>');
                             var rowContent = '';
-                            rowContent += '<th scope="row" width="80%">';
+                            rowContent += '<th scope="row" width="70%">';
                             rowContent += '<p class="recordFileName mb-0">' + upload.title + '</p>';
-                            rowContent += '<p>' + upload.template_name + '</p>';
+                            rowContent += '<p class="recordCategory mb-0">' + upload.template_name + '</p>';
                             rowContent += '</th>';
                             rowContent += '<td>';
                             rowContent += '<button type="button" class="btn neutral-outlin-btn me-lg-2" onclick="editUpload(' + upload.upload_id + ')"><i class="bi bi-pencil-fill pe-2"></i>Edit</button>';
@@ -228,7 +228,7 @@
                 },
                 success: function (response) {
                     // Handle the AJAX success response
-                    console.log("deleted "+status +": " + response);
+                    console.log("deleted " + status + ": " + response);
 
                     // Parse the JSON response
                     var jsonResponse = JSON.parse(response);
@@ -257,8 +257,8 @@
             });
         }
 
-        function showDeleteSuccessPopup(){
-            
+        function showDeleteSuccessPopup() {
+
         }
 
     </script>

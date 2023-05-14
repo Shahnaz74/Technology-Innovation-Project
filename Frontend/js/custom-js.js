@@ -45,21 +45,21 @@ const observer = new IntersectionObserver(([entry]) => {
 observer.observe(intercept);
 
 // File keyword selector
-$(function () {
-  $("select").selectpicker();
-});
+// $(function () {
+//   $("select").selectpicker();
+// });
 
 // Template fields drag to order
-function init() {
-  $(".droppable-area1, .droppable-area2")
-    .sortable({
-      connectWith: ".connected-sortable",
-      stack: ".connected-sortable",
-    })
-    .disableSelection();
-}
+// function init() {
+//   $(".droppable-area1, .droppable-area2")
+//     .sortable({
+//       connectWith: ".connected-sortable",
+//       stack: ".connected-sortable",
+//     })
+//     .disableSelection();
+// }
 
-$(init);
+// $(init);
 
 function renumber() {
   var count = 1;
