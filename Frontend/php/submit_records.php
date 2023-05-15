@@ -1,81 +1,40 @@
 <?php
-include 'head.php';
+include "head.php";
 
-$upload_id = $_GET['upload_id'];
-echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
+if (isset($_GET['data'])) {
+    // back from submit_records_preview.php
+    $dataString = $_GET['data'];
+    echo "<script>console.log(" . $dataString . ");</script>";
+}
+
 ?>
 
-<style>
-    .toast.fade.hide {
-        display: none !important;
-    }
-</style>
+<body>
+    <!-- Top Nav Bar -->
+    <?php include "header.php" ?>
 
-<body id="page-top">
-    <!-- Spinner -->
-    <div class="spinner-wrapper">
-        <div class="spinner-border text-danger" role="status">
-        </div>
-    </div>
+    <section class="record-content">
+        <div class="container px-5 py-5">
+            <div class="row gx-5 justify-content-center mx-0">
 
-    <!-- Toast message -->
-    <div id="toastMsgContainer" aria-live="polite" aria-atomic="true" class="position-relative">
-        <div class="toast-container p-3" style="position: absolute; top: 180px; right: 10px;">
-        </div>
-    </div>
-
-    <div class="wrapper">
-
-        <!-- Sidebar  -->
-        <?php include 'sidebar.php'; ?>
-
-        <!-- Page Content  -->
-        <div id="content">
-
-            <!-- Topnav -->
-            <?php include 'admin_header.php' ?>
-
-            <div class="container-fluid">
-
-                <!-- Page header -->
-                <header id="form-header" class="row mx-0 mb-4">
-                    <div class="col-lg d-flex">
-                        <h1 class="h3 primary-red">Edit Upload</h1>
+                <div class="col-lg-11 col-xl-9 col-xxl-8">
+                    <!-- Upload Form Description-->
+                    <h4 id="uploadFormTitle" class="primary-red serif">Submit Record</h4>
+                    <div id="uploadFormDesc">
+                        <p>
+                            Fill in
+                            the form below with accurate details of the record and attach supporting files if available.
+                            After submitting, our admin team
+                            will review and approve the record for publication. Once approved, it will be publicly
+                            viewable on our website.
+                        <p>
+                            Thank you for contributing to the preservation of our community's history. For
+                            any questions or assistance, please contact our admin team.
+                        </p>
                     </div>
-                    <div class="col-lg-auto">
-                        <button type="submit" id="moveToArchiveButton" class="btn btn-outline-primary me-2"><i
-                                class="bi bi-archive-fill pe-2 "></i>Move to Archive</button>
-                        <button type="button" id="publishButton" class="btn btn-primary"><i
-                                class="bi bi-check-circle-fill pe-2"></i>Save & Publish</button>
-                    </div>
-                </header>
-
-                <!-- Page content -->
-                <div class="row mx-0">
-                    <form class="needs-validation row" novalidate>
-
-                        <!-- Uploader details -->
-                        <div class="card uploaderDetailsCard mb-4">
-                            <div class=" card-body">
-                                <h5 class="card-title primary-red serif">Uploader Details</h5>
-                                <p class="card-text">
-                                <table class="table">
-                                    <tbody>
-                                        <tr>
-                                            <th scope="row">Name</th>
-                                            <td id="uploaderDetailsName"></td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">Email</th>
-                                            <td id="uploaderDetailsEmail">
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                </p>
-                            </div>
-                        </div>
-
+                    <!-- File Details Form -->
+                    <h4 id="fileFormTitle" class="primary-red serif mb-4">File Details</h4>
+                    <form class="needs-validation" novalidate>
                         <!-- Record name -->
                         <div class="mb-4">
                             <label for="recordName" class="form-label">Record name <span
@@ -90,7 +49,7 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                         <div class="col-md-6 mb-4">
                             <label for="documentType" class="form-label">Document type <span
                                     class="mandatoryField">*</span></label>
-                            <select class="form-select" id="documentType" required>
+                            <select class="form-select" id="documentType" required onchange="generateForm()">
                                 <option selected disabled value="">Choose...</option>
                                 <option>Advertisement Journal</option>
                                 <option>Advertisement Newspaper</option>
@@ -115,7 +74,7 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                         </div>
 
                         <!-- File upload -->
-                        <div class="fileUpload container mb-4">
+                        <div class="fileUpload container mb-4 px-0">
                             <label for="documentType" class="form-label">File upload <span
                                     class="mandatoryField">*</span></label>
                             <div id="uploadFileContainer">
@@ -160,131 +119,116 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
 
                         <!-- Form fields -->
                         <div id="container"> </div>
+                        <!-- Uploader Details-->
+                        <h4 id="uploaderDetailsTitle" class="primary-red serif mb-4">Uploader Details</h4>
+                        <div class="row">
+                            <!-- First Name -->
+                            <div class="col-lg-6 mb-4">
+                                <label for="firstNameField" class="form-label">First Name <span
+                                        class="mandatoryField">*</span></label>
+                                <input type="text" class="form-control" id="firstNameField" placeholder="">
+                            </div>
 
+                            <!-- Last Name -->
+                            <div class="col-lg-6 mb-4">
+                                <label for="lastNameField" class="form-label">Last Name <span
+                                        class="mandatoryField">*</span></label>
+                                <input type="text" class="form-control" id="lastNameField" placeholder="">
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="emailField" class="form-label">Email <span
+                                    class="mandatoryField">*</span></label>
+                            <input type="text" class="form-control" id="emailField" placeholder="">
+                        </div>
+                        <div class="mb-4">
+                            <label for="membershipField" class="form-label">RCCA Membership ID</label>
+                            <input type="text" class="form-control" id="membershipField" placeholder="">
+                        </div>
+                        <div class="d-grid gap-2 col-6 mx-auto my-5">
+                            <button id="sumbitRecordBtn" type="button" class="btn btn-primary">
+                                <i class="bi bi-check-circle-fill pe-2"></i>Sumbit Record</button>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
+    <!-- footer -->
+    <?php include "footer.php" ?>
     <script>
-        // Loading spinner
-        const spinnerWrapper = document.querySelector('.spinner-wrapper');
-        window.addEventListener('load', () => {
-            spinnerWrapper.style.opacity = '0';
-            setTimeout(() => {
-                spinnerWrapper.style.display = 'none';
-            }, 300);
-        })
-
         $(document).ready(function () {
-            // Get upload_id
-            var uploadId = "<?php echo $upload_id; ?>";
+            var prefillData = <?php echo isset($_GET["data"]) ? $_GET["data"] : "null"; ?>;
 
-            // Get record detail by id
-            getRecordDetail(uploadId);
+            if (prefillData !== null) {
+                // Use prefillData in your JavaScript functions
+                console.log(prefillData);
+                // prefill if back from preview page
+                setValue('documentType', prefillData.template_name);
+                var documentTypeSelect = document.getElementById("documentType");
+                if ("createEvent" in document) {
+                    var event = document.createEvent("HTMLEvents");
+                    event.initEvent("change", false, true);
+                    documentTypeSelect.dispatchEvent(event);
 
-            // Get the buttons
-            const archiveButton = document.getElementById('moveToArchiveButton');
-            const publishButton = document.getElementById('publishButton');
-
-            // Add click event listener to the move to archive button
-            archiveButton.addEventListener('click', function () {
-                // Form Validation
-                var validateStatus = validateForm();
-
-                if (validateStatus) {
-                    if (validateStatus) {
-                        var selectElement = document.getElementById('subjectKeyword');
-                        var selectedValues = Array.from(selectElement.selectedOptions).map(option => option.value);
-
-                        $.ajax({
-                            url: 'editUpload.php',
-                            method: 'PUT',
-                            data: {
-                                upload_id: uploadId,
-                                file_name: document.getElementById("uploaded-file-name")?.value || "",
-                                contributor: document.getElementById("contributor")?.value || "",
-                                coverage: document.getElementById("coverage")?.value || "",
-                                creator: document.getElementById("creator")?.value || "",
-                                date: document.getElementById("date")?.value || "",
-                                description: document.getElementById("description")?.value || "",
-                                format: document.getElementById("format")?.value || "",
-                                identifier: document.getElementById("identifier")?.value || "",
-                                language: document.getElementById("language")?.value || "",
-                                publisher: document.getElementById("publisher")?.value || "",
-                                relation: document.getElementById("relation")?.value || "",
-                                rights: document.getElementById("rights")?.value || "",
-                                source: document.getElementById("source")?.value || "",
-                                title: document.getElementById("recordName")?.value || "",
-                                upload_status: 3,
-                                template_name: document.getElementById("documentType")?.value || "",
-                                subject: selectedValues,
-                            },
-                            success: function (response) {
-                                // Handle the AJAX success response
-                                console.log(response);
-
-                                window.location.href = "admin_portal_records.php";
-                            }, error: function (error) {
-                                // Handle the AJAX error
-                                console.log(error);
-                            }
-                        });
-                    }
+                } else {
+                    documentTypeSelect.fireEvent("onchange");
                 }
+            }
 
-            });
+            // Get the button
+            const sumbitButton = document.getElementById('sumbitRecordBtn');
 
             // Add click event listener to the publish button
-            publishButton.addEventListener('click', function () {
+            sumbitButton.addEventListener('click', function () {
                 // Form Validation
                 var validateStatus = validateForm();
+                console.log(validateStatus);
 
                 if (validateStatus) {
                     var selectElement = document.getElementById('subjectKeyword');
                     var selectedValues = Array.from(selectElement.selectedOptions).map(option => option.value);
 
-                    $.ajax({
-                        url: 'editUpload.php',
-                        method: 'PUT',
-                        data: {
-                            upload_id: uploadId,
-                            file_name: document.getElementById("uploaded-file-name")?.value || "",
-                            contributor: document.getElementById("contributor")?.value || "",
-                            coverage: document.getElementById("coverage")?.value || "",
-                            creator: document.getElementById("creator")?.value || "",
-                            date: document.getElementById("date")?.value || "",
-                            description: document.getElementById("description")?.value || "",
-                            format: document.getElementById("format")?.value || "",
-                            identifier: document.getElementById("identifier")?.value || "",
-                            language: document.getElementById("language")?.value || "",
-                            publisher: document.getElementById("publisher")?.value || "",
-                            relation: document.getElementById("relation")?.value || "",
-                            rights: document.getElementById("rights")?.value || "",
-                            source: document.getElementById("source")?.value || "",
-                            title: document.getElementById("recordName")?.value || "",
-                            upload_status: 2,
-                            template_name: document.getElementById("documentType")?.value || "",
-                            subject: selectedValues,
-                        },
-                        success: function (response) {
-                            // Handle the AJAX success response
-                            console.log(response);
+                    var uploadedFileName = document.getElementById("uploaded-file-name")?.value || "";
+                    var file = uploadedFileName ? "http://localhost/Technology-innovation/client-records/" + uploadedFileName : "";
 
-                            window.location.href = "admin_portal_records.php";
-                        }, error: function (error) {
-                            // Handle the AJAX error
-                            console.log(error);
-                        }
-                    });
+                    var data = {
+                        file_name: document.getElementById("uploaded-file-name")?.value || "",
+                        file: file,
+                        contributor: document.getElementById("contributor")?.value || "",
+                        coverage: document.getElementById("coverage")?.value || "",
+                        creator: document.getElementById("creator")?.value || "",
+                        date: document.getElementById("date")?.value || "",
+                        description: document.getElementById("description")?.value || "",
+                        format: document.getElementById("format")?.value || "",
+                        identifier: document.getElementById("identifier")?.value || "",
+                        language: document.getElementById("language")?.value || "",
+                        publisher: document.getElementById("publisher")?.value || "",
+                        relation: document.getElementById("relation")?.value || "",
+                        rights: document.getElementById("rights")?.value || "",
+                        source: document.getElementById("source")?.value || "",
+                        title: document.getElementById("recordName")?.value || "",
+                        first_name: document.getElementById("firstNameField")?.value || "",
+                        last_name: document.getElementById("lastNameField")?.value || "",
+                        email: document.getElementById("emailField")?.value || "",
+                        upload_status: 1,
+                        template_name: document.getElementById("documentType")?.value || "",
+                        subject: selectedValues
+                    };
+
+                    passDataToPreview(data);
                 }
             });
 
-            const dropZone = document.querySelector('#drop-area');
-            const browseBtn = document.querySelector('#browse-btn');
-            const fileInput = document.querySelector('#file-input');
-            const deleteBtn = document.querySelector('#basic-addon2');
+            // default upload area setting
+            $('#drop-area').show();
+            $('#uploaded-area').hide();
+
+            const dropZone = document.getElementById('drop-area');
+            const browseBtn = document.getElementById('browse-btn');
+            const fileInput = document.getElementById('file-input');
+            const deleteBtn = document.getElementById('basic-addon2');
 
             dropZone.addEventListener('dragover', (e) => {
                 e.preventDefault();
@@ -320,114 +264,66 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                 filePreview.firstChild.setAttribute('src', '');
             });
 
+            // Get keyword list
+            getKeywordList(prefillData);
         });
 
-        function getRecordDetail(uploadId) {
-            $.ajax({
-                url: 'getUploadById.php',
-                method: 'GET',
-                data: {
-                    upload_id: uploadId
-                },
-                success: function (response) {
-                    // Handle the AJAX success response
-                    console.log(response);
-
-                    // Set uploader details
-                    var uploaderDetailsNameElement = document.getElementById("uploaderDetailsName");
-                    uploaderDetailsName.value = response.uploads[0].first_name + ' ' + response.uploads[0].first_name;
-                    uploaderDetailsNameElement.textContent = uploaderDetailsName.value;
-
-                    var uploaderDetailsEmailElement = document.getElementById("uploaderDetailsEmail");
-                    uploaderDetailsEmailElement.textContent = response.uploads[0].email;
-
-                    var emailButtonElement = document.createElement('button');
-                    emailButtonElement.type = 'button';
-                    emailButtonElement.id = 'emailButton';
-                    emailButtonElement.classList.add('btn', 'primary-red');
-                    emailButtonElement.innerHTML = '<i class="bi bi-envelope-fill"></i> Send email';
-                    emailButtonElement.onclick = function () {
-                        sendEmail(response.uploads[0].email);
-                    };
-
-                    // Append the button element to the existing td element
-                    uploaderDetailsEmailElement.appendChild(emailButtonElement);
-
-                    // Set the record name
-                    var recordName = document.getElementById("recordName");
-                    recordName.value = response.uploads[0].title;
-
-                    // Set the selected option based on the document type value
-                    var selectedValue = response.uploads[0].template_name;
-                    var selectElement = document.getElementById("documentType");
-                    for (var i = 0; i < selectElement.options.length; i++) {
-                        if (selectElement.options[i].text === selectedValue) {
-                            selectElement.selectedIndex = i;
-                            break;
-                        }
-                    }
-                    // Disable the select element
-                    selectElement.disabled = true;
-
-                    // Set the record name
-                    // var fileName = document.getElementById("fileName");
-                    // fileName.value = response.uploads[0].file_name;
-
-                    // Get uploaded file name
-                    var uploadedFile = document.getElementById("filePreview");
-                    var uploadFilePath = response.uploads[0].file;
-                    if (uploadedFile.src !== "") {
-                        $('#drop-area').hide();
-                        $('#uploaded-area').show();
-
-                        // File name element
-                        var uploadedFileName = document.getElementById("uploaded-file-name");
-                        var inputElement = document.querySelector('#uploaded-area input[type="text"]');
-                        inputElement.value = uploadFilePath;
-
-                        // File preview element
-                        var filePreview = document.getElementById("filePreview")
-
-                        // Create a new img element with class "img-thumbnail" and set its src attribute
-                        var imgElement = document.createElement("img");
-                        imgElement.className = "img-thumbnail";
-                        imgElement.alt = "Uploaded Image";
-                        imgElement.setAttribute('src', uploadFilePath);
-
-                        // Replace the existing img element with the new one
-                        filePreview.removeChild(filePreview.firstChild); // Remove the existing img element
-                        filePreview.appendChild(imgElement);
-
-                        // Append the div element to an existing container element with ID "uploadFileContainer"
-                        var containerElement = document.getElementById("uploadFileContainer");
-
-                    } else {
-                        $('#drop-area').show();
-                        $('#uploaded-area').hide();
-                    }
-
-                    // Get keyword
-                    getKeywordListSelectKeyword(response.uploads[0]);
-
-                    // Based on the response's document type, generate other fields in the form
-                    generateForm(selectedValue, response.uploads[0]);
-
-                },
-                error: function (error) {
-                    // Handle the AJAX error
-                    console.log(error);
-                }
-            });
+        function prefillForm(prefillData) {
+            // setValue('uploaded-file-name', $prefillData.file_name);
+            setValue('contributor', prefillData.contributor);
+            setValue('coverage', prefillData.coverage);
+            setValue('creator', prefillData.creator);
+            setValue('date', prefillData.date);
+            setValue('description', prefillData.description);
+            setValue('format', prefillData.format);
+            setValue('identifier', prefillData.identifier);
+            setValue('language', prefillData.language);
+            setValue('publisher', prefillData.publisher);
+            setValue('relation', prefillData.relation);
+            setValue('rights', prefillData.rights);
+            setValue('source', prefillData.source);
+            setValue('recordName', prefillData.title);
+            setValue('firstNameField', prefillData.first_name);
+            setValue('lastNameField', prefillData.last_name);
+            setValue('emailField', prefillData.email);
         }
 
-        function sendEmail(email) {
-            window.location.href = 'mailto:' + email;
+        function setValue(elementId, value) {
+            var element = document.getElementById(elementId);
+            if (element) {
+                element.value = value || '';
+            }
+        }
+
+        function passDataToPreview(data) {
+            var dataString = JSON.stringify(data);
+
+            window.location.href = 'submit_records_preview.php?data=' + encodeURIComponent(JSON.stringify(data));
         }
 
 
-        function getKeywordListSelectKeyword(uploadResponse) {
+        function handleFile(file) {
+            // check file type
+            const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+            if (!allowedTypes.includes(file.type)) {
+                alert('Invalid file type. Please upload a JPEG, PNG, or PDF file.');
+                return;
+            }
+            $('#drop-area').hide();
+            $('#uploaded-area').show();
+            // Do something with the file, like upload it to a server
+            console.log(file);
+            var reader = new FileReader();
+            reader.onload = function (event) {
+                $('#uploaded-file-name').val(file.name);
+                var thumbnail = '<div class="col-lg-4 mb-4"><div class="card"><img class="card-img-top" src="' + event.target.result + '"></div></div>';
+                $('#filePreview').html(thumbnail);
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function getKeywordList(prefillData) {
             var keywordList = document.getElementById("subjectKeyword");
-
             var getKeywordList = $.ajax({
                 url: 'getKeyword.php',
                 method: 'GET',
@@ -445,15 +341,17 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                         keywordList.add(keywordListOption);
                     }
 
-                    var selectedKeywordOptions = uploadResponse.subject;
-                    for (var i = 0; i < selectedKeywordOptions.length; i++) {
-                        var selectedKeywordOption = selectedKeywordOptions[i];
-                        console.log(selectedKeywordOption);
-                        for (var j = 0; j < keywordListOptions.length; j++) {
-                            var keywordListOption = keywordListOptions[j];
-                            if (selectedKeywordOption === keywordListOption) {
-                                var option = keywordList.options[j];
-                                option.selected = true;
+                    if (prefillData !== null) {
+                        var selectedKeywordOptions = prefillData.subject;
+                        for (var i = 0; i < selectedKeywordOptions.length; i++) {
+                            var selectedKeywordOption = selectedKeywordOptions[i];
+                            console.log(selectedKeywordOption);
+                            for (var j = 0; j < keywordListOptions.length; j++) {
+                                var keywordListOption = keywordListOptions[j];
+                                if (selectedKeywordOption === keywordListOption) {
+                                    var option = keywordList.options[j];
+                                    option.selected = true;
+                                }
                             }
                         }
                     }
@@ -467,17 +365,20 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
             });
         }
 
-        function generateForm(templateName, upload) {
+        function generateForm() {
+            var documentType = document.getElementById("documentType").value;
+            var container = document.getElementById('container');
+            container.innerHTML = "";
+
             $.ajax({
                 url: 'getFields.php',
                 method: 'GET',
                 data: {
-                    template_name: templateName
+                    template_name: documentType
                 },
                 success: function (response) {
                     // Handle the AJAX success response
                     console.log(response);
-                    var container = document.getElementById('container');
 
                     response.fields.forEach(field => {
                         var divElement = document.createElement('div');
@@ -775,10 +676,13 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                             default: break;
                         }
                         container.appendChild(divElement);
-
-                        // Prefill other fields after generated
-                        prefillForm(upload);
                     });
+
+                    var prefillData2 = <?php echo isset($_GET["data"]) ? $_GET["data"] : "null"; ?>;
+
+                    if (prefillData2 !== null) {
+                        prefillForm(prefillData2);
+                    }
 
                 },
                 error: function (error) {
@@ -788,52 +692,6 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
             });
         }
 
-        function prefillForm(data) {
-            setValue('contributor', data.contributor);
-            setValue('coverage', data.coverage);
-            setValue('creator', data.creator);
-            setValue('date', data.date);
-            setValue('description', data.description);
-            setValue('format', data.format);
-            setValue('identifier', data.identifier);
-            setValue('language', data.language);
-            setValue('publisher', data.publisher);
-            setValue('relation', data.relation);
-            setValue('rights', data.rights);
-            setValue('source', data.source);
-        }
-
-        function setValue(elementId, value) {
-            var element = document.getElementById(elementId);
-            if (element) {
-                element.value = value || '';
-            }
-        }
-
-        function handleFile(file) {
-            // check file type
-            const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
-            if (!allowedTypes.includes(file.type)) {
-                alert('Invalid file type. Please upload a JPEG, PNG, or PDF file.');
-                return;
-            }
-            $('#drop-area').hide();
-            $('#uploaded-area').show();
-            // Do something with the file, like upload it to a server
-            console.log(file);
-            var reader = new FileReader();
-            reader.onload = function (event) {
-                $('#uploaded-file-name').val(file.name);
-                var thumbnail = '<div class="col-lg-4 mb-4"><div class="card"><img class="card-img-top" src="' + event.target.result + '"></div></div>';
-                $('#filePreview').html(thumbnail);
-            };
-            reader.readAsDataURL(file);
-        }
-
-        function toTitleCase(str) {
-            return str.charAt(0).toUpperCase() + str.slice(1);
-        }
-
         function validateForm() {
             var recordName = document.getElementById("recordName").value;
             var documentType = document.getElementById("documentType").value;
@@ -841,58 +699,30 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
             var subjectKeywords = document.getElementById("subjectKeyword").options;
             var container = document.getElementById('container');
             var mandatoryFields = container.getElementsByClassName('mandatoryField');
-            var selectedKeywords = Array.from(subjectKeywords)
-                .filter((option) => option.selected)
-                .map((option) => option.value);
+            var firstNameField = document.getElementById("firstNameField").value;
+            var lastNameField = document.getElementById("lastNameField").value;
+            var emailField = document.getElementById("emailField").value;
             var isValid = true;
-
-            function createToast(message) {
-                var toastContainer = document.querySelector('.toast-container');
-
-                var toastElement = document.createElement('div');
-                toastElement.classList.add('toast');
-                toastElement.setAttribute('role', 'alert');
-                toastElement.setAttribute('aria-live', 'assertive');
-                toastElement.setAttribute('aria-atomic', 'true');
-
-                var toastHeader = document.createElement('div');
-                toastHeader.classList.add('toast-header');
-
-                var icon = document.createElement('i');
-                icon.classList.add('bi', 'bi-exclamation-triangle-fill', 'primary-red-darker', 'fs-3', 'pe-2');
-
-                var strong = document.createElement('strong');
-                strong.classList.add('primary-red-darker', 'fs-6', 'me-auto');
-                strong.textContent = 'Warning';
-
-                var closeButton = document.createElement('button');
-                closeButton.type = 'button';
-                closeButton.classList.add('btn-close');
-                closeButton.setAttribute('data-bs-dismiss', 'toast');
-                closeButton.setAttribute('aria-label', 'Close');
-
-                var toastBody = document.createElement('div');
-                toastBody.classList.add('toast-body');
-                toastBody.textContent = message;
-
-                toastHeader.appendChild(icon);
-                toastHeader.appendChild(strong);
-                toastHeader.appendChild(closeButton);
-
-                toastElement.appendChild(toastHeader);
-                toastElement.appendChild(toastBody);
-                toastContainer.appendChild(toastElement);
-
-                var toast = new bootstrap.Toast(toastElement);
-                toastElement.style.display = 'block';
-                toast.show();
-            }
 
             // Check if record name is empty
             if (recordName.trim() === "") {
-                createToast('Record name is required');
+                alert("Record name is required");
                 isValid = false;
                 console.log("invalid7");
+            }
+
+            // Check if document type is not selected
+            if (documentType === "") {
+                alert("Please select document type");
+                isValid = false;
+                console.log("invalid6");
+            }
+
+            // Check if file input is empty
+            if (fileInput === "") {
+                alert("File upload is required");
+                isValid = false;
+                console.log("invalid5");
             }
 
             // Check if at least one subject keyword is selected
@@ -900,25 +730,30 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                 .filter((option) => option.selected)
                 .map((option) => option.value);
             if (selectedKeywords.length === 0) {
-                createToast('Please select at least one subject keyword');
+                alert("Please select at least one subject keyword");
                 isValid = false;
                 console.log("invalid4");
             }
 
-            // Check if file input is empty
-            if (fileInput === "") {
-                // alert("File upload is required");
-                createToast('File upload is required');
+            // Check if first name is empty
+            if (firstNameField.trim() === "") {
+                alert("Uploader first name is required");
                 isValid = false;
-                console.log("invalid5");
+                console.log("invalid8");
             }
 
-            // Check if document type is not selected
-            if (documentType === "") {
-                // alert("Please select document type");
-                createToast('Please select document type');
+            // Check if last name is empty
+            if (lastNameField.trim() === "") {
+                alert("Uploader last name is required");
                 isValid = false;
-                console.log("invalid6");
+                console.log("invalid9");
+            }
+
+            // Check if record name is empty
+            if (emailField.trim() === "") {
+                alert("Uploader email is required");
+                isValid = false;
+                console.log("invalid10");
             }
 
             for (var i = 0; i < mandatoryFields.length; i++) {
@@ -933,8 +768,6 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                     // Check if the input element is a textarea or a text input
                     if (inputElement.tagName.toLowerCase() === 'textarea' || inputElement.type === 'text') {
                         if (!inputElement.value) {
-                            var inputIdTitleCase = toTitleCase(inputElement.id);
-                            createToast('Please enter ' + inputIdTitleCase);
                             isValid = false;
                             console.log("invalid1");
                         }
@@ -943,7 +776,6 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                     // Check if the input element is a date input
                     if (inputElement.type === 'date') {
                         if (!inputElement.valueAsDate) {
-                            createToast('Date format is invalid');
                             isValid = false;
                             console.log("invalid2");
                         }
@@ -952,16 +784,19 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                     // Check if the input element is a select element
                     if (inputElement.tagName.toLowerCase() === 'select') {
                         if (!inputElement.value) {
-                            createToast('Input value is not valid');
                             isValid = false;
                             console.log("invalid3");
                         }
                     }
                 }
             }
+
             return isValid;
         }
+
     </script>
+
+
 </body>
 
 </html>
