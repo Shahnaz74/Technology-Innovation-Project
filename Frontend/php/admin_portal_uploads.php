@@ -11,7 +11,7 @@
         <div id="content">
 
             <!-- Topnav -->
-            <?php include 'header.php' ?>
+            <?php include 'admin_header.php' ?>
 
             <div class="container-fluid">
 
@@ -41,150 +41,9 @@
 
                     <!-- Tab content -->
                     <div class="tab-content px-0" id="myTabContent">
-                        <!-- Pending for approval tab -->
-                        <div class="tab-pane fade show active" id="published-tab-pane" role="tabpanel"
-                            aria-labelledby="published-tab" tabindex="0">
+                        <div id="tab-panel">
                             <table class="table table-striped table-hover">
-                                <!-- Record listing content -->
-                                <tbody>
-
-                                    <?php
-                                    // SQL query to fetch data from database
-                                    $getPendingUpload = "SELECT uu.upload_id, uu.file_name, uu.contributor, uu.coverage, uu.creator, uu.date, uu.description, uu.format, uu.identifier, uu.language, uu.publisher, uu.relation, uu.rights, uu.source, uu.title, uu.first_name, uu.last_name, uu.email, uu.upload_status,uu.created, t.template_name, GROUP_CONCAT(DISTINCT k.keyword SEPARATOR ',') AS subject
-                                        FROM user_uploads AS uu
-                                        JOIN template AS t ON uu.template_id = t.template_id
-                                        LEFT JOIN keyword_upload AS ku ON uu.upload_id = ku.upload_id
-                                        LEFT JOIN keyword AS k ON ku.keyword_id = k.keyword_id
-                                        WHERE upload_status = 1
-                                        GROUP BY uu.upload_id";
-
-                                    // Execute query and get results
-                                    $getPendingUploadResult = $conn->query($getPendingUpload);
-
-                                    // Check for errors
-                                    if (!$getPendingUploadResult) {
-                                        http_response_code(400);
-                                        die("An error occurred while retrieving data: " . $conn->error);
-                                    }
-
-                                    // Check if there are any rows returned
-                                    if ($getPendingUploadResult->num_rows > 0) {
-                                        while ($row = $getPendingUploadResult->fetch_assoc()) {
-                                            // Extract individual row data
-                                            extract($row);
-
-                                            echo '<tr class="align-middle">';
-
-                                            // <!-- File name & document type -->
-                                            echo '<th scope="row" width="40%">';
-                                            echo '<p class="recordFileName mb-0">' . $title . '</p>';
-                                            echo '<p class="recordCategory mb-0">' . $template_name . '</p>';
-                                            echo '</th>';
-
-                                            // Upload date
-                                            $formatted_date = date('Y-m-d h:iA', strtotime($created));
-                                            echo '<td>' . $formatted_date . '</span></td>';
-
-                                            // Uploader details
-                                            echo '<td scope="row">';
-                                            echo '<p class="mb-0">' . $first_name . ' ' . $last_name . '</p>';
-                                            echo '<p class="mb-0">' . $row["email"] . '</p>';
-                                            echo '</td>';
-
-                                            // Action button
-                                            echo '<td>';
-                                            echo '<button type="button" class="btn neutral-outlin-btn me-lg-2">';
-                                            echo '<a href="./admin_portal_edit_upload.php?id=' . $upload_id . '">';
-                                            echo '<i class="bi bi-pencil-fill pe-2"></i>Edit';
-                                            echo '</a>';
-                                            echo '</button>';
-                                            echo '</td>';
-                                            echo '</tr>';
-                                        }
-                                        // Set response code to 200 OK
-                                        http_response_code(200);
-                                    } else {
-                                        // Set response code to 400 Bad Request
-                                        http_response_code(400);
-
-                                        // Output error message
-                                        echo "No uploads found.";
-                                    }
-                                    ?>
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <!-- Archived tab -->
-                        <div class="tab-pane fade" id="archived-tab-pane" role="tabpanel" aria-labelledby="archived-tab"
-                            tabindex="0">
-                            <table class="table table-striped table-hover">
-                                <!-- Record listing content -->
-                                <tbody>
-                                    <?php
-                                    // SQL query to fetch data from database
-                                    $getArchivedUpload = "SELECT uu.upload_id, uu.file_name, uu.contributor, uu.coverage, uu.creator, uu.date, uu.description, uu.format, uu.identifier, uu.language, uu.publisher, uu.relation, uu.rights, uu.source, uu.title, uu.first_name, uu.last_name, uu.email, uu.upload_status,uu.created, t.template_name, GROUP_CONCAT(DISTINCT k.keyword SEPARATOR ',') AS subject
-                                    FROM user_uploads AS uu
-                                    JOIN template AS t ON uu.template_id = t.template_id
-                                    LEFT JOIN keyword_upload AS ku ON uu.upload_id = ku.upload_id
-                                    LEFT JOIN keyword AS k ON ku.keyword_id = k.keyword_id
-                                    WHERE upload_status = 3
-                                    GROUP BY uu.upload_id";
-
-                                    // Execute query and get results
-                                    $getArchivedUploadResult = $conn->query($getArchivedUpload);
-
-                                    // Check for errors
-                                    if (!$getArchivedUploadResult) {
-                                        http_response_code(400);
-                                        die("An error occurred while retrieving data: " . $conn->error);
-                                    }
-
-                                    // Check if there are any rows returned
-                                    if ($getArchivedUploadResult->num_rows > 0) {
-                                        while ($row = $getArchivedUploadResult->fetch_assoc()) {
-                                            // Extract individual row data
-                                            extract($row);
-
-                                            echo '<tr class="align-middle">';
-
-                                            // <!-- File name & document type -->
-                                            echo '<th scope="row" width="40%">';
-                                            echo '<p class="recordFileName mb-0">' . $title . '</p>';
-                                            echo '<p class="recordCategory mb-0">' . $template_name . '</p>';
-                                            echo '</th>';
-
-                                            // Upload date
-                                            $formatted_date = date('Y-m-d h:iA', strtotime($created));
-                                            echo '<td>' . $formatted_date . '</td>';
-
-                                            // Uploader details
-                                            echo '<td scope="row">';
-                                            echo '<p class="mb-0">' . $first_name . ' ' . $last_name . '</p>';
-                                            echo '<p class="mb-0">' . $row["email"] . '</p>';
-                                            echo '</td>';
-
-                                            // Action button
-                                            echo '<td>';
-                                            echo '<button type="button" class="btn neutral-outlin-btn me-lg-2">';
-                                            echo '<a href="./admin_portal_edit_upload.php?id=' . $upload_id . '">';
-                                            echo '<i class="bi bi-pencil-fill pe-2"></i>Edit';
-                                            echo '</a>';
-                                            echo '</button>';
-                                            echo '</td>';
-                                            echo '</tr>';
-                                        }
-                                        // Set response code to 200 OK
-                                        http_response_code(200);
-                                    } else {
-                                        // Set response code to 400 Bad Request
-                                        http_response_code(400);
-
-                                        // Output error message
-                                        echo "No uploads found.";
-                                    }
-                                    ?>
-                                </tbody>
+                                <tbody id="tab-panel-tbody"></tbody>
                             </table>
                         </div>
                     </div>
@@ -193,8 +52,135 @@
         </div>
     </div>
 
-    <?php include 'script.php' ?>
-</body>
+    <script>
+        $(document).ready(function () {
+            // Get the tab buttons
+            const publishedTabButton = document.getElementById('published-tab');
+            const archivedTabButton = document.getElementById('archived-tab');
 
+            loadPublishedData();
+
+            // Add click event listener to the Published tab button
+            publishedTabButton.addEventListener('click', function () {
+                // Handle click logic for the Published tab
+                console.log('Published tab clicked');
+                loadPublishedData();
+            });
+
+            // Add click event listener to the Archived tab button
+            archivedTabButton.addEventListener('click', function () {
+                // Handle click logic for the Archived tab
+                console.log('Archived tab clicked');
+                loadArchivedData();
+            });
+        });
+
+        // Pending for approval uploads listing
+        function loadPublishedData() {
+            $.ajax({
+                url: 'getUploads.php',
+                method: 'GET',
+                success: function (response) {
+                    // Handle the AJAX success response
+                    console.log("published: " + response);
+
+                    // Clear the existing content of tab body
+                    $('#tab-panel-tbody').empty();
+
+                    // Loop through the uploads in the response
+                    response.uploads.forEach(function (upload) {
+                        // Create a new row element for published items
+                        if (upload.upload_status == 1) {
+                            var newRow = $('<tr></tr>');
+                            var rowContent = '';
+                            rowContent += '<th scope="row" width="60%">';
+                            rowContent += '<p class="recordFileName mb-0">' + upload.title + '</p>';
+                            rowContent += '<p class="recordCategory mb-0">' + upload.template_name + '</p>';
+                            rowContent += '</th>';
+
+                            // Upload date
+                            // rowContent += '<td>';
+                            // rowContent += '<span>' + upload.created + '</span>'; 
+                            // rowContent += '</td>';
+
+                            rowContent += '<td scope="row">';
+                            rowContent += '<p class="mb-0">' + upload.first_name + ' ' + upload.last_name + '</p>';
+                            rowContent += '<p class="mb-0">' + upload.email + '</p>';
+                            rowContent += '</td>';
+
+                            rowContent += '<td>';
+                            rowContent += '<button type="button" class="btn neutral-outlin-btn me-lg-2" onclick="editUpload(' + upload.upload_id + ')"><i class="bi bi-pencil-fill pe-2"></i>Edit</button>';
+                            rowContent += '</td>';
+
+                            newRow.html(rowContent);
+                            $('#tab-panel-tbody').append(newRow);
+                        }
+
+                    });
+                },
+                error: function (error) {
+                    // Handle the AJAX error
+                    console.log(error);
+                }
+            });
+        }
+
+        // Archived uploads listing
+        function loadArchivedData() {
+            $.ajax({
+                url: 'getUploads.php',
+                method: 'GET',
+                success: function (response) {
+                    // Handle the AJAX success response
+                    console.log("published: " + response);
+
+                    // Clear the existing content of tab body
+                    $('#tab-panel-tbody').empty();
+
+                    // Loop through the uploads in the response
+                    response.uploads.forEach(function (upload) {
+                        // Create a new row element for published items
+                        if (upload.upload_status == 3) {
+                            var newRow = $('<tr></tr>');
+                            var rowContent = '';
+                            rowContent += '<th scope="row" width="60%">';
+                            rowContent += '<p class="recordFileName mb-0">' + upload.title + '</p>';
+                            rowContent += '<p class="recordCategory mb-0">' + upload.template_name + '</p>';
+                            rowContent += '</th>';
+
+                            // Upload date
+                            // rowContent += '<td>';
+                            // rowContent += '<span>' + upload.created + '</span>'; 
+                            // rowContent += '</td>';
+
+                            rowContent += '<td scope="row">';
+                            rowContent += '<p class="mb-0">' + upload.first_name + ' ' + upload.last_name + '</p>';
+                            rowContent += '<p class="mb-0">' + upload.email + '</p>';
+                            rowContent += '</td>';
+
+                            rowContent += '<td>';
+                            rowContent += '<button type="button" class="btn neutral-outlin-btn me-lg-2" onclick="editUpload(' + upload.upload_id + ')"><i class="bi bi-pencil-fill pe-2"></i>Edit</button>';
+                            rowContent += '</td>';
+
+                            newRow.html(rowContent);
+                            $('#tab-panel-tbody').append(newRow);
+                        }
+
+                    });
+                },
+                error: function (error) {
+                    // Handle the AJAX error
+                    console.log(error);
+                }
+            });
+        }
+
+        function editUpload(upload_id) {
+            console.log("edit: " + upload_id);
+            window.location.href = "admin_portal_edit_upload.php?upload_id=" + upload_id;
+        }
+
+    </script>
+</body>
 
 </html>
