@@ -15,16 +15,78 @@ if (isset($_GET['data'])) {
     <!-- Top Nav Bar -->
     <?php include "header.php" ?>
 
-
-    <header id="form-header" class="row mx-0 mb-4 sticky-top">
-
-        <div class="col-lg-auto">
+    <!-- Page header -->
+    <header id="form-header" class="row mx-4 my-4 sticky-top">
+        <div class="col-lg d-flex justify-content-between">
             <button type="button" id="backButton" class="btn btn-outline-primary me-2"><i
                     class="bi bi-archive-fill pe-2 "></i>Go Back & Edit</button>
+            <h3 class="h3 primary-red">Document Preview</h3>
+
             <button type="button" id="publishButton" class="btn btn-primary"><i
-                    class="bi bi-check-circle-fill pe-2"></i>Publish</button>
+                    class="bi bi-check-circle-fill pe-2"></i>Confirm</button>
         </div>
     </header>
+
+    <section class="record-content bg-body-tertiary">
+        <div class="container my-5 px-3 py-5 bg-white shadow-sm rounded">
+            <div class="row gx-5 justify-content-center mx-0">
+                <div class="col-lg-11 col-xl-9 col-xxl-8">
+
+                    <?php
+                    $docType = $data->template_name;
+                    $docTitle = $data->title;
+                    $title = $data->file_name;
+                    $description = $data->description;
+                    $publishDate = $data->date;
+                    // $previewImageFormat = $data->format;
+                    // $previewImage = "../client-records/" . $title;
+                    $file = $data->file;
+                    $previewImageFormat = pathinfo($file, PATHINFO_EXTENSION);
+
+                    // Build the HTML structure
+                    $html = "";
+                    // Document type
+                    $html .= '<div id="doctypecontainer" class="d-flex align-items-center pb-2">' . $docType . '</div>';
+
+                    // Document title
+                    $html .= '<h4 id="titlecontainer" class="primary-red text-wrap text-break serif">' . $docTitle . '</h4>';
+
+                    // Document description
+                    $html .= '<div id="desccontainer">' . $description . '</div>';
+
+                    // Document publish date
+                    $html .= '<div id="publishdatecontainer" class="pb-4">Published at ' . $publishDate . '</div>';
+
+                    // Document preview
+                    if (strtolower($previewImageFormat) === "jpg" || strtolower($previewImageFormat) === "png") {
+                        // JPG file preview
+                        $html .= '<div class="row preview-area" id="previewcontainer">';
+                        $html .= '<img src="' . $file . '" alt="Preview Image">';
+                        $html .= '</div>';
+                    } elseif (strtolower($previewImageFormat) === "doc" || strtolower($previewImageFormat) === "docx") {
+                        // DOC or DOCX file preview (temporary using thumb as preview)
+                        $filenameWithoutExtension = pathinfo($title, PATHINFO_FILENAME);
+                        $filePreviewPath = $filenameWithoutExtension . "-thumb.png";
+
+                        $html .= '<div class="row preview-area" id="previewcontainer">';
+                        $html .= '<img src="../client-records/' . $filePreviewPath . '" alt="Preview Image">';
+                        $html .= '</div>';
+
+                    } elseif (strtolower($previewImageFormat) === "pdf") {
+                        // PDF file preview
+                        $html .= '<div class="row preview-area" id="previewcontainer">';
+                        $html .= '<iframe src="' . $file . '" width="100%" height="600" frameborder="0"></iframe>';
+                        $html .= '</div>';
+                    }
+
+                    // Output the HTML code
+                    echo $html;
+
+                    ?>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!-- footer -->
     <?php include "footer.php" ?>

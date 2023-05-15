@@ -1,4 +1,5 @@
 <?php include 'head.php'; ?>
+<?php include 'message.php'; ?>
 
 <body id="page-top">
     <div class="wrapper">
@@ -29,7 +30,7 @@
                         <li class="nav-item" role="presentation">
                             <button class="nav-link active" id="published-tab" data-bs-toggle="tab"
                                 data-bs-target="#published-tab-pane" type="button" role="tab"
-                                aria-controls="published-tab-pane" aria-selected="true">New</button>
+                                aria-controls="published-tab-pane" aria-selected="true">Pending for Approval</button>
                         </li>
                         <li class="nav-item" role="presentation">
                             <button class="nav-link" id="archived-tab" data-bs-toggle="tab"
@@ -40,54 +41,10 @@
 
                     <!-- Tab content -->
                     <div class="tab-content px-0" id="myTabContent">
-
-                        <!-- New upload -->
-                        <div class="tab-pane fade show active" id="published-tab-pane" role="tabpanel"
-                            aria-labelledby="published-tab" tabindex="0">
+                        <div id="tab-panel">
                             <table class="table table-striped table-hover">
-                                <!-- Table header -->
-                                <!-- <thead>
-                                    <tr>
-                                        <th scope="col">File name</th>
-                                        <th scope="col">Views</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                </thead> -->
-                                <!-- Record listing content -->
-                                <tbody>
-                                    <tr class="align-middle">
-                                        <!-- File name & document type -->
-                                        <th scope="row" width="40%">
-                                            <p class="recordFileName mb-0">Upload file name</p>
-                                            <p class="recordCategory mb-0"><img src="../img/recordCat_advertisment.svg"
-                                                    alt="Custom SVG" class="pe-1">Advertisement</p>
-                                        </th>
-
-                                        <!-- Upload date -->
-                                        <td>Uploaded at <span>DD/MM/YYYY</span></td>
-
-                                        <!-- Uploader details -->
-                                        <td scope="row">
-                                            <p class="mb-0">Uploader name</p>
-                                            <p class="mb-0">uploaderemail@gmail.com</p>
-                                        </td>
-
-                                        <!-- Action button -->
-                                        <td>
-                                            <button type="button" class="btn neutral-outlin-btn me-lg-2"><a
-                                                    href="admin_portal_edit_upload.php">
-                                                    <i class="bi bi-pencil-fill pe-2"></i>Edit
-                                                </a></button>
-                                        </td>
-                                    </tr>
-                                </tbody>
+                                <tbody id="tab-panel-tbody"></tbody>
                             </table>
-                        </div>
-
-                        <!-- Archive content -->
-                        <div class="tab-pane fade" id="archived-tab-pane" role="tabpanel" aria-labelledby="archived-tab"
-                            tabindex="0">
-                            Tab 2 content
                         </div>
                     </div>
                 </div>
@@ -95,8 +52,135 @@
         </div>
     </div>
 
-    <?php include 'script.php' ?>
-</body>
+    <script>
+        $(document).ready(function () {
+            // Get the tab buttons
+            const publishedTabButton = document.getElementById('published-tab');
+            const archivedTabButton = document.getElementById('archived-tab');
 
+            loadPublishedData();
+
+            // Add click event listener to the Published tab button
+            publishedTabButton.addEventListener('click', function () {
+                // Handle click logic for the Published tab
+                console.log('Published tab clicked');
+                loadPublishedData();
+            });
+
+            // Add click event listener to the Archived tab button
+            archivedTabButton.addEventListener('click', function () {
+                // Handle click logic for the Archived tab
+                console.log('Archived tab clicked');
+                loadArchivedData();
+            });
+        });
+
+        // Pending for approval uploads listing
+        function loadPublishedData() {
+            $.ajax({
+                url: 'getUploads.php',
+                method: 'GET',
+                success: function (response) {
+                    // Handle the AJAX success response
+                    console.log("published: " + response);
+
+                    // Clear the existing content of tab body
+                    $('#tab-panel-tbody').empty();
+
+                    // Loop through the uploads in the response
+                    response.uploads.forEach(function (upload) {
+                        // Create a new row element for published items
+                        if (upload.upload_status == 1) {
+                            var newRow = $('<tr></tr>');
+                            var rowContent = '';
+                            rowContent += '<th scope="row" width="60%">';
+                            rowContent += '<p class="recordFileName mb-0">' + upload.title + '</p>';
+                            rowContent += '<p class="recordCategory mb-0">' + upload.template_name + '</p>';
+                            rowContent += '</th>';
+
+                            // Upload date
+                            // rowContent += '<td>';
+                            // rowContent += '<span>' + upload.created + '</span>'; 
+                            // rowContent += '</td>';
+
+                            rowContent += '<td scope="row">';
+                            rowContent += '<p class="mb-0">' + upload.first_name + ' ' + upload.last_name + '</p>';
+                            rowContent += '<p class="mb-0">' + upload.email + '</p>';
+                            rowContent += '</td>';
+
+                            rowContent += '<td>';
+                            rowContent += '<button type="button" class="btn neutral-outlin-btn me-lg-2" onclick="editUpload(' + upload.upload_id + ')"><i class="bi bi-pencil-fill pe-2"></i>Edit</button>';
+                            rowContent += '</td>';
+
+                            newRow.html(rowContent);
+                            $('#tab-panel-tbody').append(newRow);
+                        }
+
+                    });
+                },
+                error: function (error) {
+                    // Handle the AJAX error
+                    console.log(error);
+                }
+            });
+        }
+
+        // Archived uploads listing
+        function loadArchivedData() {
+            $.ajax({
+                url: 'getUploads.php',
+                method: 'GET',
+                success: function (response) {
+                    // Handle the AJAX success response
+                    console.log("published: " + response);
+
+                    // Clear the existing content of tab body
+                    $('#tab-panel-tbody').empty();
+
+                    // Loop through the uploads in the response
+                    response.uploads.forEach(function (upload) {
+                        // Create a new row element for published items
+                        if (upload.upload_status == 3) {
+                            var newRow = $('<tr></tr>');
+                            var rowContent = '';
+                            rowContent += '<th scope="row" width="60%">';
+                            rowContent += '<p class="recordFileName mb-0">' + upload.title + '</p>';
+                            rowContent += '<p class="recordCategory mb-0">' + upload.template_name + '</p>';
+                            rowContent += '</th>';
+
+                            // Upload date
+                            // rowContent += '<td>';
+                            // rowContent += '<span>' + upload.created + '</span>'; 
+                            // rowContent += '</td>';
+
+                            rowContent += '<td scope="row">';
+                            rowContent += '<p class="mb-0">' + upload.first_name + ' ' + upload.last_name + '</p>';
+                            rowContent += '<p class="mb-0">' + upload.email + '</p>';
+                            rowContent += '</td>';
+
+                            rowContent += '<td>';
+                            rowContent += '<button type="button" class="btn neutral-outlin-btn me-lg-2" onclick="editUpload(' + upload.upload_id + ')"><i class="bi bi-pencil-fill pe-2"></i>Edit</button>';
+                            rowContent += '</td>';
+
+                            newRow.html(rowContent);
+                            $('#tab-panel-tbody').append(newRow);
+                        }
+
+                    });
+                },
+                error: function (error) {
+                    // Handle the AJAX error
+                    console.log(error);
+                }
+            });
+        }
+
+        function editUpload(upload_id) {
+            console.log("edit: " + upload_id);
+            window.location.href = "admin_portal_edit_upload.php?upload_id=" + upload_id;
+        }
+
+    </script>
+</body>
 
 </html>

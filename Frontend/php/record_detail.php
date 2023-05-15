@@ -1,4 +1,4 @@
-<?php 
+<?php
 include "head.php";
 
 $upload_id = $_GET['upload_id'];
@@ -47,7 +47,7 @@ if (isset($_SESSION["upload_" . $upload_id])) {
                     // Document preview
                     if (strtolower($previewImageFormat) === "jpg" || strtolower($previewImageFormat) === "png") {
                         // JPG file preview
-                        $html .= '<div class="preview-area id="previewcontainer"">';
+                        $html .= '<div id="previewcontainer" class="row preview-area">';
                         $html .= '<img src="' . $previewImage . '" alt="Preview Image">';
                         $html .= '</div>';
                     } elseif (strtolower($previewImageFormat) === "doc" || strtolower($previewImageFormat) === "docx") {
@@ -55,7 +55,7 @@ if (isset($_SESSION["upload_" . $upload_id])) {
                         $filenameWithoutExtension = pathinfo($title, PATHINFO_FILENAME);
                         $filePreviewPath = $filenameWithoutExtension . "-thumb.png";
 
-                        $html .= '<div class="preview-area id="previewcontainer"">';
+                        $html .= '<div id="previewcontainer" class="row preview-area">';
                         $html .= '<img src="../client-records/' . $filePreviewPath . '" alt="Preview Image">';
                         $html .= '</div>';
 
@@ -64,7 +64,7 @@ if (isset($_SESSION["upload_" . $upload_id])) {
                         // $html .=  '</div>';
                     } elseif (strtolower($previewImageFormat) === "pdf") {
                         // PDF file preview
-                        $html .= '<div class="preview-area" id="previewcontainer">';
+                        $html .= '<div id="previewcontainer" class="row preview-area" >';
                         $html .= '<iframe src="' . $previewImage . '" width="100%" height="600" frameborder="0"></iframe>';
                         $html .= '</div>';
                     }
