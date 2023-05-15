@@ -224,8 +224,7 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                             success: function (response) {
                                 // Handle the AJAX success response
                                 console.log(response);
-
-                                window.location.href = "admin_portal_records.php";
+                                window.location.href = "admin_portal_uploads.php?movetoarchivesuccess=true";
                             }, error: function (error) {
                                 // Handle the AJAX error
                                 console.log(error);
@@ -271,8 +270,8 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                         success: function (response) {
                             // Handle the AJAX success response
                             console.log(response);
+                            window.location.href = "admin_portal_uploads.php?publishsuccess=true";
 
-                            window.location.href = "admin_portal_records.php";
                         }, error: function (error) {
                             // Handle the AJAX error
                             console.log(error);

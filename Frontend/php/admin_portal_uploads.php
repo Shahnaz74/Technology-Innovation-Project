@@ -1,7 +1,29 @@
 <?php include 'head.php'; ?>
 <?php include 'message.php'; ?>
 
+<style>
+    .toast.fade.hide {
+        display: none !important;
+    }
+</style>
+
 <body id="page-top">
+
+    <!-- Toast message -->
+    <div id="toastMsgContainer" aria-live="polite" aria-atomic="true" class="position-relative">
+        <div class="toast-container top-0 end-0 p-3">
+            <div id="successToastMessage" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
+                style="display: none">
+                <div class="toast-header">
+                    <i class="bi bi-check-circle-fill primary-green-darker fs-3 pe-2"></i>
+                    <strong class="primary-green-darker fs-6 me-auto">Success</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body"></div>
+            </div>
+        </div>
+    </div>
+
     <div class="wrapper">
 
         <!-- Sidebar  -->
@@ -73,6 +95,31 @@
                 console.log('Archived tab clicked');
                 loadArchivedData();
             });
+
+            // Retrieve the query parameter from the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const publishSuccessParam = urlParams.get('publishsuccess');
+            const moveToArchiveSuccessParam = urlParams.get('movetoarchivesuccess');
+
+            if (publishSuccessParam === 'true') {
+                // If the success parameter is present and set to 'true', show the success toast message
+                var successToastMessage = document.getElementById('successToastMessage');
+                var toast = new bootstrap.Toast(successToastMessage);
+                successToastMessage.style.display = 'block';
+                var toastBody = document.querySelector('.toast-body')
+                toastBody.textContent = "Uploads have been published.";
+                toast.show();
+            } else {
+                if (moveToArchiveSuccessParam === 'true') {
+                    // If the move to archive success parameter is present and set to 'true', show the move to archive success toast message
+                    var successToastMessage = document.getElementById('successToastMessage');
+                    var toast = new bootstrap.Toast(successToastMessage);
+                    successToastMessage.style.display = 'block';
+                    var toastBody = document.querySelector('.toast-body');
+                    toastBody.textContent = "Uploads have been moved to archive.";
+                    toast.show();
+                }
+            }
         });
 
         // Pending for approval uploads listing
