@@ -14,7 +14,11 @@
 
     <!-- footer -->
     <?php include "footer.php" ?>
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> 94f5c17bc781d915b3bda37249e488e3d7da2ae1
 </body>
 
 </html>

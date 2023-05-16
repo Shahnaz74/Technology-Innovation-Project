@@ -31,20 +31,6 @@ $(document).ready(function () {
   });
 });
 
-// Dropdown list functionality
-$(document).ready(function () {
-  $(".dropdown .default_option").click(function () {
-    $(this).siblings("ul").addClass("active");
-  });
-
-  $(".dropdown ul li").click(function () {
-    var text = $(this).text();
-    var dropdown = $(this).closest(".dropdown");
-    dropdown.find(".default_option").text(text);
-    dropdown.find("ul").removeClass("active");
-  });
-});
-
 // Sticky header
 const header = document.getElementById("form-header");
 const intercept = document.createElement("div");
@@ -59,21 +45,21 @@ const observer = new IntersectionObserver(([entry]) => {
 observer.observe(intercept);
 
 // File keyword selector
-$(function () {
-  $("select").selectpicker();
-});
+// $(function () {
+//   $("select").selectpicker();
+// });
 
 // Template fields drag to order
-function init() {
-  $(".droppable-area1, .droppable-area2")
-    .sortable({
-      connectWith: ".connected-sortable",
-      stack: ".connected-sortable",
-    })
-    .disableSelection();
-}
+// function init() {
+//   $(".droppable-area1, .droppable-area2")
+//     .sortable({
+//       connectWith: ".connected-sortable",
+//       stack: ".connected-sortable",
+//     })
+//     .disableSelection();
+// }
 
-$(init);
+// $(init);
 
 function renumber() {
   var count = 1;

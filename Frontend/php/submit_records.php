@@ -20,6 +20,7 @@ if (isset($_GET['data'])) {
                 <div class="col-lg-11 col-xl-9 col-xxl-8">
                     <!-- Upload Form Description-->
                     <h4 id="uploadFormTitle" class="primary-red serif">Submit Record</h4>
+<<<<<<< HEAD
                     <div id="uploadFormDesc">
                         <p>
                             Fill in
@@ -32,6 +33,18 @@ if (isset($_GET['data'])) {
                             any questions or assistance, please contact our admin team.
                         </p>
                     </div>
+=======
+                    <div id="uploadFormDesc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+                        tempor
+                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                        ullamco
+                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+                        voluptate
+                        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                        proident,
+                        sunt
+                        in culpa qui officia deserunt mollit anim id est laborum. </div>
+>>>>>>> 94f5c17bc781d915b3bda37249e488e3d7da2ae1
                     <!-- File Details Form -->
                     <h4 id="fileFormTitle" class="primary-red serif mb-4">File Details</h4>
                     <form class="needs-validation" novalidate>
@@ -171,7 +184,11 @@ if (isset($_GET['data'])) {
                     var event = document.createEvent("HTMLEvents");
                     event.initEvent("change", false, true);
                     documentTypeSelect.dispatchEvent(event);
+<<<<<<< HEAD
 
+=======
+                    
+>>>>>>> 94f5c17bc781d915b3bda37249e488e3d7da2ae1
                 } else {
                     documentTypeSelect.fireEvent("onchange");
                 }
@@ -677,6 +694,7 @@ if (isset($_GET['data'])) {
                         }
                         container.appendChild(divElement);
                     });
+<<<<<<< HEAD
 
                     var prefillData2 = <?php echo isset($_GET["data"]) ? $_GET["data"] : "null"; ?>;
 
@@ -684,6 +702,15 @@ if (isset($_GET['data'])) {
                         prefillForm(prefillData2);
                     }
 
+=======
+                    
+                    var prefillData2 = <?php echo isset($_GET["data"]) ? $_GET["data"] : "null"; ?>;
+                    
+                    if (prefillData2 !== null) {
+                        prefillForm(prefillData2);
+                    }
+                    
+>>>>>>> 94f5c17bc781d915b3bda37249e488e3d7da2ae1
                 },
                 error: function (error) {
                     // Handle the AJAX error
