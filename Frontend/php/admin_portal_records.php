@@ -12,8 +12,7 @@
     <!-- Toast message -->
     <div id="toastMsgContainer" aria-live="polite" aria-atomic="true" class="position-relative">
         <div class="toast-container p-3" style="position: absolute; top: 80px; right: 10px;">
-            <div id="successToastMessage" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
-                style="display: none">
+            <div id="successToastMessage" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="display: none">
                 <div class="toast-header">
                     <i class="bi bi-check-circle-fill primary-green-darker fs-3 pe-2"></i>
                     <strong class="primary-green-darker fs-6 me-auto">Success</strong>
@@ -42,10 +41,8 @@
                         <h1 class="h3 primary-red mb-0">Records</h1>
                         <form class="form-inline ms-4">
                             <div class="input-group">
-                                <input class="form-control" id="searchInput" type="text" placeholder="Search for..."
-                                    aria-label="Search for..." aria-describedby="btnNavbarSearch" />
-                                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i
-                                        class="bi bi-search pe-2"></i>Search</button>
+                                <input class="form-control" id="searchInput" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                                <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="bi bi-search pe-2"></i>Search</button>
                             </div>
                         </form>
                     </div>
@@ -62,14 +59,10 @@
                     <!-- Tab menu -->
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="published-tab" data-bs-toggle="tab"
-                                data-bs-target="#published-tab-pane" type="button" role="tab"
-                                aria-controls="published-tab-pane" aria-selected="true">Published</button>
+                            <button class="nav-link active" id="published-tab" data-bs-toggle="tab" data-bs-target="#published-tab-pane" type="button" role="tab" aria-controls="published-tab-pane" aria-selected="true">Published</button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="archived-tab" data-bs-toggle="tab"
-                                data-bs-target="#archived-tab-pane" type="button" role="tab"
-                                aria-controls="archived-tab-pane" aria-selected="false">Archived</button>
+                            <button class="nav-link" id="archived-tab" data-bs-toggle="tab" data-bs-target="#archived-tab-pane" type="button" role="tab" aria-controls="archived-tab-pane" aria-selected="false">Archived</button>
                         </li>
                     </ul>
 
@@ -89,13 +82,13 @@
     </div>
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             // Get the search button
             const searchInput = document.getElementById('searchInput');
             const searchButton = document.getElementById('btnNavbarSearch');
 
             // Add click event listener to the search button
-            searchButton.addEventListener('click', function () {
+            searchButton.addEventListener('click', function() {
                 // Handle click logic for the search
                 console.log('Search clicked');
                 searchRecords();
@@ -108,14 +101,14 @@
             loadPublishedData();
 
             // Add click event listener to the Published tab button
-            publishedTabButton.addEventListener('click', function () {
+            publishedTabButton.addEventListener('click', function() {
                 // Handle click logic for the Published tab
                 console.log('Published tab clicked');
                 loadPublishedData();
             });
 
             // Add click event listener to the Archived tab button
-            archivedTabButton.addEventListener('click', function () {
+            archivedTabButton.addEventListener('click', function() {
                 // Handle click logic for the Archived tab
                 console.log('Archived tab clicked');
                 loadArchivedData();
@@ -175,7 +168,7 @@
             $.ajax({
                 url: 'getUploads.php',
                 method: 'GET',
-                success: function (response) {
+                success: function(response) {
                     // Handle the AJAX success response
                     console.log("published: " + response);
 
@@ -183,14 +176,14 @@
                     $('#tab-panel-tbody').empty();
 
                     // Sort the records based on formattedDateTime in descending order
-                    response.uploads.sort(function (a, b) {
+                    response.uploads.sort(function(a, b) {
                         var dateA = new Date(a.updated);
                         var dateB = new Date(b.updated);
                         return dateB - dateA;
                     });
 
                     // Loop through the uploads in the response
-                    response.uploads.forEach(function (upload) {
+                    response.uploads.forEach(function(upload) {
                         // Create a new row element for published items
                         if (upload.upload_status == 2) {
                             var newRow = $('<tr></tr>');
@@ -208,7 +201,7 @@
                         }
                     });
                 },
-                error: function (error) {
+                error: function(error) {
                     // Handle the AJAX error
                     console.log(error);
                 }
@@ -219,7 +212,7 @@
             $.ajax({
                 url: 'getUploads.php',
                 method: 'GET',
-                success: function (response) {
+                success: function(response) {
                     // Handle the AJAX success response
                     console.log("archived: " + response);
 
@@ -227,14 +220,14 @@
                     $('#tab-panel-tbody').empty();
 
                     // Sort the records based on formattedDateTime in descending order
-                    response.uploads.sort(function (a, b) {
+                    response.uploads.sort(function(a, b) {
                         var dateA = new Date(a.updated);
                         var dateB = new Date(b.updated);
                         return dateB - dateA;
                     });
 
                     // Loop through the uploads in the response
-                    response.uploads.forEach(function (upload) {
+                    response.uploads.forEach(function(upload) {
                         // Create a new row element for archived items
                         if (upload.upload_status == 3) {
                             var newRow = $('<tr></tr>');
@@ -252,7 +245,7 @@
                         }
                     });
                 },
-                error: function (error) {
+                error: function(error) {
                     // Handle the AJAX error
                     console.log(error);
                 }
@@ -273,7 +266,7 @@
                 data: {
                     upload_id: upload_id
                 },
-                success: function (response) {
+                success: function(response) {
                     // Handle the AJAX success response
                     console.log("deleted " + status + ": " + response);
 
@@ -297,7 +290,7 @@
                     }
 
                 },
-                error: function (error) {
+                error: function(error) {
                     // Handle the AJAX error
                     console.log(error);
                 }
@@ -305,9 +298,15 @@
         }
 
         function showDeleteSuccessPopup() {
+            var successToastMessage = document.getElementById('successToastMessage');
 
+            var toastBody = document.querySelector('.toast-body');
+            toastBody.textContent = "Record deleted successfully";
+
+            var toast = new bootstrap.Toast(successToastMessage);
+            successToastMessage.style.display = 'block';
+            toast.show();
         }
-
     </script>
 </body>
 
