@@ -65,6 +65,50 @@ E.g
 ```
 
 
+## templates/getTemplatesById.php
+GET Display templates in the database with their data, including name, icon and data of the fields related to it based on template_name.
+
+### PARAMS template_name
+
+#### STATUS CODE
+200 - Page Loaded Successfully 
+400 - An error occured that preveted the page from loading.
+
+#### RETURN
+Returns a JSON object of a template, contains all data, including name, icon and data of the fields related to that template based on a provided template_name.
+
+E.g
+```JSON
+{
+    "template":
+        {
+	        "template_id": "1",
+	        "template_name": "Advertisement Journal",
+	        "template_icon": null,
+	        "fields": [
+	        	{
+	        		"title": "Contributor",
+	        		"name": "contributor",
+	        		"placeholder":"Enter the name of the contributor",
+	        		"is_required": 0
+	    		},
+	    		{
+	    			"title": "Coverage",
+	    			"name": "coverage",
+	    			"placeholder":"Enter the spatial or temporal topic of the resource",
+	    			"is_required": 1
+	    		},
+	    		{
+	    			"title": "Title",
+	    			"name": "title",
+	    			"placeholder":"Enter a name given to the resource",
+	    			"is_required": 0
+	    		}
+	        ]
+        }
+}
+```
+
 
 ## templates/editTemplates.php
 ### PUT based on the template_name, edit a template data, including name, icon and fields related to the template using fields. The added fields are taken from field table. Relate the field to the template through fields_in_template table
