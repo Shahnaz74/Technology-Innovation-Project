@@ -2,7 +2,7 @@
 require_once('databaseConfig.php');
 
 // SQL query to fetch data from database
-$sql = "SELECT uu.upload_id, uu.file_name, uu.contributor, uu.coverage, uu.creator, uu.date, uu.description, uu.format, uu.identifier, uu.language, uu.publisher, uu.relation, uu.rights, uu.source, uu.title, uu.first_name, uu.last_name, uu.email, uu.upload_status, t.template_name, GROUP_CONCAT(DISTINCT k.keyword SEPARATOR ',') AS subject
+$sql = "SELECT uu.upload_id, uu.file_name, uu.contributor, uu.coverage, uu.creator, uu.date, uu.description, uu.format, uu.identifier, uu.language, uu.publisher, uu.relation, uu.rights, uu.source, uu.title, uu.first_name, uu.last_name, uu.email, uu.upload_status, uu.updated, t.template_name, GROUP_CONCAT(DISTINCT k.keyword SEPARATOR ',') AS subject
             FROM user_uploads AS uu
             JOIN template AS t ON uu.template_id = t.template_id
             LEFT JOIN keyword_upload AS ku ON uu.upload_id = ku.upload_id
@@ -50,7 +50,8 @@ if ($result->num_rows > 0) {
             "email" => $row['email'],
             "upload_status" => $row['upload_status'],
             "template_name" => $row['template_name'],
-            "subject" => explode(",", $row['subject'])
+            "subject" => explode(",", $row['subject']),
+            "updated" => $row['updated'],
         );
 
         // Add upload item to uploads array

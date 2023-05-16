@@ -1,7 +1,6 @@
 <?php include 'head.php'; ?>
-<?php include 'message.php'; ?>
 
-<<<<<<< HEAD
+<!-- Hide old toast messages -->
 <style>
     .toast.fade.hide {
         display: none !important;
@@ -12,7 +11,7 @@
 
     <!-- Toast message -->
     <div id="toastMsgContainer" aria-live="polite" aria-atomic="true" class="position-relative">
-        <div class="toast-container top-0 end-0 p-3">
+        <div class="toast-container p-3" style="position: absolute; top: 80px; right: 10px;">
             <div id="successToastMessage" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
                 style="display: none">
                 <div class="toast-header">
@@ -25,9 +24,6 @@
         </div>
     </div>
 
-=======
-<body id="page-top">
->>>>>>> 94f5c17bc781d915b3bda37249e488e3d7da2ae1
     <div class="wrapper">
 
         <!-- Sidebar  -->
@@ -99,7 +95,6 @@
                 console.log('Archived tab clicked');
                 loadArchivedData();
             });
-<<<<<<< HEAD
 
             // Retrieve the query parameter from the URL
             const urlParams = new URLSearchParams(window.location.search);
@@ -112,7 +107,7 @@
                 var toast = new bootstrap.Toast(successToastMessage);
                 successToastMessage.style.display = 'block';
                 var toastBody = document.querySelector('.toast-body')
-                toastBody.textContent = "Uploads have been published.";
+                toastBody.textContent = "Upload has been published successfully.";
                 toast.show();
             } else {
                 if (moveToArchiveSuccessParam === 'true') {
@@ -121,12 +116,10 @@
                     var toast = new bootstrap.Toast(successToastMessage);
                     successToastMessage.style.display = 'block';
                     var toastBody = document.querySelector('.toast-body');
-                    toastBody.textContent = "Uploads have been moved to archive.";
+                    toastBody.textContent = "Upload has been moved to archive.";
                     toast.show();
                 }
             }
-=======
->>>>>>> 94f5c17bc781d915b3bda37249e488e3d7da2ae1
         });
 
         // Pending for approval uploads listing
@@ -141,21 +134,44 @@
                     // Clear the existing content of tab body
                     $('#tab-panel-tbody').empty();
 
+                    // Sort the uploads based on formattedDateTime in descending order
+                    response.uploads.sort(function (a, b) {
+                        var dateA = new Date(a.updated);
+                        var dateB = new Date(b.updated);
+                        return dateB - dateA;
+                    });
+
                     // Loop through the uploads in the response
                     response.uploads.forEach(function (upload) {
+
+                        // Format updated date time format
+                        var updatedElement = new Date(upload.updated);
+                        // Format the date
+                        var formattedDate = updatedElement.toLocaleString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                        // Format the time
+                        var formattedTime = updatedElement.toLocaleString('en-US', {
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            hour12: true
+                        });
+                        var formattedDateTime = formattedDate + ' ' + formattedTime;
+
                         // Create a new row element for published items
                         if (upload.upload_status == 1) {
                             var newRow = $('<tr></tr>');
                             var rowContent = '';
-                            rowContent += '<th scope="row" width="60%">';
+                            rowContent += '<th scope="row" width="40%">';
                             rowContent += '<p class="recordFileName mb-0">' + upload.title + '</p>';
                             rowContent += '<p class="recordCategory mb-0">' + upload.template_name + '</p>';
                             rowContent += '</th>';
 
-                            // Upload date
-                            // rowContent += '<td>';
-                            // rowContent += '<span>' + upload.created + '</span>'; 
-                            // rowContent += '</td>';
+                            rowContent += '<td>';
+                            rowContent += '<span>' + formattedDateTime + '</span > ';
+                            rowContent += '</td>';
 
                             rowContent += '<td scope="row">';
                             rowContent += '<p class="mb-0">' + upload.first_name + ' ' + upload.last_name + '</p>';
@@ -191,21 +207,44 @@
                     // Clear the existing content of tab body
                     $('#tab-panel-tbody').empty();
 
+                    // Sort the uploads based on formattedDateTime in descending order
+                    response.uploads.sort(function (a, b) {
+                        var dateA = new Date(a.updated);
+                        var dateB = new Date(b.updated);
+                        return dateB - dateA;
+                    });
+
                     // Loop through the uploads in the response
                     response.uploads.forEach(function (upload) {
+                        // Format updated date time format
+                        var updatedElement = new Date(upload.updated);
+                        // Format the date
+                        var formattedDate = updatedElement.toLocaleString('en-US', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric'
+                        });
+                        // Format the time
+                        var formattedTime = updatedElement.toLocaleString('en-US', {
+                            hour: 'numeric',
+                            minute: 'numeric',
+                            hour12: true
+                        });
+                        var formattedDateTime = formattedDate + ' ' + formattedTime;
+
                         // Create a new row element for published items
                         if (upload.upload_status == 3) {
                             var newRow = $('<tr></tr>');
                             var rowContent = '';
-                            rowContent += '<th scope="row" width="60%">';
+                            rowContent += '<th scope="row" width="40%">';
                             rowContent += '<p class="recordFileName mb-0">' + upload.title + '</p>';
                             rowContent += '<p class="recordCategory mb-0">' + upload.template_name + '</p>';
                             rowContent += '</th>';
 
-                            // Upload date
-                            // rowContent += '<td>';
-                            // rowContent += '<span>' + upload.created + '</span>'; 
-                            // rowContent += '</td>';
+                            rowContent += '<td>';
+                            rowContent += '<span>Uploaded at ' + formattedDateTime + '</span>';
+                            rowContent += '</td>';
+
 
                             rowContent += '<td scope="row">';
                             rowContent += '<p class="mb-0">' + upload.first_name + ' ' + upload.last_name + '</p>';

@@ -9,7 +9,20 @@ if (isset($_GET['data'])) {
 
 ?>
 
+<!-- Hide old toast messages -->
+<style>
+    .toast.fade.hide {
+        display: none !important;
+    }
+</style>
+
 <body>
+    <!-- Toast message -->
+    <div id="toastMsgContainer" aria-live="polite" aria-atomic="true" class="position-relative">
+        <div class="toast-container p-3">
+        </div>
+    </div>
+
     <!-- Top Nav Bar -->
     <?php include "header.php" ?>
 
@@ -18,9 +31,9 @@ if (isset($_GET['data'])) {
             <div class="row gx-5 justify-content-center mx-0">
 
                 <div class="col-lg-11 col-xl-9 col-xxl-8">
+
                     <!-- Upload Form Description-->
                     <h4 id="uploadFormTitle" class="primary-red serif">Submit Record</h4>
-<<<<<<< HEAD
                     <div id="uploadFormDesc">
                         <p>
                             Fill in
@@ -33,18 +46,7 @@ if (isset($_GET['data'])) {
                             any questions or assistance, please contact our admin team.
                         </p>
                     </div>
-=======
-                    <div id="uploadFormDesc">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-                        tempor
-                        incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                        ullamco
-                        laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
-                        voluptate
-                        velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                        proident,
-                        sunt
-                        in culpa qui officia deserunt mollit anim id est laborum. </div>
->>>>>>> 94f5c17bc781d915b3bda37249e488e3d7da2ae1
+
                     <!-- File Details Form -->
                     <h4 id="fileFormTitle" class="primary-red serif mb-4">File Details</h4>
                     <form class="needs-validation" novalidate>
@@ -132,6 +134,7 @@ if (isset($_GET['data'])) {
 
                         <!-- Form fields -->
                         <div id="container"> </div>
+
                         <!-- Uploader Details-->
                         <h4 id="uploaderDetailsTitle" class="primary-red serif mb-4">Uploader Details</h4>
                         <div class="row">
@@ -184,11 +187,7 @@ if (isset($_GET['data'])) {
                     var event = document.createEvent("HTMLEvents");
                     event.initEvent("change", false, true);
                     documentTypeSelect.dispatchEvent(event);
-<<<<<<< HEAD
 
-=======
-                    
->>>>>>> 94f5c17bc781d915b3bda37249e488e3d7da2ae1
                 } else {
                     documentTypeSelect.fireEvent("onchange");
                 }
@@ -398,6 +397,12 @@ if (isset($_GET['data'])) {
                     console.log(response);
 
                     response.fields.forEach(field => {
+
+                        // Skip creating the field if it already exists
+                        if (document.getElementById(field.name)) {
+                            return;
+                        }
+
                         var divElement = document.createElement('div');
                         divElement.classList.add('mb-4');
 
@@ -694,7 +699,6 @@ if (isset($_GET['data'])) {
                         }
                         container.appendChild(divElement);
                     });
-<<<<<<< HEAD
 
                     var prefillData2 = <?php echo isset($_GET["data"]) ? $_GET["data"] : "null"; ?>;
 
@@ -702,21 +706,16 @@ if (isset($_GET['data'])) {
                         prefillForm(prefillData2);
                     }
 
-=======
-                    
-                    var prefillData2 = <?php echo isset($_GET["data"]) ? $_GET["data"] : "null"; ?>;
-                    
-                    if (prefillData2 !== null) {
-                        prefillForm(prefillData2);
-                    }
-                    
->>>>>>> 94f5c17bc781d915b3bda37249e488e3d7da2ae1
                 },
                 error: function (error) {
                     // Handle the AJAX error
                     console.log(error);
                 }
             });
+        }
+
+        function toTitleCase(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
         }
 
         function validateForm() {
@@ -731,23 +730,65 @@ if (isset($_GET['data'])) {
             var emailField = document.getElementById("emailField").value;
             var isValid = true;
 
+            function createToast(message) {
+                var toastContainer = document.querySelector('.toast-container');
+
+                var toastElement = document.createElement('div');
+                toastElement.classList.add('toast');
+                toastElement.setAttribute('role', 'alert');
+                toastElement.setAttribute('aria-live', 'assertive');
+                toastElement.setAttribute('aria-atomic', 'true');
+
+                var toastHeader = document.createElement('div');
+                toastHeader.classList.add('toast-header');
+
+                var icon = document.createElement('i');
+                icon.classList.add('bi', 'bi-exclamation-triangle-fill', 'primary-red-darker', 'fs-3', 'pe-2');
+
+                var strong = document.createElement('strong');
+                strong.classList.add('primary-red-darker', 'fs-6', 'me-auto');
+                strong.textContent = 'Warning';
+
+                var closeButton = document.createElement('button');
+                closeButton.type = 'button';
+                closeButton.classList.add('btn-close');
+                closeButton.setAttribute('data-bs-dismiss', 'toast');
+                closeButton.setAttribute('aria-label', 'Close');
+
+                var toastBody = document.createElement('div');
+                toastBody.classList.add('toast-body');
+                toastBody.textContent = message;
+
+                toastHeader.appendChild(icon);
+                toastHeader.appendChild(strong);
+                toastHeader.appendChild(closeButton);
+
+                toastElement.appendChild(toastHeader);
+                toastElement.appendChild(toastBody);
+                toastContainer.appendChild(toastElement);
+
+                var toast = new bootstrap.Toast(toastElement);
+                toastElement.style.display = 'block';
+                toast.show();
+            }
+
             // Check if record name is empty
             if (recordName.trim() === "") {
-                alert("Record name is required");
+                createToast('Record name is required');
                 isValid = false;
                 console.log("invalid7");
             }
 
             // Check if document type is not selected
             if (documentType === "") {
-                alert("Please select document type");
+                createToast('Please select document type');
                 isValid = false;
                 console.log("invalid6");
             }
 
             // Check if file input is empty
             if (fileInput === "") {
-                alert("File upload is required");
+                createToast('File upload is required');
                 isValid = false;
                 console.log("invalid5");
             }
@@ -757,28 +798,28 @@ if (isset($_GET['data'])) {
                 .filter((option) => option.selected)
                 .map((option) => option.value);
             if (selectedKeywords.length === 0) {
-                alert("Please select at least one subject keyword");
+                createToast('Please select at least one subject keyword');
                 isValid = false;
                 console.log("invalid4");
             }
 
             // Check if first name is empty
             if (firstNameField.trim() === "") {
-                alert("Uploader first name is required");
+                createToast('First name is required');
                 isValid = false;
                 console.log("invalid8");
             }
 
             // Check if last name is empty
             if (lastNameField.trim() === "") {
-                alert("Uploader last name is required");
+                createToast('Last name is required');
                 isValid = false;
                 console.log("invalid9");
             }
 
             // Check if record name is empty
             if (emailField.trim() === "") {
-                alert("Uploader email is required");
+                createToast('Email is required');
                 isValid = false;
                 console.log("invalid10");
             }
@@ -795,6 +836,8 @@ if (isset($_GET['data'])) {
                     // Check if the input element is a textarea or a text input
                     if (inputElement.tagName.toLowerCase() === 'textarea' || inputElement.type === 'text') {
                         if (!inputElement.value) {
+                            var inputIdTitleCase = toTitleCase(inputElement.id);
+                            createToast('Please enter ' + inputIdTitleCase);
                             isValid = false;
                             console.log("invalid1");
                         }
@@ -803,6 +846,7 @@ if (isset($_GET['data'])) {
                     // Check if the input element is a date input
                     if (inputElement.type === 'date') {
                         if (!inputElement.valueAsDate) {
+                            createToast('Date format is invalid');
                             isValid = false;
                             console.log("invalid2");
                         }
@@ -811,6 +855,7 @@ if (isset($_GET['data'])) {
                     // Check if the input element is a select element
                     if (inputElement.tagName.toLowerCase() === 'select') {
                         if (!inputElement.value) {
+                            createToast('Input value is not valid');
                             isValid = false;
                             console.log("invalid3");
                         }

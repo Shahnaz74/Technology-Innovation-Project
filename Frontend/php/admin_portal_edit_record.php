@@ -6,7 +6,26 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
 
 ?>
 
+<!-- Hide old toast messages -->
+<style>
+    .toast.fade.hide {
+        display: none !important;
+    }
+</style>
+
 <body id="page-top">
+    <!-- Spinner -->
+    <div class="spinner-wrapper">
+        <div class="spinner-border text-danger" role="status">
+        </div>
+    </div>
+
+    <!-- Toast message -->
+    <div id="toastMsgContainer" aria-live="polite" aria-atomic="true" class="position-relative">
+        <div class="toast-container p-3">
+        </div>
+    </div>
+
     <div class="wrapper">
 
         <!-- Sidebar  -->
@@ -18,10 +37,10 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
             <!-- Topnav -->
             <?php include 'admin_header.php' ?>
 
-            <div class="container-fluid">
+            <div class="container-fluid mb-5">
 
                 <!-- Page header -->
-                <header id="form-header" class="row mx-0 mb-4 sticky-top">
+                <header id="form-header" class="row mx-0 mb-4">
                     <div class="col-lg d-flex">
                         <h1 class="h3 primary-red">Edit Record</h1>
                     </div>
@@ -35,7 +54,7 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
 
                 <!-- Page content -->
                 <div class="row mx-0">
-                    <form class="needs-validation" novalidate>
+                    <form class="needs-validation row" novalidate>
 
                         <!-- Record name -->
                         <div class="mb-4">
@@ -76,7 +95,7 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                         </div>
 
                         <!-- File upload -->
-                        <div class="fileUpload container mb-4 px-0">
+                        <div class="fileUpload mb-4">
                             <label for="documentType" class="form-label">File upload <span
                                     class="mandatoryField">*</span></label>
                             <div id="uploadFileContainer">
@@ -109,13 +128,13 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                         </div>
 
                         <!-- File keyword -->
-                        <div class="mb-4">
+                        <div class="">
                             <label class="mb-2" for="subjectKeyword">Topic subject</label>
                             <span class="mandatoryField">*</span></label>
-                            <p>
+                            <div>
                                 <select id="subjectKeyword" name="subjectKeyword[]" multiple>
                                 </select>
-                            </p>
+                            </div>
 
                         </div>
 
@@ -129,6 +148,15 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
     </div>
 
     <script>
+        // Loading spinner
+        const spinnerWrapper = document.querySelector('.spinner-wrapper');
+        window.addEventListener('load', () => {
+            spinnerWrapper.style.opacity = '0';
+            setTimeout(() => {
+                spinnerWrapper.style.display = 'none';
+            }, 300);
+        })
+
         $(document).ready(function () {
             // Get upload_id
             var uploadId = "<?php echo $upload_id; ?>";
@@ -176,8 +204,7 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                             success: function (response) {
                                 // Handle the AJAX success response
                                 console.log(response);
-
-                                window.location.href = "admin_portal_records.php";
+                                window.location.href = "admin_portal_records.php?movetoarchivesuccess=true";
                             }, error: function (error) {
                                 // Handle the AJAX error
                                 console.log(error);
@@ -224,7 +251,7 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                             // Handle the AJAX success response
                             console.log(response);
 
-                            window.location.href = "admin_portal_records.php";
+                            window.location.href = "admin_portal_records.php?publishsuccess=true";
                         }, error: function (error) {
                             // Handle the AJAX error
                             console.log(error);
@@ -285,6 +312,12 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                     // Handle the AJAX success response
                     console.log(response);
 
+                    // Hide Move to Archive button if record already archived
+                    const archiveButton = document.querySelector("#moveToArchiveButton");
+                    if (response.uploads[0].upload_status === 3) {
+                        archiveButton.style.display = "none";
+                    }
+
                     // Set the record name
                     var recordName = document.getElementById("recordName");
                     recordName.value = response.uploads[0].title;
@@ -301,14 +334,10 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                     // Disable the select element
                     selectElement.disabled = true;
 
-                    // Set the record name
-                    // var fileName = document.getElementById("fileName");
-                    // fileName.value = response.uploads[0].file_name;
-
                     // Get uploaded file name
                     var uploadedFile = document.getElementById("filePreview");
                     var uploadFilePath = response.uploads[0].file;
-                    if (uploadedFile.src !== "") {
+                    if (uploadFilePath !== "") {
                         $('#drop-area').hide();
                         $('#uploaded-area').show();
 
@@ -407,6 +436,11 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                     var container = document.getElementById('container');
 
                     response.fields.forEach(field => {
+                        // Skip creating the field if it already exists
+                        if (document.getElementById(field.name)) {
+                            return;
+                        }
+
                         var divElement = document.createElement('div');
                         divElement.classList.add('mb-4');
 
@@ -757,6 +791,11 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
             reader.readAsDataURL(file);
         }
 
+        function toTitleCase(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+
         function validateForm() {
             var recordName = document.getElementById("recordName").value;
             var documentType = document.getElementById("documentType").value;
@@ -766,23 +805,68 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
             var mandatoryFields = container.getElementsByClassName('mandatoryField');
             var isValid = true;
 
+            function createToast(message) {
+                var toastContainer = document.querySelector('.toast-container');
+
+                var toastElement = document.createElement('div');
+                toastElement.classList.add('toast');
+                toastElement.setAttribute('role', 'alert');
+                toastElement.setAttribute('aria-live', 'assertive');
+                toastElement.setAttribute('aria-atomic', 'true');
+
+                var toastHeader = document.createElement('div');
+                toastHeader.classList.add('toast-header');
+
+                var icon = document.createElement('i');
+                icon.classList.add('bi', 'bi-exclamation-triangle-fill', 'primary-red-darker', 'fs-3', 'pe-2');
+
+                var strong = document.createElement('strong');
+                strong.classList.add('primary-red-darker', 'fs-6', 'me-auto');
+                strong.textContent = 'Warning';
+
+                var closeButton = document.createElement('button');
+                closeButton.type = 'button';
+                closeButton.classList.add('btn-close');
+                closeButton.setAttribute('data-bs-dismiss', 'toast');
+                closeButton.setAttribute('aria-label', 'Close');
+
+                var toastBody = document.createElement('div');
+                toastBody.classList.add('toast-body');
+                toastBody.textContent = message;
+
+                toastHeader.appendChild(icon);
+                toastHeader.appendChild(strong);
+                toastHeader.appendChild(closeButton);
+
+                toastElement.appendChild(toastHeader);
+                toastElement.appendChild(toastBody);
+                toastContainer.appendChild(toastElement);
+
+                var toast = new bootstrap.Toast(toastElement);
+                toastElement.style.display = 'block';
+                toast.show();
+            }
+
+
             // Check if record name is empty
             if (recordName.trim() === "") {
-                alert("Record name is required");
+                createToast('Record name is required');
                 isValid = false;
                 console.log("invalid7");
             }
 
             // Check if document type is not selected
             if (documentType === "") {
-                alert("Please select document type");
+                // alert("Please select document type");
+                createToast('Please select document type');
                 isValid = false;
                 console.log("invalid6");
             }
 
             // Check if file input is empty
             if (fileInput === "") {
-                alert("File upload is required");
+                // alert("File upload is required");
+                createToast('File upload is required');
                 isValid = false;
                 console.log("invalid5");
             }
@@ -792,7 +876,7 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                 .filter((option) => option.selected)
                 .map((option) => option.value);
             if (selectedKeywords.length === 0) {
-                alert("Please select at least one subject keyword");
+                createToast('Please select at least one subject keyword');;
                 isValid = false;
                 console.log("invalid4");
             }
@@ -809,6 +893,8 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                     // Check if the input element is a textarea or a text input
                     if (inputElement.tagName.toLowerCase() === 'textarea' || inputElement.type === 'text') {
                         if (!inputElement.value) {
+                            var inputIdTitleCase = toTitleCase(inputElement.id);
+                            createToast('Please enter ' + inputIdTitleCase);
                             isValid = false;
                             console.log("invalid1");
                         }
@@ -817,6 +903,7 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                     // Check if the input element is a date input
                     if (inputElement.type === 'date') {
                         if (!inputElement.valueAsDate) {
+                            createToast('Date format is invalid');
                             isValid = false;
                             console.log("invalid2");
                         }
@@ -825,6 +912,7 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                     // Check if the input element is a select element
                     if (inputElement.tagName.toLowerCase() === 'select') {
                         if (!inputElement.value) {
+                            createToast('Input value is not valid');
                             isValid = false;
                             console.log("invalid3");
                         }

@@ -1,20 +1,28 @@
 <?php include 'head.php'; ?>
 
-<!-- Toast message -->
-<!-- <div class="toast-container position-absolute bottom-0 end-0 p-3">
-    <div class=" toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
-        <div class="toast-header">
-            <i class="bi bi-check-circle-fill primary-green-darker pe-2"></i>
-            <strong class="primary-green-darker me-auto">Record Added Successfully</strong>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-            Regent Motors Advertisment has been to the digital archive.
-        </div>
-    </div>
-</div> -->
+<!-- Hide old toast messages -->
+<style>
+    .toast.fade.hide {
+        display: none !important;
+    }
+</style>
 
 <body id="page-top">
+
+    <!-- Toast message -->
+    <div id="toastMsgContainer" aria-live="polite" aria-atomic="true" class="position-relative">
+        <div class="toast-container p-3" style="position: absolute; top: 80px; right: 10px;">
+            <div id="successToastMessage" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
+                style="display: none">
+                <div class="toast-header">
+                    <i class="bi bi-check-circle-fill primary-green-darker fs-3 pe-2"></i>
+                    <strong class="primary-green-darker fs-6 me-auto">Success</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body"></div>
+            </div>
+        </div>
+    </div>
     <div class="wrapper">
 
         <!-- Sidebar  -->
@@ -112,6 +120,31 @@
                 console.log('Archived tab clicked');
                 loadArchivedData();
             });
+
+            // Retrieve the query parameter from the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const publishSuccessParam = urlParams.get('publishsuccess');
+            const moveToArchiveSuccessParam = urlParams.get('movetoarchivesuccess');
+
+            if (publishSuccessParam === 'true') {
+                // If the success parameter is present and set to 'true', show the success toast message
+                var successToastMessage = document.getElementById('successToastMessage');
+                var toast = new bootstrap.Toast(successToastMessage);
+                successToastMessage.style.display = 'block';
+                var toastBody = document.querySelector('.toast-body')
+                toastBody.textContent = "Record has been published successfully.";
+                toast.show();
+            } else {
+                if (moveToArchiveSuccessParam === 'true') {
+                    // If the move to archive success parameter is present and set to 'true', show the move to archive success toast message
+                    var successToastMessage = document.getElementById('successToastMessage');
+                    var toast = new bootstrap.Toast(successToastMessage);
+                    successToastMessage.style.display = 'block';
+                    var toastBody = document.querySelector('.toast-body');
+                    toastBody.textContent = "Record has been moved to archive.";
+                    toast.show();
+                }
+            }
         });
 
         function searchRecords() {
@@ -149,6 +182,13 @@
                     // Clear the existing content of tab body
                     $('#tab-panel-tbody').empty();
 
+                    // Sort the records based on formattedDateTime in descending order
+                    response.uploads.sort(function (a, b) {
+                        var dateA = new Date(a.updated);
+                        var dateB = new Date(b.updated);
+                        return dateB - dateA;
+                    });
+
                     // Loop through the uploads in the response
                     response.uploads.forEach(function (upload) {
                         // Create a new row element for published items
@@ -185,6 +225,13 @@
 
                     // Clear the existing content of tab body
                     $('#tab-panel-tbody').empty();
+
+                    // Sort the records based on formattedDateTime in descending order
+                    response.uploads.sort(function (a, b) {
+                        var dateA = new Date(a.updated);
+                        var dateB = new Date(b.updated);
+                        return dateB - dateA;
+                    });
 
                     // Loop through the uploads in the response
                     response.uploads.forEach(function (upload) {

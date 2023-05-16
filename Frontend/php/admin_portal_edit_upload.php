@@ -3,18 +3,14 @@ include 'head.php';
 
 $upload_id = $_GET['upload_id'];
 echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
-<<<<<<< HEAD
 ?>
 
+<!-- Hide old toast messages -->
 <style>
     .toast.fade.hide {
         display: none !important;
     }
 </style>
-=======
-
-?>
->>>>>>> 94f5c17bc781d915b3bda37249e488e3d7da2ae1
 
 <body id="page-top">
     <!-- Spinner -->
@@ -23,15 +19,12 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
         </div>
     </div>
 
-<<<<<<< HEAD
     <!-- Toast message -->
     <div id="toastMsgContainer" aria-live="polite" aria-atomic="true" class="position-relative">
-        <div class="toast-container p-3" style="position: absolute; top: 180px; right: 10px;">
+        <div class="toast-container p-3">
         </div>
     </div>
 
-=======
->>>>>>> 94f5c17bc781d915b3bda37249e488e3d7da2ae1
     <div class="wrapper">
 
         <!-- Sidebar  -->
@@ -43,23 +36,15 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
             <!-- Topnav -->
             <?php include 'admin_header.php' ?>
 
-            <div class="container-fluid">
+            <div class="container-fluid mb-5">
 
                 <!-- Page header -->
-<<<<<<< HEAD
                 <header id="form-header" class="row mx-0 mb-4">
-=======
-                <header id="form-header" class="row mx-0 mb-4 sticky-top">
->>>>>>> 94f5c17bc781d915b3bda37249e488e3d7da2ae1
                     <div class="col-lg d-flex">
                         <h1 class="h3 primary-red">Edit Upload</h1>
                     </div>
                     <div class="col-lg-auto">
-<<<<<<< HEAD
                         <button type="submit" id="moveToArchiveButton" class="btn btn-outline-primary me-2"><i
-=======
-                        <button type="button" id="moveToArchiveButton" class="btn btn-outline-primary me-2"><i
->>>>>>> 94f5c17bc781d915b3bda37249e488e3d7da2ae1
                                 class="bi bi-archive-fill pe-2 "></i>Move to Archive</button>
                         <button type="button" id="publishButton" class="btn btn-primary"><i
                                 class="bi bi-check-circle-fill pe-2"></i>Save & Publish</button>
@@ -68,11 +53,7 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
 
                 <!-- Page content -->
                 <div class="row mx-0">
-<<<<<<< HEAD
                     <form class="needs-validation row" novalidate>
-=======
-                    <form method="post">
->>>>>>> 94f5c17bc781d915b3bda37249e488e3d7da2ae1
 
                         <!-- Uploader details -->
                         <div class="card uploaderDetailsCard mb-4">
@@ -135,11 +116,7 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                         </div>
 
                         <!-- File upload -->
-<<<<<<< HEAD
-                        <div class="fileUpload container mb-4">
-=======
-                        <div class="fileUpload container mb-4 px-0">
->>>>>>> 94f5c17bc781d915b3bda37249e488e3d7da2ae1
+                        <div class="fileUpload mb-4">
                             <label for="documentType" class="form-label">File upload <span
                                     class="mandatoryField">*</span></label>
                             <div id="uploadFileContainer">
@@ -172,14 +149,13 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                         </div>
 
                         <!-- File keyword -->
-                        <div class="mb-4">
-                            <label class="mb-2" for="subjectKeyword">Topic subject</label>
+                        <div class="">
+                            <label class=" mb-2" for="subjectKeyword">Topic subject</label>
                             <span class="mandatoryField">*</span></label>
-                            <p>
+                            <div>
                                 <select id="subjectKeyword" name="subjectKeyword[]" multiple>
                                 </select>
-                            </p>
-
+                            </div>
                         </div>
 
                         <!-- Form fields -->
@@ -248,12 +224,7 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                             success: function (response) {
                                 // Handle the AJAX success response
                                 console.log(response);
-<<<<<<< HEAD
                                 window.location.href = "admin_portal_uploads.php?movetoarchivesuccess=true";
-=======
-
-                                window.location.href = "admin_portal_records.php";
->>>>>>> 94f5c17bc781d915b3bda37249e488e3d7da2ae1
                             }, error: function (error) {
                                 // Handle the AJAX error
                                 console.log(error);
@@ -299,13 +270,8 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                         success: function (response) {
                             // Handle the AJAX success response
                             console.log(response);
-<<<<<<< HEAD
                             window.location.href = "admin_portal_uploads.php?publishsuccess=true";
 
-=======
-
-                            window.location.href = "admin_portal_records.php";
->>>>>>> 94f5c17bc781d915b3bda37249e488e3d7da2ae1
                         }, error: function (error) {
                             // Handle the AJAX error
                             console.log(error);
@@ -366,6 +332,12 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                     // Handle the AJAX success response
                     console.log(response);
 
+                    // Hide Move to Archive button if record already archived
+                    const archiveButton = document.querySelector("#moveToArchiveButton");
+                    if (response.uploads[0].upload_status === 3) {
+                        archiveButton.style.display = "none";
+                    }
+
                     // Set uploader details
                     var uploaderDetailsNameElement = document.getElementById("uploaderDetailsName");
                     uploaderDetailsName.value = response.uploads[0].first_name + ' ' + response.uploads[0].first_name;
@@ -402,14 +374,10 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                     // Disable the select element
                     selectElement.disabled = true;
 
-                    // Set the record name
-                    // var fileName = document.getElementById("fileName");
-                    // fileName.value = response.uploads[0].file_name;
-
                     // Get uploaded file name
                     var uploadedFile = document.getElementById("filePreview");
                     var uploadFilePath = response.uploads[0].file;
-                    if (uploadedFile.src !== "") {
+                    if (uploadFilePath !== "") {
                         $('#drop-area').hide();
                         $('#uploaded-area').show();
 
@@ -456,7 +424,6 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
         function sendEmail(email) {
             window.location.href = 'mailto:' + email;
         }
-
 
         function getKeywordListSelectKeyword(uploadResponse) {
             var keywordList = document.getElementById("subjectKeyword");
@@ -513,6 +480,11 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                     var container = document.getElementById('container');
 
                     response.fields.forEach(field => {
+                        // Skip creating the field if it already exists
+                        if (document.getElementById(field.name)) {
+                            return;
+                        }
+
                         var divElement = document.createElement('div');
                         divElement.classList.add('mb-4');
 
@@ -863,13 +835,10 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
             reader.readAsDataURL(file);
         }
 
-<<<<<<< HEAD
         function toTitleCase(str) {
             return str.charAt(0).toUpperCase() + str.slice(1);
         }
 
-=======
->>>>>>> 94f5c17bc781d915b3bda37249e488e3d7da2ae1
         function validateForm() {
             var recordName = document.getElementById("recordName").value;
             var documentType = document.getElementById("documentType").value;
@@ -877,10 +846,6 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
             var subjectKeywords = document.getElementById("subjectKeyword").options;
             var container = document.getElementById('container');
             var mandatoryFields = container.getElementsByClassName('mandatoryField');
-<<<<<<< HEAD
-            var selectedKeywords = Array.from(subjectKeywords)
-                .filter((option) => option.selected)
-                .map((option) => option.value);
             var isValid = true;
 
             function createToast(message) {
@@ -940,54 +905,22 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                 createToast('Please select at least one subject keyword');
                 isValid = false;
                 console.log("invalid4");
-=======
-            var isValid = true;
-
-            // Check if record name is empty
-            if (recordName.trim() === "") {
-                alert("Record name is required");
-                isValid = false;
-                const toast = document.getElementById("toast-container");
-                console.log("invalid7");
-            }
-
-            // Check if document type is not selected
-            if (documentType === "") {
-                alert("Please select document type");
-                isValid = false;
-                console.log("invalid6");
->>>>>>> 94f5c17bc781d915b3bda37249e488e3d7da2ae1
             }
 
             // Check if file input is empty
             if (fileInput === "") {
-<<<<<<< HEAD
                 // alert("File upload is required");
                 createToast('File upload is required');
-=======
-                alert("File upload is required");
->>>>>>> 94f5c17bc781d915b3bda37249e488e3d7da2ae1
                 isValid = false;
                 console.log("invalid5");
             }
 
-<<<<<<< HEAD
             // Check if document type is not selected
             if (documentType === "") {
                 // alert("Please select document type");
                 createToast('Please select document type');
                 isValid = false;
                 console.log("invalid6");
-=======
-            // Check if at least one subject keyword is selected
-            var selectedKeywords = Array.from(subjectKeywords)
-                .filter((option) => option.selected)
-                .map((option) => option.value);
-            if (selectedKeywords.length === 0) {
-                alert("Please select at least one subject keyword");
-                isValid = false;
-                console.log("invalid4");
->>>>>>> 94f5c17bc781d915b3bda37249e488e3d7da2ae1
             }
 
             for (var i = 0; i < mandatoryFields.length; i++) {
@@ -1002,11 +935,8 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                     // Check if the input element is a textarea or a text input
                     if (inputElement.tagName.toLowerCase() === 'textarea' || inputElement.type === 'text') {
                         if (!inputElement.value) {
-<<<<<<< HEAD
                             var inputIdTitleCase = toTitleCase(inputElement.id);
                             createToast('Please enter ' + inputIdTitleCase);
-=======
->>>>>>> 94f5c17bc781d915b3bda37249e488e3d7da2ae1
                             isValid = false;
                             console.log("invalid1");
                         }
@@ -1015,10 +945,7 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                     // Check if the input element is a date input
                     if (inputElement.type === 'date') {
                         if (!inputElement.valueAsDate) {
-<<<<<<< HEAD
                             createToast('Date format is invalid');
-=======
->>>>>>> 94f5c17bc781d915b3bda37249e488e3d7da2ae1
                             isValid = false;
                             console.log("invalid2");
                         }
@@ -1027,31 +954,16 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                     // Check if the input element is a select element
                     if (inputElement.tagName.toLowerCase() === 'select') {
                         if (!inputElement.value) {
-<<<<<<< HEAD
                             createToast('Input value is not valid');
-=======
->>>>>>> 94f5c17bc781d915b3bda37249e488e3d7da2ae1
                             isValid = false;
                             console.log("invalid3");
                         }
                     }
                 }
             }
-<<<<<<< HEAD
             return isValid;
         }
     </script>
 </body>
 
-=======
-
-
-            return isValid;
-        }
-
-    </script>
-</body>
-
-
->>>>>>> 94f5c17bc781d915b3bda37249e488e3d7da2ae1
 </html>

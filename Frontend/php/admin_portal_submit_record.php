@@ -1,6 +1,20 @@
 <?php include 'head.php'; ?>
 
+<!-- Hide old toast messages -->
+<style>
+    .toast.fade.hide {
+        display: none !important;
+    }
+</style>
+
 <body id="page-top">
+
+    <!-- Toast message -->
+    <div id="toastMsgContainer" aria-live="polite" aria-atomic="true" class="position-relative">
+        <div class="toast-container p-3">
+        </div>
+    </div>
+
     <div class="wrapper">
 
         <!-- Sidebar  -->
@@ -12,10 +26,10 @@
             <!-- Topnav -->
             <?php include 'admin_header.php' ?>
 
-            <div class="container-fluid">
+            <div class="container-fluid mb-5">
 
                 <!-- Page header -->
-                <header id="form-header" class="row mx-0 mb-4 sticky-top">
+                <header id="form-header" class="row mx-0 mb-4">
                     <div class="col-lg d-flex">
                         <h1 class="h3 primary-red">New Record</h1>
                     </div>
@@ -70,7 +84,7 @@
                         </div>
 
                         <!-- File upload -->
-                        <div class="fileUpload container mb-4 px-0">
+                        <div class="fileUpload mb-4">
                             <label for="documentType" class="form-label">File upload <span
                                     class="mandatoryField">*</span></label>
                             <div id="uploadFileContainer">
@@ -103,13 +117,13 @@
                         </div>
 
                         <!-- File keyword -->
-                        <div class="mb-4">
+                        <div class="">
                             <label class="mb-2" for="subjectKeyword">Topic subject</label>
                             <span class="mandatoryField">*</span></label>
-                            <p>
+                            <div>
                                 <select id="subjectKeyword" name="subjectKeyword[]" multiple>
                                 </select>
-                            </p>
+                            </div>
 
                         </div>
 
@@ -167,7 +181,7 @@
                             // Handle the AJAX success response
                             console.log(response);
 
-                            window.location.href = "admin_portal_records.php";
+                            window.location.href = "admin_portal_records.php?movetoarchivesuccess=true";
                         }, error: function (error) {
                             // Handle the AJAX error
                             console.log(error);
@@ -216,7 +230,7 @@
                             // Handle the AJAX success response
                             console.log(response);
 
-                            window.location.href = "admin_portal_records.php";
+                            window.location.href = "admin_portal_records.php?publishsuccess=true";
                         }, error: function (error) {
                             // Handle the AJAX error
                             console.log(error);
@@ -336,6 +350,12 @@
                     console.log(response);
 
                     response.fields.forEach(field => {
+
+                        // Skip creating the field if it already exists
+                        if (document.getElementById(field.name)) {
+                            return;
+                        }
+
                         var divElement = document.createElement('div');
                         divElement.classList.add('mb-4');
 
@@ -641,6 +661,10 @@
             });
         }
 
+        function toTitleCase(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
         function validateForm() {
             var recordName = document.getElementById("recordName").value;
             var documentType = document.getElementById("documentType").value;
@@ -650,23 +674,65 @@
             var mandatoryFields = container.getElementsByClassName('mandatoryField');
             var isValid = true;
 
+            function createToast(message) {
+                var toastContainer = document.querySelector('.toast-container');
+
+                var toastElement = document.createElement('div');
+                toastElement.classList.add('toast');
+                toastElement.setAttribute('role', 'alert');
+                toastElement.setAttribute('aria-live', 'assertive');
+                toastElement.setAttribute('aria-atomic', 'true');
+
+                var toastHeader = document.createElement('div');
+                toastHeader.classList.add('toast-header');
+
+                var icon = document.createElement('i');
+                icon.classList.add('bi', 'bi-exclamation-triangle-fill', 'primary-red-darker', 'fs-3', 'pe-2');
+
+                var strong = document.createElement('strong');
+                strong.classList.add('primary-red-darker', 'fs-6', 'me-auto');
+                strong.textContent = 'Warning';
+
+                var closeButton = document.createElement('button');
+                closeButton.type = 'button';
+                closeButton.classList.add('btn-close');
+                closeButton.setAttribute('data-bs-dismiss', 'toast');
+                closeButton.setAttribute('aria-label', 'Close');
+
+                var toastBody = document.createElement('div');
+                toastBody.classList.add('toast-body');
+                toastBody.textContent = message;
+
+                toastHeader.appendChild(icon);
+                toastHeader.appendChild(strong);
+                toastHeader.appendChild(closeButton);
+
+                toastElement.appendChild(toastHeader);
+                toastElement.appendChild(toastBody);
+                toastContainer.appendChild(toastElement);
+
+                var toast = new bootstrap.Toast(toastElement);
+                toastElement.style.display = 'block';
+                toast.show();
+            }
+
             // Check if record name is empty
             if (recordName.trim() === "") {
-                alert("Record name is required");
+                createToast('Record name is required');
                 isValid = false;
                 console.log("invalid7");
             }
 
             // Check if document type is not selected
             if (documentType === "") {
-                alert("Please select document type");
+                createToast('Please select document type');
                 isValid = false;
                 console.log("invalid6");
             }
 
             // Check if file input is empty
             if (fileInput === "") {
-                alert("File upload is required");
+                createToast('File upload is required');
                 isValid = false;
                 console.log("invalid5");
             }
@@ -676,7 +742,7 @@
                 .filter((option) => option.selected)
                 .map((option) => option.value);
             if (selectedKeywords.length === 0) {
-                alert("Please select at least one subject keyword");
+                createToast('Please select at least one subject keyword');
                 isValid = false;
                 console.log("invalid4");
             }
@@ -693,6 +759,8 @@
                     // Check if the input element is a textarea or a text input
                     if (inputElement.tagName.toLowerCase() === 'textarea' || inputElement.type === 'text') {
                         if (!inputElement.value) {
+                            var inputIdTitleCase = toTitleCase(inputElement.id);
+                            createToast('Please enter ' + inputIdTitleCase);
                             isValid = false;
                             console.log("invalid1");
                         }
@@ -701,6 +769,7 @@
                     // Check if the input element is a date input
                     if (inputElement.type === 'date') {
                         if (!inputElement.valueAsDate) {
+                            createToast('Date format is invalid');
                             isValid = false;
                             console.log("invalid2");
                         }
@@ -709,6 +778,7 @@
                     // Check if the input element is a select element
                     if (inputElement.tagName.toLowerCase() === 'select') {
                         if (!inputElement.value) {
+                            createToast('Input value is not valid');
                             isValid = false;
                             console.log("invalid3");
                         }
