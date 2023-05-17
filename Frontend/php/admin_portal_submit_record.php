@@ -34,10 +34,8 @@
                         <h1 class="h3 primary-red">New Record</h1>
                     </div>
                     <div class="col-lg-auto">
-                        <button type="button" id="saveToArchiveButton" class="btn btn-outline-primary me-2"><i
-                                class=" bi bi-archive-fill pe-2 "></i>Save to Archive</button>
-                        <button type=" button" id="publishButton" class="btn btn-primary"><i
-                                class="bi bi-check-circle-fill pe-2"></i>Publish</button>
+                        <button type="button" id="saveToArchiveButton" class="btn btn-outline-primary me-2"><i class=" bi bi-archive-fill pe-2 "></i>Save to Archive</button>
+                        <button type=" button" id="publishButton" class="btn btn-primary"><i class="bi bi-check-circle-fill pe-2"></i>Publish</button>
                     </div>
                 </header>
 
@@ -47,8 +45,7 @@
 
                         <!-- Record name -->
                         <div class="mb-4">
-                            <label for="recordName" class="form-label">Record name <span
-                                    class="mandatoryField">*</span></label>
+                            <label for="recordName" class="form-label">Record name <span class="mandatoryField">*</span></label>
                             <input type="text" class="form-control" id="recordName" placeholder="" required>
                             <div class="invalid-feedback">
                                 Record name is required
@@ -57,8 +54,7 @@
 
                         <!-- Document type -->
                         <div class="col-md-6 mb-4">
-                            <label for="documentType" class="form-label">Document type <span
-                                    class="mandatoryField">*</span></label>
+                            <label for="documentType" class="form-label">Document type <span class="mandatoryField">*</span></label>
                             <select class="form-select" id="documentType" required onchange="generateForm()">
                                 <option selected disabled value="">Choose...</option>
                                 <option>Advertisement Journal</option>
@@ -85,17 +81,14 @@
 
                         <!-- File upload -->
                         <div class="fileUpload mb-4">
-                            <label for="documentType" class="form-label">File upload <span
-                                    class="mandatoryField">*</span></label>
+                            <label for="documentType" class="form-label">File upload <span class="mandatoryField">*</span></label>
                             <div id="uploadFileContainer">
                                 <!-- Drag and drop file upload area -->
                                 <div id="drop-area" class="col-md-6 col-md-offset-3 py-5">
                                     <img src="../img/fileUpload.svg" class="pb-2" alt="">
-                                    <h5 id="drop-hint" class="serif pb-2">Drag & drop files or <a href="#"
-                                            id="browse-btn">Browse</a></h5>
+                                    <h5 id="drop-hint" class="serif pb-2">Drag & drop files or <a href="#" id="browse-btn">Browse</a></h5>
                                     <p id="drop-subhint">Supported formats: JPEG, PNG, PDF</p>
-                                    <input type="file" id="file-input" accept=".jpg, .jpeg, .png, .pdf"
-                                        style="display:none;">
+                                    <input type="file" id="file-input" accept=".jpg, .jpeg, .png, .pdf" style="display:none;">
                                     <p id="drop-subhint" class="primary-red">File size limit: 2MB</p>
                                     <!-- <div class="row" id="thumbnails"></div> -->
                                 </div>
@@ -103,8 +96,7 @@
                                 <!-- Uploaded file preview -->
                                 <div id="uploaded-area">
                                     <div class="input-group mb-3">
-                                        <input id="uploaded-file-name" type="text" class="form-control" placeholder=""
-                                            aria-label="" aria-describedby="basic-addon2">
+                                        <input id="uploaded-file-name" type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
                                         <button class="input-group-text deleteFileUpload" id="basic-addon2">
                                             <i class="bi bi-trash3-fill pe-2"></i>
                                             Delete file
@@ -136,13 +128,13 @@
     </div>
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             // Get the buttons
             const archiveButton = document.getElementById('saveToArchiveButton');
             const publishButton = document.getElementById('publishButton');
 
             // Add click event listener to the move to archive button
-            archiveButton.addEventListener('click', function () {
+            archiveButton.addEventListener('click', function() {
                 // Form Validation
                 var validateStatus = validateForm();
                 console.log(validateStatus);
@@ -177,12 +169,13 @@
                             template_name: document.getElementById("documentType")?.value || "",
                             subject: selectedValues,
                         },
-                        success: function (response) {
+                        success: function(response) {
                             // Handle the AJAX success response
                             console.log(response);
 
                             window.location.href = "admin_portal_records.php?movetoarchivesuccess=true";
-                        }, error: function (error) {
+                        },
+                        error: function(error) {
                             // Handle the AJAX error
                             console.log(error);
                         }
@@ -191,7 +184,7 @@
             });
 
             // Add click event listener to the publish button
-            publishButton.addEventListener('click', function () {
+            publishButton.addEventListener('click', function() {
                 // Form Validation
                 var validateStatus = validateForm();
                 console.log(validateStatus);
@@ -226,12 +219,13 @@
                             template_name: document.getElementById("documentType")?.value || "",
                             subject: selectedValues,
                         },
-                        success: function (response) {
+                        success: function(response) {
                             // Handle the AJAX success response
                             console.log(response);
 
                             window.location.href = "admin_portal_records.php?publishsuccess=true";
-                        }, error: function (error) {
+                        },
+                        error: function(error) {
                             // Handle the AJAX error
                             console.log(error);
                         }
@@ -298,7 +292,7 @@
             // Do something with the file, like upload it to a server
             console.log(file);
             var reader = new FileReader();
-            reader.onload = function (event) {
+            reader.onload = function(event) {
                 $('#uploaded-file-name').val(file.name);
                 var thumbnail = '<div class="col-lg-4 mb-4"><div class="card"><img class="card-img-top" src="' + event.target.result + '"></div></div>';
                 $('#filePreview').html(thumbnail);
@@ -311,7 +305,7 @@
             var getKeywordList = $.ajax({
                 url: 'getKeyword.php',
                 method: 'GET',
-                success: function (response) {
+                success: function(response) {
                     // Handle the AJAX success response
                     console.log(response);
 
@@ -327,7 +321,7 @@
 
                     MultiselectDropdown(window.MultiselectDropdownOptions);
                 },
-                error: function (error) {
+                error: function(error) {
                     // Handle the AJAX error
                     console.log(error);
                 }
@@ -345,7 +339,7 @@
                 data: {
                     template_name: documentType
                 },
-                success: function (response) {
+                success: function(response) {
                     // Handle the AJAX success response
                     console.log(response);
 
@@ -648,13 +642,14 @@
                                 divElement.appendChild(labelElement);
                                 divElement.appendChild(inputElement);
                                 break;
-                            default: break;
+                            default:
+                                break;
                         }
                         container.appendChild(divElement);
                     });
 
                 },
-                error: function (error) {
+                error: function(error) {
                     // Handle the AJAX error
                     console.log(error);
                 }
@@ -788,7 +783,6 @@
 
             return isValid;
         }
-
     </script>
 </body>
 

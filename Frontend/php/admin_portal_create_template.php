@@ -90,7 +90,7 @@ include 'head.php';
 
                                             <!-- Mandatory field -->
                                             <td><input class="form-check-input mt-0 me-2" type="checkbox" value="" id="flexCheckDefault">
-                                                <label class="form-check-label" for="flexCheckDefault">Mandatory field</label>
+                                                <label class="form-check-label">Mandatory field</label>
                                             </td>
 
                                             <!-- Delete button -->
@@ -117,27 +117,34 @@ include 'head.php';
                 saveTemplateButton.addEventListener('click', function() {
                     // Form Validation
                     var validateStatus = validateForm();
-                    console.log("Validate status: " + validateStatus);
+                    // console.log("Validate status: " + validateStatus);
+                    var fieldsArray = getFieldsArray();
+                    var postData = {
+                        template_name: document.getElementById("templateName")?.value || "",
+                        fields: fieldsArray,
+                        template_icon: null,
+                    };
 
-                    if (validateStatus) {
-                        $.ajax({
-                            url: 'createTemplate.php',
-                            method: 'POST',
-                            data: {
-                                template_name: document.getElementById("templateName")?.value || "",
-                            },
-                            success: function(response) {
-                                // Handle the AJAX success response
-                                console.log(response);
+                    console.log(postData);
 
+                    $.ajax({
+                        url: 'createTemplate.php',
+                        method: 'POST',
+                        data: postData,
+                        success: function(response) {
+                            // Handle the AJAX success response
+                            console.log(response);
+
+                            // Check if the message matches a specific value
+                            if (response.message === "Template has been created successfully") {
                                 window.location.href = "admin_portal_templates.php?createsuccess=true";
-                            },
-                            error: function(error) {
-                                // Handle the AJAX error
-                                console.log(error);
                             }
-                        });
-                    }
+                        },
+                        error: function(error) {
+                            // Handle the AJAX error
+                            console.log(error);
+                        }
+                    });
                 });
 
                 // Add field button
@@ -148,26 +155,33 @@ include 'head.php';
                     var row = $('<tr></tr>');
                     var rowContent = '';
                     rowContent += '<td><select class="form-select fieldDropdown" aria-label="Default select example">';
-                    rowContent += '<option selected>Select data field</option>';
-                    rowContent += '<option value="Contributor">Contributor</option>';
-                    rowContent += '<option value="Coverage">Coverage</option>';
-                    rowContent += '<option value="Creator">Creator</option>';
-                    rowContent += '<option value="Date">Date</option>';
-                    rowContent += '<option value="Description">Description</option>';
-                    rowContent += '<option value="Format">Format</option>';
-                    rowContent += '<option value="Identifier">Identifier</option>';
-                    rowContent += '<option value="Language">Language</option>';
-                    rowContent += '<option value="Publisher">Publisher</option>';
-                    rowContent += '<option value="Relation">Relation</option>';
-                    rowContent += '<option value="Rights">Rights</option>';
-                    rowContent += '<option value="Source">Source</option>';
-                    rowContent += '<option value="Subject">Subject</option>';
-                    rowContent += '<option value="Title">Title</option>';
+
+                    // Get all the selected options from previous rows
+                    var selectedOptions = [];
+                    var previousRows = document.querySelectorAll('table tr');
+                    previousRows.forEach(function(row) {
+                        var selectedOption = row.querySelector('.fieldDropdown').value;
+                        selectedOptions.push(selectedOption);
+                    });
+
+                    // Iterate through the remaining options and add them to the dropdown if not selected in previous rows
+                    var availableOptions = [
+                        'Contributor', 'Coverage', 'Creator', 'Date', 'Description',
+                        'Format', 'Identifier', 'Language', 'Publisher',
+                        'Relation', 'Rights', 'Source', 'Subject', 'Title'
+                    ];
+
+                    availableOptions.forEach(function(option) {
+                        if (!selectedOptions.includes(option)) {
+                            rowContent += `<option value="${option}">${option}</option>`;
+                        }
+                    });
+
                     rowContent += '</select></td>';
 
                     // Mandatory field
                     rowContent += '<td><input class="form-check-input mt-0 me-2" type="checkbox" value="" id="flexCheckDefault">';
-                    rowContent += '<label class="form-check-label" for="flexCheckDefault">Mandatory field</label></td>';
+                    rowContent += '<label class="form-check-label" >Mandatory field</label></td>';
 
                     // Delete button
                     rowContent += '<td><button type="button" class="btn btn-outline-danger"><i class="bi bi-trash3-fill pe-2"></i>Delete field</button></td>';
@@ -298,6 +312,29 @@ include 'head.php';
                         }
                     }
                 })
+            }
+
+            // Get the fields array from the table rows
+            function getFieldsArray() {
+                var fieldsArray = [];
+                var rows = document.querySelectorAll('table tr');
+                rows.forEach(function(row) {
+                    // Check if option is selected
+                    var templateField = row.querySelector('.form-select').value;
+
+                    if (templateField !== 'Select data field') {
+                        var templateFieldRequired = row.querySelector('.form-check-input').checked ? 1 : 0;
+
+                        var data = {
+                            name: templateField,
+                            is_required: templateFieldRequired
+                        };
+
+                        fieldsArray.push(data);
+                    }
+                });
+
+                return fieldsArray;
             }
         </script>
 </body>

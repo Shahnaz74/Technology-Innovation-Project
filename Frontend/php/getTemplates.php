@@ -19,17 +19,15 @@
                 while ($field = mysqli_fetch_assoc($fields_result)) {
                     $fields[] = $field;
                 }
-            } else {
-                http_response_code(400);
-                die("Error: " . mysqli_error($conn));
             }
             $template["fields"] = $fields;
             $templates[] = $template;
         }
         // Encoding the data in JSON format and sending the response
+        $response = array("templates" => $templates);
         header("Content-Type: application/json");
         http_response_code(200);
-        echo json_encode(array("templates" => $templates));
+        echo json_encode($response);
     } else {
         http_response_code(400);
         die("Error: " . mysqli_error($conn));

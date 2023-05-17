@@ -3,6 +3,7 @@ include 'head.php';
 
 $template_name = $_GET['template_name'];
 echo "<script>console.log('template_name: " . $template_name . "');</script>";
+echo "<script>var template_name = '" . $template_name . "';</script>";
 
 ?>
 
@@ -52,7 +53,7 @@ echo "<script>console.log('template_name: " . $template_name . "');</script>";
                         <!-- Template name -->
                         <div class="mb-4">
                             <label for="templateName" class="form-label">Template name <span class="mandatoryField">*</span></label>
-                            <input type="text" class="form-control" id="templateName" placeholder="" required>
+                            <input type="text" class="form-control" id="templateName" placeholder="" disabled>
                         </div>
 
                         <div class="templateFields">
@@ -97,7 +98,7 @@ echo "<script>console.log('template_name: " . $template_name . "');</script>";
 
                 // Add click event listener to the delete template button
                 deleteTemplateButton.addEventListener('click', function() {
-                    var template_name = "<?php echo $template_name; ?>";
+
                     $.ajax({
                         url: 'removeTemplate.php',
                         method: 'GET',
@@ -119,27 +120,38 @@ echo "<script>console.log('template_name: " . $template_name . "');</script>";
                 // Add click event listener to the save template button
                 saveTemplateButton.addEventListener('click', function() {
                     // Form Validation
-                    validateForm();
+                    var validateStatus = validateForm();
+                    // console.log(validateStatus);
 
-                    if (validateStatus) {
-                        $.ajax({
-                            url: 'createTemplate.php',
-                            method: 'POST',
-                            data: {
-                                template_name: document.getElementById("templateName")?.value || "",
-                            },
-                            success: function(response) {
-                                // Handle the AJAX success response
-                                console.log(response);
+                    var fieldsArray = getFieldsArray();
+                    var postData = {
+                        template_name: document.getElementById("templateName")?.value || "",
+                        fields: fieldsArray,
+                        template_icon: null,
+                    };
 
-                                window.location.href = "admin_portal_templates.php?createsuccess=true";
-                            },
-                            error: function(error) {
-                                // Handle the AJAX error
-                                console.log(error);
-                            }
-                        });
-                    }
+                    console.log(postData);
+
+                    $.ajax({
+                        url: 'editTemplates.php',
+                        method: 'PUT',
+                        data: postData,
+                        success: function(response) {
+                            // Handle the AJAX success response
+                            console.log("postData:", postData);
+                            console.log("response:", response);
+
+                            // Parse the JSON response
+                            // var jsonResponse = JSON.parse(response);
+
+                            // if (jsonResponse.message === "Template has been updated") {
+                            //     window.location.href = "admin_portal_templates.php?updatesuccess=true";
+                            // } else {
+                            //     console.log("Unexpected response: " + response.message);
+                            // }
+                        }
+                    });
+
                 });
 
                 // Add field button
@@ -151,22 +163,6 @@ echo "<script>console.log('template_name: " . $template_name . "');</script>";
                     var row = $('<tr></tr>');
                     var rowContent = '';
                     rowContent += '<td><select class="form-select fieldDropdown" aria-label="Default select example">';
-
-                    // rowContent += '<option selected>Select data field</option>';
-                    // rowContent += '<option value="Contributor">Contributor</option>';
-                    // rowContent += '<option value="Coverage">Coverage</option>';
-                    // rowContent += '<option value="Creator">Creator</option>';
-                    // rowContent += '<option value="Date">Date</option>';
-                    // rowContent += '<option value="Description">Description</option>';
-                    // rowContent += '<option value="Format">Format</option>';
-                    // rowContent += '<option value="Identifier">Identifier</option>';
-                    // rowContent += '<option value="Language">Language</option>';
-                    // rowContent += '<option value="Publisher">Publisher</option>';
-                    // rowContent += '<option value="Relation">Relation</option>';
-                    // rowContent += '<option value="Rights">Rights</option>';
-                    // rowContent += '<option value="Source">Source</option>';
-                    // rowContent += '<option value="Subject">Subject</option>';
-                    // rowContent += '<option value="Title">Title</option>';
 
                     // Get all the selected options from previous rows
                     var selectedOptions = [];
@@ -245,8 +241,7 @@ echo "<script>console.log('template_name: " . $template_name . "');</script>";
                         // console.log(title);
 
                         // Clear the existing content of tab body
-                        // $('#tab-panel-tbody').empty();
-
+                        $('#tab-panel-tbody').empty();
 
                         fields.forEach(function(field, index) {
                             var newRow = $('<tr></tr>');
@@ -278,7 +273,7 @@ echo "<script>console.log('template_name: " . $template_name . "');</script>";
                             rowContent += '<td><input class="form-check-input mt-0 me-2" type="checkbox" value="" id="flexCheckDefault"';
                             rowContent += field.is_required === 1 ? ' checked' : '';
                             rowContent += '>';
-                            rowContent += '<label class="form-check-label" for="flexCheckDefault">Mandatory field</label></td>';
+                            rowContent += '<label class="form-check-label">Mandatory field</label></td>';
 
 
                             // Delete button
@@ -304,9 +299,33 @@ echo "<script>console.log('template_name: " . $template_name . "');</script>";
                 });
             }
 
+            // Get the fields array from the table rows
+            function getFieldsArray() {
+                var fieldsArray = [];
+                var rows = document.querySelectorAll('table tr');
+                rows.forEach(function(row) {
+                    // Check if option is selected
+                    var templateField = row.querySelector('.form-select').value.toLowerCase();
+
+                    if (templateField !== 'Select data field') {
+                        var templateFieldRequired = row.querySelector('.form-check-input').checked ? 1 : 0;
+
+                        var data = {
+                            name: templateField,
+                            is_required: templateFieldRequired
+                        };
+
+                        fieldsArray.push(data);
+                    }
+                });
+
+                return fieldsArray;
+            }
+
             // Validate form
             function validateForm() {
                 var templateName = document.getElementById("templateName").value;
+                var isValid = true;
 
                 function createToast(message) {
                     var toastContainer = document.querySelector('.toast-container');
@@ -349,32 +368,6 @@ echo "<script>console.log('template_name: " . $template_name . "');</script>";
                     toastElement.style.display = 'block';
                     toast.show();
                 }
-
-                // Get all fields
-                var fieldsArray = [];
-                var rows = document.querySelectorAll('table tr');
-                rows.forEach(function(row) {
-                    // Check if option is selected
-                    var templateField = row.querySelector('.form-select').value;
-
-                    if (templateField === 'Select data field') {
-                        createToast('Please choose a field')
-                    } else {
-                        var templateFieldRequired = row.querySelector('.form-check-input').checked ? 1 : 0;
-
-                        var data = {
-                            title: templateField,
-                            is_required: templateFieldRequired
-                        };
-
-                        fieldsArray.push(data);
-                    }
-                });
-
-                console.log(fieldsArray);
-
-                // Return false if validation fails, true if it passes
-                return fieldsArray.length > 0;
             }
         </script>
 </body>

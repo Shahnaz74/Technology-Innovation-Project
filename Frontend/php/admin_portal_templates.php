@@ -11,7 +11,7 @@
 
     <!-- Toast message -->
     <div id="toastMsgContainer" aria-live="polite" aria-atomic="true" class="position-relative">
-        <div class="toast-container p-3">
+        <div class="toast-container p-3" style="position: absolute; top: 80px; right: 10px;">
             <div id="successToastMessage" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="display: none">
                 <div class="toast-header">
                     <i class="bi bi-check-circle-fill primary-green-darker fs-3 pe-2"></i>
@@ -41,11 +41,6 @@
                         <h1 class="h3 primary-red mb-0">Templates</h1>
                     </div>
                     <div class="col-lg-auto">
-                        <a href="admin_portal_add_template.php">
-                            <button type="button" class="btn btn-primary"><i class="bi bi-plus-lg pe-2"></i></i>TESTING BUTTON</button></a>
-                    </div>
-
-                    <div class="col-lg-auto">
                         <a href="admin_portal_create_template.php">
                             <button type="button" class="btn btn-primary"><i class="bi bi-plus-lg pe-2"></i></i>Add New
                                 Template</button></a>
@@ -66,21 +61,42 @@
     <script>
         $(document).ready(function() {
             loadTemplateData();
+
+            // Retrieve the query parameter from the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const createSuccessParam = urlParams.get('createsuccess');
+            const updateSuccessParam = urlParams.get('updatesuccess');
+            const deleteSuccessParam = urlParams.get('deletesuccess');
+
+
+
+            if (createSuccessParam === 'true') {
+                var successToastMessage = document.getElementById('successToastMessage');
+                var toast = new bootstrap.Toast(successToastMessage);
+                successToastMessage.style.display = 'block';
+                var toastBody = document.querySelector('.toast-body');
+                toastBody.textContent = "Template created successfully.";
+                toast.show();
+            }
+
+            if (updateSuccessParam === 'true') {
+                var successToastMessage = document.getElementById('successToastMessage');
+                var toast = new bootstrap.Toast(successToastMessage);
+                successToastMessage.style.display = 'block';
+                var toastBody = document.querySelector('.toast-body');
+                toastBody.textContent = "Template has been updated successfully.";
+                toast.show();
+            }
+
+            if (deleteSuccessParam === 'true') {
+                var successToastMessage = document.getElementById('successToastMessage');
+                var toast = new bootstrap.Toast(successToastMessage);
+                successToastMessage.style.display = 'block';
+                var toastBody = document.querySelector('.toast-body');
+                toastBody.textContent = "Template deleted successfully.";
+                toast.show();
+            }
         })
-
-        // Retrieve the query parameter from the URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const deleteSuccessParam = urlParams.get('deletesuccess');
-
-        // THIS IS NOT WORKING!!! NEED TO FIX
-        if (deleteSuccessParam === 'true') {
-            var successToastMessage = document.getElementById('successToastMessage');
-            var toast = new bootstrap.Toast(successToastMessage);
-            successToastMessage.style.display = 'block';
-            var toastBody = document.querySelector('.toast-body');
-            toastBody.textContent = "Template deleted successfully.";
-            toast.show();
-        }
 
         function loadTemplateData() {
             $.ajax({
