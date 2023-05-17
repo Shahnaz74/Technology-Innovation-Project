@@ -2,13 +2,20 @@
     require_once('../databaseConfig.php');
 
     // Read the request data
-    $request_data = file_get_contents('php://input');
-    $data = json_decode($request_data);
+    parse_str(file_get_contents("php://input"), $_POST);
+    $data = $_POST;
+
+    // Check if the required data is present
+    if (!isset($data['template_name']) || !isset($data['fields'])) {
+        http_response_code(400);
+        die("Error: Required data is missing.");
+    }
 
     // Create the template record
-    $template_name = $data->template_name;
-    $template_icon = $data->template_icon;
-    $fields = $data->fields;
+    $template_name = $data['template_name'];
+    $template_icon = isset($data['template_icon']) ? $data['template_icon'] : null;
+    $fields = $data['fields'];
+
     $sql = "INSERT INTO template (template_name, template_icon) VALUES ('$template_name', '$template_icon')";
     if ($conn->query($sql) === FALSE) {
         http_response_code(400);
@@ -20,8 +27,9 @@
 
     // Add the fields to the template
     foreach ($fields as $field) {
-        $field_name = $field->name;
-        $is_required = $field->is_required;
+        $field_name = $field['name'];
+        $is_required = isset($field['is_required']) ? $field['is_required'] : 0;
+
         $sql = "SELECT * FROM field WHERE name='$field_name'";
         $result = $conn->query($sql);
         if ($result->num_rows > 0) {

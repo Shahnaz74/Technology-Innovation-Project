@@ -323,6 +323,45 @@ E.g
 }
 ```
 
+## fields/getFieldsToAdd.php
+### GET receive a template_name of a existing template, response all the fields in field table that are not related to the provided template
+#### PARAMS template_name
+#### STATUS CODE
+200 - Page Loaded Successfully 
+400 - An error occured that preveted the page from loading.
+#### RETURN
+return all the fields in field table which are not related to the provided template
+E.g
+```JSON
+{
+	"fields":[
+		{
+		"name": "contributor",
+		"title": "Contributor",
+		"placeholder": "Enter the name of the contributor"
+		},
+		{
+		"name": "creator",
+		"title": "Creator",
+		"placeholder": "Enter the name of the creator"
+		},
+		{
+		"name": "date",
+		"title": "Date",
+		"placeholder": "Enter the date associated with the resource"
+		},
+		{
+		"name": "publisher",
+		"title": "Publisher",
+		"placeholder": "Enter the name of the publisher"
+		}
+	]
+}
+```
+
+
+
+
 ## fields/removeFields.php
 ### DELETE receive a existing template_name in template table and a name of a existing field in field table, remove a row in fields_in_template table to detach the field from the template
 #### PARAMS template_name, field_name
