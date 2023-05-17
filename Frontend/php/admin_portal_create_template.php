@@ -1,6 +1,22 @@
-<?php include 'head.php'; ?>
+<?php
+include 'head.php';
+?>
+
+<!-- Hide old toast messages -->
+<style>
+    .toast.fade.hide {
+        display: none !important;
+    }
+</style>
 
 <body id="page-top">
+
+    <!-- Toast message -->
+    <div id="toastMsgContainer" aria-live="polite" aria-atomic="true" class="position-relative">
+        <div class="toast-container p-3">
+        </div>
+    </div>
+
     <div class="wrapper">
 
         <!-- Sidebar  -->
@@ -8,355 +24,282 @@
 
         <!-- Page Content  -->
         <div id="content">
-            <?php
-            if (isset($_POST['submit_template'])) {
-                // print_r($_POST);
-                $templatename = $_POST['templateName'];
-                $select = "SELECT * FROM template where LOWER(template_name) = LOWER('" . $templatename . "')";
-                // echo $select;die;
-                $runQuery = mysqli_query($conn, $select);
-                $rowcount = mysqli_num_rows($runQuery);
-                if ($rowcount == 0) {
-                    // $row = mysqli_fetch_assoc($runQuery);
-                    // echo  $rowcount; print_r($row);die;
-                    $sql = "INSERT INTO `template`(`template_name`) VALUES ('$templatename')";
-                    $insert = mysqli_query($conn, $sql);
-                    if ($insert) {
-                        $_SESSION['message'] = "Templated Created Successfully";
-                        header('Location:admin_portal_templates.php');
-                    }
-                } else {
-                    $_SESSION['error'] = "Templated Already Exist.";
-                }
-            }
-
-
-            if (isset($_POST['submit'])) {
-                // echo "<pre>";
-                // print_r($_POST);die;
-                $template_id = $_POST['template_id'];
-                $field_type = $_POST['type'];
-                $field_title = $_POST['title'];
-                $field_placeholder = $_POST['placeholder'];
-                $field_required = $_POST['is_required'];
-                $count = $_POST['row_count'];
-
-                $res_arr_values = array();
-
-                for ($i = 1; $i <= $count; $i++) {
-                    if (empty($field_required[$i])) {
-                        $field_required[$i] = 0;
-                    }
-                    $res_arr_values[$i] = [
-                        'field_type' => $field_type[$i],
-                        'field_title' => $field_title[$i],
-                        'field_placeholder' => $field_placeholder[$i],
-                        'field_required' => $field_required[$i],
-                    ];
-                }
-                // print_r($res_arr_values);die;
-                foreach ($res_arr_values as $val) {
-                    $field_type = $val['field_type'];
-                    $field_title = $val['field_title'];
-                    $field_name = strtolower($val['field_title']);
-                    $field_placeholder = $val['field_placeholder'];
-                    $field_required = $val['field_required'];
-                    $select = "SELECT * FROM fields where LOWER(name) = LOWER('" . $field_name . "') AND `template_id` = " . $template_id;
-
-                    $runQuery = mysqli_query($conn, $select);
-                    $rowcount = mysqli_num_rows($runQuery);
-                    if ($rowcount == 0) {
-                        $sql = "INSERT INTO `fields`(`type`, `title`, `name`,`placeholder`,`is_required`, `template_id`) VALUES ('$field_type','$field_title','$field_name','$field_placeholder','$field_required','$template_id')";
-                        // echo $sql;die;
-                        mysqli_query($conn, $sql);
-                        $_SESSION['message'] = "Fields Added Successfully";
-                        header('Location:admin_portal_fields.php?id=' . $template_id);
-
-                    } else {
-                        $select = "SELECT * FROM fields where LOWER(name) = LOWER('" . $field_name . "')";
-                        $runQuery = mysqli_query($conn, $select);
-                        $rowcount = mysqli_num_rows($runQuery);
-                        if ($rowcount > 0) {
-                            $row = mysqli_fetch_assoc($runQuery);
-                            $id = $row['id'];
-                            $sql = "UPDATE `fields` SET `type` = '$field_type' , `title` = '$field_title' ,`name` = '$field_name',`is_required` = '$field_required' , `template_id` = '$template_id' WHERE `id` = '$id'";
-                            $runQuery = mysqli_query($conn, $sql);
-                            $_SESSION['message'] = "Fields Added Successfully";
-                            header('Location:admin_portal_fields.php?id=' . $template_id);
-
-                        }
-                    }
-                    // print_r($res_arr_values);
-                }
-            }
-            ?>
-            <?php include 'message.php'; ?>
 
             <!-- Topnav -->
             <?php include 'admin_header.php' ?>
-            <div class="container-fluid">
-                <form class="needs-validation" method="POST">
-                    <!-- Page header -->
-                    <header id="form-header" class="row mx-0 mb-4 sticky-top">
-                        <div class="col-lg d-flex">
-                            <h1 class="h3 primary-red">Add Template</h1>
-                        </div>
-                    </header>
-                    <!-- Page content -->
-                    <div class="row mx-0">
+
+            <div class="container-fluid mb-5">
+
+                <!-- Page header -->
+                <header id="form-header" class="row mx-0 mb-4">
+                    <div class="col-lg d-flex">
+                        <h1 class="h3 primary-red">Add new Template</h1>
+                    </div>
+                    <div class="col-lg-auto">
+                        <button type="button" id="saveTemplateButton" class="btn btn-primary"><i class="bi bi-check-circle-fill pe-2"></i>Save Template</button>
+                    </div>
+                </header>
+
+                <!-- Page content -->
+                <div class="row mx-0">
+                    <form class="needs-validation row" novalidate>
+
                         <!-- Template name -->
                         <div class="mb-4">
-                            <label for="templateName" class="form-label">Template name <span
-                                    class="mandatoryField">*</span></label>
-                            <input type="text" class="form-control" id="templateName" name="templateName"
-                                placeholder="Enter Template Name" value="" required>
-                            <div class="invalid-feedback">
-                                File name is required
+                            <label for="templateName" class="form-label">Template name <span class="mandatoryField">*</span></label>
+                            <input type="text" class="form-control" id="templateName" placeholder="" required>
+                        </div>
+
+                        <div class="templateFields">
+
+                            <!-- Template field header -->
+                            <div class="row align-items-center mx-0 px-0">
+                                <div class="col-lg d-flex px-0">
+                                    <p>Template fields</p>
+                                </div>
+                                <div class="col-lg-auto px-0">
+                                    <button type="button" class="btn btn-outline-primary mb-4" id="addRow" class="add"><i class="bi bi-plus-lg pe-2"></i>
+                                        Add data
+                                        field
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- Template field table -->
+                            <div class="table-responsive">
+                                <table id="templateFieldTable" class="table table-hover" data-toggle="table" data-mobile-responsive="true">
+                                    <tbody id="tab-panel-tbody">
+                                        <tr>
+                                            <td td width="50%"><select class="form-select fieldDropdown" aria-label="Default select example">
+                                                    <option selected>Select data field</option>
+                                                    <option value="Contributor">Contributor</option>
+                                                    <option value="Coverage">Coverage</option>'
+                                                    <option value="Creator">Creator</option>
+                                                    <option value="Date">Date</option>
+                                                    <option value="Description">Description</option>
+                                                    <option value="Format">Format</option>
+                                                    <option value="Identifier">Identifier</option>
+                                                    <option value="Language">Language</option>
+                                                    <option value="Publisher">Publisher</option>
+                                                    <option value="Relation">Relation</option>
+                                                    <option value="Rights">Rights</option>
+                                                    <option value="Source">Source</option>
+                                                    <option value="Subject">Subject</option>
+                                                    <option value="Title">Title</option>
+                                                </select></td>
+
+                                            <!-- Mandatory field -->
+                                            <td><input class="form-check-input mt-0 me-2" type="checkbox" value="" id="flexCheckDefault">
+                                                <label class="form-check-label" for="flexCheckDefault">Mandatory field</label>
+                                            </td>
+
+                                            <!-- Delete button -->
+                                            <td>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
-                        <div class="col-lg-auto">
-                            <!-- <button type="button" class="btn btn-outline-primary me-2"><i class="bi bi-trash3-fill pe-2"></i>Delete Template</button> -->
-                            <button type="submit" name="submit_template" value="Save Template"
-                                class="btn btn-primary"><i class="bi bi-check-circle-fill pe-2"></i>Save
-                                Template</button>
-                        </div>
-                    </div>
-
-                </form>
-                <?php if (isset($_GET['edit']) && $_GET['edit'] == 'add_fields') {
-                    if (isset($_GET['id'])) {
-                        $templateid = $_GET['id'];
-
-                        ?>
-                        <form method="POST">
-
-                            <!-- Page header -->
-                            <header id="form-header" class="row mx-0 mb-4 sticky-top mt-5">
-                                <div class="col-lg d-flex">
-                                    <h1 class="h3 primary-red">Add Fields</h1>
-                                </div>
-                            </header>
-
-                            <div class="row mx-0">
-                                <!-- Template icon -->
-
-
-                                <div class="col">
-                                    <div class="btn-group templateIconSelect" role="group"
-                                        aria-label="Basic radio toggle button group">
-                                        <select class="form-select" name="template_id" aria-label="Default select example"
-                                            required>
-                                            <option value="" selected>Select Template</option>
-                                            <?php
-
-                                            $select = "SELECT * FROM template";
-                                            // echo $select;die;
-                                            $runQuery = mysqli_query($conn, $select);
-                                            $rowcount = mysqli_num_rows($runQuery);
-                                            if ($rowcount > 0) {
-                                                while ($row = mysqli_fetch_object($runQuery)) {
-                                                    $tid = $row->template_id;
-                                                    $templatename = $row->template_name;
-                                                    ?>
-                                                    <option value="<?php echo $tid; ?>" <?php echo $templateid == $tid ? 'selected' : '' ?>><?php echo $templatename; ?></option>
-                                                <?php
-                                                }
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                </div>
-
-
-                                <div class="templateFields">
-
-                                    <!-- Template field header -->
-                                    <div class="row align-items-center mx-0 px-0">
-                                        <div class="col-lg d-flex px-0 mt-4">
-                                            <label for="templatefileds" class="form-label">Template fields<span
-                                                    class="mandatoryField">*</span></label>
-                                        </div>
-                                        <div class="col-lg-auto px-0">
-                                            <button type="button" class="btn btn-outline-primary mb-4" id="addRow1"
-                                                class="add"><i class="bi bi-plus-lg pe-2"></i>
-                                                Add data
-                                                field
-                                            </button>
-                                        </div>
-                                    </div>
-
-                                    <!-- Template field table -->
-                                    <div class="table-responsive">
-                                        <table id="templateFieldTable" class="table table-hover" data-toggle="table"
-                                            data-mobile-responsive="true">
-                                            <tbody class="connected-sortable droppable-area1">
-                                                <tr class="draggable-item">
-
-                                                    <!-- Drag icon & row number -->
-                                                    <td class="fixed-col"><i class="bi bi-arrows-move pe-2"></i>1</td>
-                                                    <!-- <td><span class="js-sort-number">1</span>
-                                            </td> -->
-
-                                                    <!-- Data field selection -->
-                                                    <td><select class="form-select" name="type[1]"
-                                                            aria-label="Default select example" required>
-                                                            <option value="" selected>Select Field Type</option>
-                                                            <option value="text">text</option>
-                                                            <option value="email">email</option>
-                                                            <option value="date">date</option>
-                                                            <option value="textarea">textarea</option>
-                                                        </select></td>
-
-                                                    <!-- Data field selection -->
-                                                    <td>
-                                                        <select class="form-select" name="title[1]"
-                                                            aria-label="Default select example" required>
-                                                            <option value="" selected>Select Field Title</option>
-                                                            <option value="Contributor">Contributor</option>
-                                                            <option value="Coverage">Coverage</option>
-                                                            <option value="Creator">Creator</option>
-                                                            <option value="Date">Date</option>
-                                                            <option value="Description">Description</option>
-                                                            <option value="Format">Format</option>
-                                                            <option value="Identifier">Identifier</option>
-                                                            <option value="Language">Language</option>
-                                                            <option value="Publisher">Publisher</option>
-                                                            <option value="Relation">Relation</option>
-                                                            <option value="Rights">Rights</option>
-                                                            <option value="Source">Source</option>
-                                                            <option value="Subject">Subject</option>
-                                                            <option value="Title">Title</option>
-                                                            <option value="Type">Type</option>
-                                                        </select>
-                                                    </td>
-
-                                                    <td><input type="text" class="form-control" name="placeholder[1]"
-                                                            placeholder="Enter Placeholder" value="" required></td>
-
-                                                    <!-- Mandatory field -->
-                                                    <td><input class="form-check-input mt-0 me-2" name="is_required[1]"
-                                                            type="checkbox" value="1" id="flexCheckDefault">
-                                                        <label class="form-check-label" for="flexCheckDefault">
-                                                            Mandatory field
-                                                        </label>
-                                                    </td>
-
-                                                    <!-- Delete row -->
-                                                    <td>
-                                                        <button type="button" class="btn btn-secondary disabled"><i
-                                                                class="bi bi-trash3-fill pe-2"></i>Delete field</button>
-                                                    </td>
-                                                </tr>
-
-                                                <tr class="draggable-item">
-
-                                                    <!-- Drag icon & row number -->
-                                                    <td class="fixed-col"><i class="bi bi-arrows-move pe-2"></i>2</td>
-                                                    <!-- <td><span class="js-sort-number">1</span>
-                                            </td> -->
-
-                                                    <!-- Data field selection -->
-                                                    <td><select class="form-select" name="type[2]"
-                                                            aria-label="Default select example" required>
-                                                            <option selected>Select Field Type</option>
-                                                            <option value="text">text</option>
-                                                            <option value="email">email</option>
-                                                            <option value="date">date</option>
-                                                            <option value="textarea">textarea</option>
-                                                        </select></td>
-
-                                                    <td>
-                                                        <select class="form-select" name="title[2]"
-                                                            aria-label="Default select example" required>
-                                                            <option value="" selected>Select Field Title</option>
-                                                            <option value="Contributor">Contributor</option>
-                                                            <option value="Coverage">Coverage</option>
-                                                            <option value="Creator">Creator</option>
-                                                            <option value="Date">Date</option>
-                                                            <option value="Description">Description</option>
-                                                            <option value="Format">Format</option>
-                                                            <option value="Identifier">Identifier</option>
-                                                            <option value="Language">Language</option>
-                                                            <option value="Publisher">Publisher</option>
-                                                            <option value="Relation">Relation</option>
-                                                            <option value="Rights">Rights</option>
-                                                            <option value="Source">Source</option>
-                                                            <option value="Subject">Subject</option>
-                                                            <option value="Title">Title</option>
-                                                            <option value="Type">Type</option>
-                                                        </select>
-                                                    </td>
-
-                                                    <td><input type="text" class="form-control" name="placeholder[2]"
-                                                            placeholder="Enter Placeholder" value="" required></td>
-
-                                                    <!-- Mandatory field -->
-                                                    <td><input class="form-check-input mt-0 me-2" name="is_required[2]"
-                                                            type="checkbox" value="1" id="flexCheckDefault">
-                                                        <label class="form-check-label" for="flexCheckDefault">
-                                                            Mandatory field
-                                                        </label>
-                                                    </td>
-
-                                                    <!-- Delete row -->
-                                                    <td>
-                                                        <button type="button" class="btn btn-secondary disabled"><i
-                                                                class="bi bi-trash3-fill pe-2"></i>Delete field</button>
-                                                    </td>
-                                                </tr>
-                                                <input type="hidden" name="row_count" id="row_count" value="2">
-                                            </tbody>
-                                        </table>
-                                        <div class="col-lg-auto">
-                                            <!-- <button type="button" class="btn btn-outline-primary me-2"><i class="bi bi-trash3-fill pe-2"></i>Delete Template</button> -->
-                                            <button type="submit" name="submit" class="btn btn-primary"><i
-                                                    class="bi bi-check-circle-fill pe-2"></i>Save Fields</button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </form>
-                    <?php }
-                } ?>
+                    </form>
+                </div>
             </div>
         </div>
-    </div>
 
-    <?php include 'script.php' ?>
-    <script src="../js/jquery.sortable.js"></script>
-    <script>
-        $(function () {
-            $('.table-sortable tbody').sortable({
-                handle: 'span'
+        <script>
+            $(document).ready(function() {
+
+                // Get the buttons
+                const deleteTemplateButton = document.getElementById('deleteTemplateButton');
+                const saveTemplateButton = document.getElementById('saveTemplateButton');
+
+                // Add click event listener to the save template button
+                saveTemplateButton.addEventListener('click', function() {
+                    // Form Validation
+                    var validateStatus = validateForm();
+                    console.log("Validate status: " + validateStatus);
+
+                    if (validateStatus) {
+                        $.ajax({
+                            url: 'createTemplate.php',
+                            method: 'POST',
+                            data: {
+                                template_name: document.getElementById("templateName")?.value || "",
+                            },
+                            success: function(response) {
+                                // Handle the AJAX success response
+                                console.log(response);
+
+                                window.location.href = "admin_portal_templates.php?createsuccess=true";
+                            },
+                            error: function(error) {
+                                // Handle the AJAX error
+                                console.log(error);
+                            }
+                        });
+                    }
+                });
+
+                // Add field button
+                $("#addRow").click(function() {
+                    var row_count = $('#row_count').val();
+                    row_count++;
+
+                    var row = $('<tr></tr>');
+                    var rowContent = '';
+                    rowContent += '<td><select class="form-select fieldDropdown" aria-label="Default select example">';
+                    rowContent += '<option selected>Select data field</option>';
+                    rowContent += '<option value="Contributor">Contributor</option>';
+                    rowContent += '<option value="Coverage">Coverage</option>';
+                    rowContent += '<option value="Creator">Creator</option>';
+                    rowContent += '<option value="Date">Date</option>';
+                    rowContent += '<option value="Description">Description</option>';
+                    rowContent += '<option value="Format">Format</option>';
+                    rowContent += '<option value="Identifier">Identifier</option>';
+                    rowContent += '<option value="Language">Language</option>';
+                    rowContent += '<option value="Publisher">Publisher</option>';
+                    rowContent += '<option value="Relation">Relation</option>';
+                    rowContent += '<option value="Rights">Rights</option>';
+                    rowContent += '<option value="Source">Source</option>';
+                    rowContent += '<option value="Subject">Subject</option>';
+                    rowContent += '<option value="Title">Title</option>';
+                    rowContent += '</select></td>';
+
+                    // Mandatory field
+                    rowContent += '<td><input class="form-check-input mt-0 me-2" type="checkbox" value="" id="flexCheckDefault">';
+                    rowContent += '<label class="form-check-label" for="flexCheckDefault">Mandatory field</label></td>';
+
+                    // Delete button
+                    rowContent += '<td><button type="button" class="btn btn-outline-danger"><i class="bi bi-trash3-fill pe-2"></i>Delete field</button></td>';
+
+                    row.html(rowContent);
+                    $("tbody").append(row);
+                    $('#row_count').val(row_count);
+                });
+
+                // Delete field button
+                $("#templateFieldTable").on("click", ".btn.btn-outline-danger", function() {
+                    var row_count = $('#row_count').val();
+                    row_count--;
+                    $('#row_count').val(row_count);
+                    $(this).closest("tr").remove();
+                });
+
+                // Add event listener to every new row that is added
+                $("#templateFieldTable").on("change", "select", function() {
+                    // Code to handle select change goes here...
+                });
+
             });
-        });
-    </script>
-    <script>
-        $("#addRow1").click(function () {
-            //Add row
-            row = "";
-            var row_count = $('#row_count').val();
-            row_count++;
-            var field_count = 'field' + row_count;
 
-            row +=
-                '<tr class="draggable-item"><td class="fixed-col"><i class="bi bi-arrows-move pe-2"></i>' + row_count + '</td><td><select class="form-select" name="type[' + row_count + ']" required aria-label="Default select example"><option selected>Select Field Type</option><option value="text">text</option><option value="email">email</option><option value="date">date</option><option value="textarea">textarea</option></select></td><td><select class="form-select" name="title[' + row_count + ']" aria-label="Default select example" required><option value="" selected>Select Field Title</option><option value="Contributor">Contributor</option><option value="Coverage">Coverage</option><option value="Creator">Creator</option><option value="Date">Date</option><option value="Description">Description</option><option value="Format">Format</option><option value="Identifier">Identifier</option><option value="Language">Language</option><option value="Publisher">Publisher</option><option value="Relation">Relation</option><option value="Rights">Rights</option><option value="Source">Source</option><option value="Subject">Subject</option><option value="Title">Title</option><option value="Type">Type</option></select></td><td><input type="text" class="form-control" name="placeholder[' + row_count + ']" placeholder="Enter Placeholder" value="" required></td><!-- Mandatory field --><td><input class="form-check-input mt-0 me-2" name="is_required[ ' +row_coun t +']" type="checkbox" value="1" id="flexCheckDefault"><label class="form-check-label" for="flexCheckDefault">Mandatory field</label></td>';
-            row +=
-                '<td><button type="button" class="btn neutral-outlin-btn deleteRow"><i class="bi bi-trash3-fill pe-2"></i>Delete field</button></td></tr>';
-            $("tbody").append(row);
-            $('#row_count').val(row_count);
-        });
+            function createToast(message) {
+                var toastContainer = document.querySelector('.toast-container');
 
+                var toastElement = document.createElement('div');
+                toastElement.classList.add('toast');
+                toastElement.setAttribute('role', 'alert');
+                toastElement.setAttribute('aria-live', 'assertive');
+                toastElement.setAttribute('aria-atomic', 'true');
 
-        $("#templateFieldTable").on("click", ".deleteRow", function () {
-            var row_count = $('#row_count').val();
-            row_count--;
-            $('#row_count').val(row_count);
-            $(this).closest("tr").remove();
-        });
+                var toastHeader = document.createElement('div');
+                toastHeader.classList.add('toast-header');
 
-    </script>
+                var icon = document.createElement('i');
+                icon.classList.add('bi', 'bi-exclamation-triangle-fill', 'primary-red-darker', 'fs-3', 'pe-2');
+
+                var strong = document.createElement('strong');
+                strong.classList.add('primary-red-darker', 'fs-6', 'me-auto');
+                strong.textContent = 'Warning';
+
+                var closeButton = document.createElement('button');
+                closeButton.type = 'button';
+                closeButton.classList.add('btn-close');
+                closeButton.setAttribute('data-bs-dismiss', 'toast');
+                closeButton.setAttribute('aria-label', 'Close');
+
+                var toastBody = document.createElement('div');
+                toastBody.classList.add('toast-body');
+                toastBody.textContent = message;
+
+                toastHeader.appendChild(icon);
+                toastHeader.appendChild(strong);
+                toastHeader.appendChild(closeButton);
+
+                toastElement.appendChild(toastHeader);
+                toastElement.appendChild(toastBody);
+                toastContainer.appendChild(toastElement);
+
+                var toast = new bootstrap.Toast(toastElement);
+                toastElement.style.display = 'block';
+                toast.show();
+            }
+
+            // Validate form
+            function validateForm() {
+                var templateName = document.getElementById("templateName").value;
+                var isValid = true;
+
+                // Check if record name is empty
+                if (templateName.trim() === "") {
+                    createToast('Template name is required');
+                    isValid = false;
+                    console.log("invalid7");
+                } else {
+                    // Check if record name already exists
+                    checkTemplateName(templateName);
+                }
+
+                // Get all fields
+                var fieldsArray = [];
+                var rows = document.querySelectorAll('table tr');
+                rows.forEach(function(row) {
+                    // Check if option is selected
+                    var templateField = row.querySelector('.form-select').value;
+
+                    if (templateField === 'Select data field') {
+                        createToast('Please choose a field')
+                    } else {
+                        var templateFieldRequired = row.querySelector('.form-check-input').checked ? 1 : 0;
+
+                        var data = {
+                            title: templateField,
+                            is_required: templateFieldRequired
+                        };
+
+                        fieldsArray.push(data);
+                    }
+                });
+
+                console.log(fieldsArray);
+
+                // Return false if validation fails, true if it passes
+                return fieldsArray.length > 0;
+            }
+
+            function checkTemplateName(templateName) {
+                $.ajax({
+                    url: 'getTemplates.php',
+                    method: 'GET',
+                    success: function(response) {
+                        var templateExists = false; // Flag to track if the template name already exists
+
+                        response.templates.forEach(function(template) {
+                            if (template.template_name === templateName) {
+                                templateExists = true;
+                                isValid = false;
+                                return false;
+                            }
+                        });
+
+                        if (templateExists) {
+                            createToast('This template name has been used. Enter new template name.');
+                        } else {
+                            console.log("Template name: " + templateName);
+                        }
+                    }
+                })
+            }
+        </script>
 </body>
 
 

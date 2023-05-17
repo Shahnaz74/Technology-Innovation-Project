@@ -1,8 +1,27 @@
 <?php include 'head.php'; ?>
 
-<?php include 'message.php'; ?>
+<!-- Hide old toast messages -->
+<style>
+    .toast.fade.hide {
+        display: none !important;
+    }
+</style>
 
 <body id="page-top">
+
+    <!-- Toast message -->
+    <div id="toastMsgContainer" aria-live="polite" aria-atomic="true" class="position-relative">
+        <div class="toast-container p-3">
+            <div id="successToastMessage" class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="display: none">
+                <div class="toast-header">
+                    <i class="bi bi-check-circle-fill primary-green-darker fs-3 pe-2"></i>
+                    <strong class="primary-green-darker fs-6 me-auto">Success</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body"></div>
+            </div>
+        </div>
+    </div>
     <div class="wrapper">
 
         <!-- Sidebar  -->
@@ -10,19 +29,7 @@
 
         <!-- Page Content  -->
         <div id="content">
-            <?php if (isset($_GET['delete']) && $_GET['delete'] == true) {
-                $id = $_GET['id'];
-                $select = "DELETE FROM template where id=" . $id;
-                $delete = mysqli_query($conn, $select);
-                if ($delete) {
-                    $_SESSION['message'] = "Template Deleted Successfully";
-                    header('Location:admin_portal_templates.php');
-                } else {
-                    $_SESSION['error'] = "Something went wrong";
-                    header('Location:admin_portal_templates.php');
-                }
-            }
-            ?>
+
             <!-- Topnav -->
             <?php include 'admin_header.php' ?>
 
@@ -34,6 +41,11 @@
                         <h1 class="h3 primary-red mb-0">Templates</h1>
                     </div>
                     <div class="col-lg-auto">
+                        <a href="admin_portal_add_template.php">
+                            <button type="button" class="btn btn-primary"><i class="bi bi-plus-lg pe-2"></i></i>TESTING BUTTON</button></a>
+                    </div>
+
+                    <div class="col-lg-auto">
                         <a href="admin_portal_create_template.php">
                             <button type="button" class="btn btn-primary"><i class="bi bi-plus-lg pe-2"></i></i>Add New
                                 Template</button></a>
@@ -43,67 +55,7 @@
                 <div class="row mx-0">
 
                     <table class="table table-striped table-hover">
-                        <tbody>
-                            <tr>
-                                <th>Template Name</th>
-                                <th>Used Records</th>
-                                <th>Edit</th>
-                                <th>Edit Fields</th>
-                                <th>View Fields</th>
-                                <th>Delete</th>
-                            </tr>
-                            <?php
-                            // if(isset($_GET['id'])){
-                            //     $id = $_GET['id'];
-                            // }
-                            $select2 = "SELECT * FROM template";
-                            $runQuery2 = mysqli_query($conn, $select2);
-                            $rowcount = mysqli_num_rows($runQuery2);
-                            if ($rowcount > 0) {
-                                // echo $rowcount;
-                                // $row1 = mysqli_fetch_assoc($runQuery);
-                                // 
-                                // print_r(mysqli_fetch_assoc($runQuery));
-                                while ($row1 = mysqli_fetch_assoc($runQuery2)) {
-                                    $templatename = $row1['template_name'];
-                                    $select1 = "SELECT * FROM field where 'template_id' =" . $row1['template_id'];
-                                    $runQuery1 = mysqli_query($conn, $select1);
-                                    $rowcount1 = mysqli_num_rows($runQuery1);
-                                    ?>
-                                    <tr class="align-middle">
-                                        <th scope="row" width="25%">
-                                            <p class="recordFileName mb-0"><img src="../img/recordCat_advertisment.svg"
-                                                    alt="Custom SVG" class="pe-1"><?php echo !empty($templatename) ? $templatename : ''; ?></p>
-                                        </th>
-                                        <td class="recordCategory">Used in <span>10</span> Records</td>
-                                        <td><!--  <button type="button" class="btn neutral-outlin-btn me-lg-2"><i class="fas fa-copy pe-2"></i>Duplicate Template</button> -->
-                                            <button type="button" class="btn neutral-outlin-btn me-lg-2"><a
-                                                    href="admin_portal_edit_template.php?id=<?php echo $row1['template_id']; ?>&edit=<?php echo 'template_edit'; ?>">
-                                                    <i class="bi bi-pencil-fill pe-2"></i>Edit
-                                                </a></button>
-                                        </td>
-                                        <?php if ($rowcount1 > 0) { ?>
-                                            <td><button type="button" class="btn neutral-outlin-btn me-lg-2"><a
-                                                        href="admin_portal_edit_template.php?id=<?php echo $row1['template_id']; ?>&edit=<?php echo 'field_edit'; ?>">
-                                                        <i class="bi bi-pencil-fill pe-2"></i>Edit Fields
-                                                    </a></button></td>
-                                        <?php } else if ($rowcount1 == 0) { ?>
-                                                <td><button type="button" class="btn neutral-outlin-btn me-lg-2"><a
-                                                            href="admin_portal_create_template.php?id=<?php echo $row1['template_id']; ?>&edit=<?php echo 'add_fields'; ?>">
-                                                            <i class="bi bi-pencil-fill pe-2"></i>Add Fields
-                                                        </a></button></td>
-                                        <?php } ?>
-                                        <td><button type="button" class="btn neutral-outlin-btn me-lg-2"><a
-                                                    href="admin_portal_fields.php?id=<?php echo $row1['template_id']; ?>">
-                                                    <i class="bi bi-pencil-fill pe-2"></i>View Fields
-                                                </a></button></td>
-                                        <td><a href="admin_portal_templates.php?id=<?php echo $row1['template_id']; ?>&delete=<?php echo 'true'; ?>"
-                                                onclick="return confirm('Are you sure you want to delete this template?')"><button
-                                                    type="button" class="btn neutral-outlin-btn"><i
-                                                        class="bi bi-trash3-fill pe-2"></i>Delete</button></a></td>
-                                    </tr>
-                                <?php }
-                            } ?>
+                        <tbody id="tab-panel-tbody">
                         </tbody>
                     </table>
                 </div>
@@ -111,8 +63,103 @@
         </div>
     </div>
 
-    <?php include 'script.php' ?>
-</body>
+    <script>
+        $(document).ready(function() {
+            loadTemplateData();
+        })
 
+        // Retrieve the query parameter from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const deleteSuccessParam = urlParams.get('deletesuccess');
+
+        // THIS IS NOT WORKING!!! NEED TO FIX
+        if (deleteSuccessParam === 'true') {
+            var successToastMessage = document.getElementById('successToastMessage');
+            var toast = new bootstrap.Toast(successToastMessage);
+            successToastMessage.style.display = 'block';
+            var toastBody = document.querySelector('.toast-body');
+            toastBody.textContent = "Template deleted successfully.";
+            toast.show();
+        }
+
+        function loadTemplateData() {
+            $.ajax({
+                url: 'getTemplates.php',
+                method: 'GET',
+                success: function(response) {
+                    // Handle the AJAX success response
+                    console.log("Templates: " + response);
+
+                    // Clear the existing content body
+                    $('#tab-panel-tbody').empty();
+
+                    // Loop through the uploads in the response
+                    response.templates.forEach(function(template) {
+                        // Create a new row element for published items
+                        var newRow = $('<tr class="align-middle"></tr>');
+                        var rowContent = '';
+                        rowContent += '<th scope="row" width="60%">';
+                        rowContent += '<p class="recordFileName mb-0"><img src="../img/recordCat_advertisment.svg" alt="Custom SVG" class="pe-1"> ' + template.template_name + '</p>';
+                        rowContent += '</th>';
+
+                        rowContent += '<td>';
+                        rowContent += '<button type="button" class="btn neutral-outlin-btn me-lg-2" onclick="editTemplate(\'' + template.template_name + '\')"><i class="bi bi-pencil-fill pe-2"></i>Edit</button>';
+                        rowContent += '</td>';
+
+                        rowContent += '<td>';
+                        rowContent += '<button type="button" class="btn neutral-outlin-btn delete-upload-btn" data-upload-id="' + template.template_name + '" onclick="deleteTemplate(\'published\',' + template.template_name + ')"><i class="bi bi-trash3-fill pe-2"></i>Delete</button>';
+                        rowContent += '</td>';
+
+                        newRow.html(rowContent);
+                        $('#tab-panel-tbody').append(newRow);
+                    });
+
+                },
+                error: function(error) {
+                    // Handle the AJAX error
+                    console.log(error);
+                }
+            });
+        }
+
+        function editTemplate(template_name) {
+            console.log("edit: " + template_name);
+            window.location.href = "admin_portal_edit_template.php?template_name=" + template_name;
+        }
+
+        function deleteTemplate(status, template_name) {
+            console.log("delete: " + template_name);
+
+            $.ajax({
+                url: 'removeTemplate.php',
+                method: 'GET',
+                data: {
+                    template_name: template_name
+                },
+                success: function(response) {
+                    // Handle the AJAX success response
+                    console.log("deleted " + status + ": " + response);
+                    loadTemplateData();
+                    showDeleteSuccessPopup();
+                },
+                error: function(error) {
+                    // Handle the AJAX error
+                    console.log(error);
+                }
+            });
+        }
+
+        function showDeleteSuccessPopup() {
+            var successToastMessage = document.getElementById('successToastMessage');
+
+            var toastBody = document.querySelector('.toast-body');
+            toastBody.textContent = "Template deleted successfully";
+
+            var toast = new bootstrap.Toast(successToastMessage);
+            successToastMessage.style.display = 'block';
+            toast.show();
+        }
+    </script>
+</body>
 
 </html>
