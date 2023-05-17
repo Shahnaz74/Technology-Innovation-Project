@@ -1,6 +1,6 @@
 <?php
     require_once('../databaseConfig.php');
-    
+
     // Parse the PUT request body
     parse_str(file_get_contents("php://input"), $_PUT);
 
@@ -28,6 +28,9 @@
     // Update template icon if provided
     if (isset($_PUT['template_icon'])) {
         $templateIcon = $_PUT['template_icon'];
+        if ($templateIcon === "") {
+            $templateIcon = null;
+        }
         $updateTemplateIconQuery = "UPDATE template SET template_icon = '$templateIcon' WHERE template_name = '$templateName'";
         $conn->query($updateTemplateIconQuery);
     }
@@ -77,16 +80,23 @@
                 "is_required" => $row['is_required']
             );
         }
+    }
 
-        // Prepare the response data
-        $responseData = array(
-            "template_name" => $templateData['template_name'],
-            "template_icon" => $templateData['template_icon'],
-            "fields" => $updatedFields
-        );
+    // Prepare the response data
+    $responseData = array(
+        "template_name" => $templateData['template_name'],
+        "template_icon" => $templateData['template_icon'],
+        "fields" => $updatedFields
+    );
 
-        // Return the response as JSON
-        http_response_code(200);
-        echo json_encode(array("message" => "Template has been updated", "data" => $responseData));
+    // Replace empty strings with null values in the response data
+    foreach ($responseData as $key => $value) {
+        if ($value === "") {
+            $responseData[$key] = null;
+        }
+    }
+
+    // Return the response as JSON
+    http_response_code(200);
+    echo json_encode(array("message" => "Template has been updated", "data" => $responseData));
 ?>
-
