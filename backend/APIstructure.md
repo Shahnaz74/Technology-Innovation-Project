@@ -111,7 +111,7 @@ E.g
 
 
 ## templates/editTemplates.php
-### PUT based on the template_name, edit a template data, including name, icon and fields related to the template using fields. The added fields are taken from field table. Relate the field to the template through fields_in_template table
+### PUT based on the template_name, edit a template data, including name, icon and fields related to the template. The added fields are taken from field table. Relate the field to the template through creating new rows in fields_in_template table
 
 #### PARAMS 
 template_name

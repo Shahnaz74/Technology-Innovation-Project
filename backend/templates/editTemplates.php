@@ -35,30 +35,21 @@
         $conn->query($updateTemplateIconQuery);
     }
 
-    // Update template fields if provided
+    // Delete existing fields in the fields_in_template table related to the template
+    $deleteFieldsInTemplateQuery = "DELETE FROM fields_in_template WHERE template_id = (SELECT template_id FROM template WHERE template_name = '$templateName')";
+    $conn->query($deleteFieldsInTemplateQuery);
+
+    // Insert fields into the fields_in_template table
     if (isset($_PUT['fields'])) {
         $fields = $_PUT['fields'];
 
-        // Get existing field names from the field table
-        $existingFieldNamesQuery = "SELECT name FROM field";
-        $existingFieldNamesResult = $conn->query($existingFieldNamesQuery);
-        $existingFieldNames = array();
-
-        while ($row = $existingFieldNamesResult->fetch_assoc()) {
-            $existingFieldNames[] = $row['name'];
-        }
-
-        // Update existing fields and ignore new fields
         foreach ($fields as $field) {
             $fieldName = $field['name'];
             $isRequired = $field['is_required'];
 
-            // Check if the field already exists in the field table
-            if (in_array($fieldName, $existingFieldNames)) {
-                // Update the existing field in the fields_in_template table
-                $updateFieldInTemplateQuery = "UPDATE fields_in_template SET is_required = '$isRequired' WHERE field_id = (SELECT field_id FROM field WHERE name = '$fieldName') AND template_id = (SELECT template_id FROM template WHERE template_name = '$templateName')";
-                $conn->query($updateFieldInTemplateQuery);
-            }
+            // Insert new field into the fields_in_template table
+            $insertFieldInTemplateQuery = "INSERT INTO fields_in_template (is_required, template_id, field_id) SELECT '$isRequired', (SELECT template_id FROM template WHERE template_name = '$templateName'), field_id FROM field WHERE name = '$fieldName'";
+            $conn->query($insertFieldInTemplateQuery);
         }
     }
 
@@ -88,6 +79,7 @@
         "template_icon" => $templateData['template_icon'],
         "fields" => $updatedFields
     );
+
 
     // Replace empty strings with null values in the response data
     foreach ($responseData as $key => $value) {
