@@ -175,23 +175,8 @@ if (isset($_GET['data'])) {
     <?php include "footer.php" ?>
     <script>
         $(document).ready(function () {
-            var prefillData = <?php echo isset($_GET["data"]) ? $_GET["data"] : "null"; ?>;
-
-            if (prefillData !== null) {
-                // Use prefillData in your JavaScript functions
-                console.log(prefillData);
-                // prefill if back from preview page
-                setValue('documentType', prefillData.template_name);
-                var documentTypeSelect = document.getElementById("documentType");
-                if ("createEvent" in document) {
-                    var event = document.createEvent("HTMLEvents");
-                    event.initEvent("change", false, true);
-                    documentTypeSelect.dispatchEvent(event);
-
-                } else {
-                    documentTypeSelect.fireEvent("onchange");
-                }
-            }
+            // Get document type list
+            getDropdownList()
 
             // Get the button
             const sumbitButton = document.getElementById('sumbitRecordBtn');
@@ -280,12 +265,6 @@ if (isset($_GET['data'])) {
                 $('#uploaded-area').hide();
                 filePreview.firstChild.setAttribute('src', '');
             });
-
-            // Get keyword list
-            getKeywordList(prefillData);
-
-            // Get document type list
-            getDropdownList()
         });
 
         function prefillForm(prefillData) {
@@ -358,6 +337,28 @@ if (isset($_GET['data'])) {
                         documentTypeOption.value = template.template_name;
                         documentTypeList.add(documentTypeOption);
                     });
+
+                    var prefillData = <?php echo isset($_GET["data"]) ? $_GET["data"] : "null"; ?>;
+
+                    if (prefillData !== null) {
+                        // Use prefillData in your JavaScript functions
+                        console.log(prefillData);
+                        // prefill if back from preview page
+                        setValue('documentType', prefillData.template_name);
+                        var documentTypeSelect = document.getElementById("documentType");
+                        if ("createEvent" in document) {
+                            var event = document.createEvent("HTMLEvents");
+                            event.initEvent("change", false, true);
+                            documentTypeSelect.dispatchEvent(event);
+
+                        } else {
+                            documentTypeSelect.fireEvent("onchange");
+                        }
+
+                        // Get keyword list
+                        getKeywordList(prefillData);
+                    }
+
                 }
             });
         }

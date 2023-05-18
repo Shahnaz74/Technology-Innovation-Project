@@ -52,10 +52,14 @@ if (isset($_GET['data'])) {
                     $html .= '<h4 id="titlecontainer" class="primary-red text-wrap text-break serif">' . $docTitle . '</h4>';
 
                     // Document description
-                    $html .= '<div id="desccontainer">' . $description . '</div>';
+                    if (!empty($description)) {
+                        $html .= '<div id="desccontainer">' . $description . '</div>';
+                    }
 
                     // Document publish date
-                    $html .= '<div id="publishdatecontainer" class="pb-4">Published at ' . $publishDate . '</div>';
+                    if (!empty($publishDate)) {
+                        $html .= '<div id="publishdatecontainer" class="pb-4">Published at ' . $publishDate . '</div>';
+                    }
 
                     // Document preview
                     if (strtolower($previewImageFormat) === "jpg" || strtolower($previewImageFormat) === "png") {
