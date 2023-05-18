@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 18, 2023 at 04:20 AM
+-- Generation Time: May 18, 2023 at 06:04 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -179,12 +179,8 @@ INSERT INTO `fields_in_template` (`fit_id`, `is_required`, `template_id`, `field
 (90, 0, 10, 1, '2023-05-13 06:34:34', '2023-05-13 06:34:34'),
 (91, 0, 10, 12, '2023-05-13 06:34:34', '2023-05-13 06:34:34'),
 (92, 1, 10, 9, '2023-05-13 06:34:34', '2023-05-13 06:34:34'),
-(93, 0, 10, 5, '2023-05-13 06:34:34', '2023-05-13 06:34:34'),
+(93, 0, 10, 5, '2023-05-13 06:34:34', '2023-05-13 06:34:34');
 (100, 1, 14, 3, '2023-05-18 02:20:01', '2023-05-18 02:20:01'),
-(101, 0, 14, 13, '2023-05-18 02:20:01', '2023-05-18 02:20:01'),
-(102, 0, 14, 10, '2023-05-18 02:20:01', '2023-05-18 02:20:01'),
-(103, 0, 14, 14, '2023-05-18 02:20:01', '2023-05-18 02:20:01'),
-(104, 0, 14, 4, '2023-05-18 02:20:01', '2023-05-18 02:20:01');
 
 -- --------------------------------------------------------
 
@@ -202,15 +198,6 @@ CREATE TABLE `keyword` (
 --
 
 INSERT INTO `keyword` (`keyword_id`, `keyword`) VALUES
-(1, 'keyword1'),
-(2, 'keyword2'),
-(3, 'keyword3'),
-(4, 'keyword4'),
-(5, 'keyword5'),
-(6, 'keyword6'),
-(7, 'keyword7'),
-(8, 'keyword8'),
-(9, 'keyword9'),
 (10, 'LR1'),
 (11, 'LR2'),
 (12, 'P3'),
@@ -235,11 +222,6 @@ CREATE TABLE `keyword_upload` (
 --
 
 INSERT INTO `keyword_upload` (`keyword_upload_id`, `upload_id`, `keyword_id`) VALUES
-(1, 1, 1),
-(2, 1, 2),
-(3, 2, 5),
-(4, 2, 6),
-(5, 2, 7),
 (8, 11, 10),
 (9, 12, 10),
 (10, 13, 10),
@@ -274,16 +256,7 @@ INSERT INTO `keyword_upload` (`keyword_upload_id`, `upload_id`, `keyword_id`) VA
 (41, 34, 14),
 (42, 38, 15),
 (43, 39, 15),
-(70, 3, 3),
-(71, 3, 4),
 (72, 5, 12),
-(77, 47, 1),
-(78, 47, 2),
-(79, 48, 1),
-(80, 48, 2),
-(81, 49, 2),
-(86, 50, 1),
-(87, 50, 2),
 (89, 4, 12);
 
 -- --------------------------------------------------------
@@ -314,8 +287,7 @@ INSERT INTO `template` (`template_id`, `template_name`, `template_icon`, `create
 (7, 'Photograph Commercial', NULL, '2023-05-10 01:42:56', '2023-05-10 01:42:56'),
 (8, 'Photograph Personal', NULL, '2023-05-10 01:42:56', '2023-05-10 01:42:56'),
 (9, 'Sales Brochure', NULL, '2023-05-10 01:42:56', '2023-05-10 01:42:56'),
-(10, 'Sales Record', NULL, '2023-05-10 01:42:56', '2023-05-10 01:42:56'),
-(14, 'asdasd', '', '2023-05-18 02:20:01', '2023-05-18 02:20:01');
+(10, 'Sales Record', NULL, '2023-05-10 01:42:56', '2023-05-10 01:42:56');
 
 -- --------------------------------------------------------
 
@@ -351,7 +323,7 @@ CREATE TABLE `user_uploads` (
   `coverage` char(200) DEFAULT NULL,
   `creator` char(200) DEFAULT NULL,
   `date` date DEFAULT NULL,
-  `description` char(200) DEFAULT NULL,
+  `description` varchar(2000) DEFAULT NULL,
   `format` char(200) DEFAULT NULL,
   `identifier` char(200) DEFAULT NULL,
   `language` char(200) DEFAULT NULL,
@@ -374,9 +346,6 @@ CREATE TABLE `user_uploads` (
 --
 
 INSERT INTO `user_uploads` (`upload_id`, `file_name`, `file`, `contributor`, `coverage`, `creator`, `date`, `description`, `format`, `identifier`, `language`, `publisher`, `relation`, `rights`, `source`, `title`, `first_name`, `last_name`, `email`, `upload_status`, `template_id`, `created`, `updated`) VALUES
-(1, 'sample_file1', 'path/to/sample_file.pdf', 'Harry Potter', NULL, 'Harry Potter', '2022-01-01', NULL, 'PDF', '12345', 'English', 'Random Publishing', NULL, 'All Rights Reserved', 'https://example.com', 'Sample File', 'Harry', 'Potter', 'harry@example.com', 1, 1, '2023-05-10 01:42:56', '2023-05-10 01:42:56'),
-(2, 'sample_file2', 'path/to/sample_file.pdf', NULL, NULL, NULL, NULL, NULL, 'PDF', '12345', 'Mandarin', 'Random Publishing', NULL, 'All Rights Reserved', NULL, 'Sample File', 'Creator2', 'Creator2', 'creator2@example.com', 1, 2, '2023-05-10 01:42:56', '2023-05-10 01:42:56'),
-(3, 'path/to/sample_file.pdf', 'path/to/sample_file.pdf', NULL, NULL, 'deded', '2023-05-14', NULL, 'PDF', '12345', NULL, NULL, NULL, NULL, NULL, 'Sample File e', 'Creator3', 'Creator3', 'harry@example.com', 3, 3, '2023-05-10 01:42:56', '2023-05-10 01:42:56'),
 (4, 'http://localhost/Technology-innovation/client-records/AJ_P3_IntroducingTheRoverSixtyAndSeventyFive_TheMotor_18Feb1948_p20.jpg', 'http://localhost/Technology-innovation/client-records/AJ_P3_IntroducingTheRoverSixtyAndSeventyFive_TheMotor_18Feb1948_p20.jpg', NULL, NULL, NULL, '1948-02-18', NULL, 'JPG', 'p20', 'English', 'The Motor', NULL, NULL, NULL, 'Introducing The Rover Sixty And Seventy Five', 'RCCA', 'Admin', 'secretary.rcca@gmail.com', 3, 1, '2023-05-10 06:41:04', '2023-05-10 06:41:04'),
 (5, 'http://localhost/Technology-innovation/client-records/AJ_P3_TopMechanicalQuality_TheMotor_11May1949_p26.jpg', 'http://localhost/Technology-innovation/client-records/AJ_P3_TopMechanicalQuality_TheMotor_11May1949_p26.jpg', NULL, NULL, NULL, '1949-05-11', NULL, 'JPG', 'p26', 'English', 'The Motor', NULL, NULL, NULL, 'Top Mechanical Quality', 'RCCA', 'Admin', 'secretary.rcca@gmail.com', 3, 1, '2023-05-10 06:41:04', '2023-05-10 06:41:04'),
 (6, 'AJ_P4_ItsAReliefToDriveARover_TheMotor_24Aug1955_p43.jpg', 'http://localhost/Technology-innovation/client-records/AJ_P4_ItsAReliefToDriveARover_TheMotor_24Aug1955_p43.jpg', NULL, NULL, NULL, '1955-08-24', NULL, 'JPG', 'p43', 'English', 'The Motor', NULL, NULL, NULL, 'It’s a Relief To Drive A Rover', 'RCCA', 'Admin', 'secretary.rcca@gmail.com', 2, 1, '2023-05-10 06:41:04', '2023-05-10 06:41:04'),
@@ -412,11 +381,7 @@ INSERT INTO `user_uploads` (`upload_id`, `file_name`, `file`, `contributor`, `co
 (36, 'SB_LR1_Land-Rover-80-Inch-Regent-Motors-Brochure-1949-PDF.pdf', 'http://localhost/Technology-innovation/client-records/SB_LR1_Land-Rover-80-Inch-Regent-Motors-Brochure-1949-PDF.pdf', NULL, NULL, NULL, '1949-01-01', NULL, 'PDF', NULL, 'English', 'Regent Motors', NULL, NULL, NULL, '80 Inch Regent Motors Brochure', 'RCCA', 'Admin', 'secretary.rcca@gmail.com', 2, 9, '2023-05-10 06:41:04', '2023-05-10 06:41:04'),
 (37, 'SB_LR2_Land Rover_US Series II_1964.pdf', 'http://localhost/Technology-innovation/client-records/SB_LR2_Land Rover_US Series II_1964.pdf', NULL, 'United States', NULL, '1964-01-01', NULL, 'PDF', NULL, 'English', NULL, NULL, NULL, NULL, 'US Series II', 'RCCA', 'Admin', 'secretary.rcca@gmail.com', 2, 9, '2023-05-10 06:41:04', '2023-05-10 06:41:04'),
 (38, 'SB_RR_5-range-rover-brochure-australia-may-1982.pdf', 'http://localhost/Technology-innovation/client-records/SB_RR_5-range-rover-brochure-australia-may-1982.pdf', NULL, 'Australia', NULL, '1982-05-01', NULL, 'PDF', NULL, 'English', NULL, NULL, NULL, NULL, 'RR5 Range Rover Brochure', 'RCCA', 'Admin', 'secretary.rcca@gmail.com', 2, 9, '2023-05-10 06:41:04', '2023-05-10 06:41:04'),
-(39, 'SB_RR_6-range-rover-brochure-australia-1-3-1987.pdf', 'http://localhost/Technology-innovation/client-records/SB_RR_6-range-rover-brochure-australia-1-3-1987.pdf', NULL, 'Australia', NULL, '1987-01-01', NULL, 'PDF', NULL, 'English', NULL, NULL, NULL, NULL, 'RR6 Range Rover Brochure', 'RCCA', 'Admin', 'secretary.rcca@gmail.com', 2, 9, '2023-05-10 06:41:04', '2023-05-10 06:41:04'),
-(47, 'Install_phpMyAdmin_OCI.pdf', 'http://localhost/Technology-innovation/client-records/Install_phpMyAdmin_OCI.pdf', '', 'prefillData2', '', '2023-05-15', '', '', 'prefillData2', '', 'prefillData2', '', '', '', 'prefillData2', 'prefillData2', 'prefillData2', 'prefillData2@gmail.com', 1, 1, '2023-05-14 19:22:46', '2023-05-14 19:22:46'),
-(48, 'Install_phpMyAdmin_OCI.pdf', 'http://localhost/Technology-innovation/client-records/Install_phpMyAdmin_OCI.pdf', '', '', 'efefe', '2023-05-15', '', '', '', '', '', '', '', '', 'efefe', 'efefe', 'efefe', 'efefe', 1, 6, '2023-05-14 19:33:08', '2023-05-14 19:33:08'),
-(49, 'COS80001 Assignment 2.pdf', 'http://localhost/Technology-innovation/client-records/COS80001 Assignment 2.pdf', '', '', '', '2023-05-15', '', '', '', '', '', '', '', '', 'test123', 'test123', 'test123', 'test123test123test123', 1, 1, '2023-05-15 03:46:40', '2023-05-15 03:46:40'),
-(50, 'http://localhost/Technology-innovation/client-records/report.pdf', 'http://localhost/Technology-innovation/client-records/report.pdf', NULL, NULL, 'testtest', '2023-05-16', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'testtest', '', '', '', 3, 6, '2023-05-16 12:55:04', '2023-05-16 12:55:04');
+(39, 'SB_RR_6-range-rover-brochure-australia-1-3-1987.pdf', 'http://localhost/Technology-innovation/client-records/SB_RR_6-range-rover-brochure-australia-1-3-1987.pdf', NULL, 'Australia', NULL, '1987-01-01', NULL, 'PDF', NULL, 'English', NULL, NULL, NULL, NULL, 'RR6 Range Rover Brochure', 'RCCA', 'Admin', 'secretary.rcca@gmail.com', 2, 9, '2023-05-10 06:41:04', '2023-05-10 06:41:04');
 
 --
 -- Indexes for dumped tables
@@ -508,7 +473,7 @@ ALTER TABLE `keyword`
 -- AUTO_INCREMENT for table `keyword_upload`
 --
 ALTER TABLE `keyword_upload`
-  MODIFY `keyword_upload_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
+  MODIFY `keyword_upload_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
 
 --
 -- AUTO_INCREMENT for table `template`
@@ -520,7 +485,7 @@ ALTER TABLE `template`
 -- AUTO_INCREMENT for table `user_uploads`
 --
 ALTER TABLE `user_uploads`
-  MODIFY `upload_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `upload_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- Constraints for dumped tables
