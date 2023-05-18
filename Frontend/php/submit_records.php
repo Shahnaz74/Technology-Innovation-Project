@@ -52,8 +52,7 @@ if (isset($_GET['data'])) {
                     <form class="needs-validation" novalidate>
                         <!-- Record name -->
                         <div class="mb-4">
-                            <label for="recordName" class="form-label">Record name <span
-                                    class="mandatoryField">*</span></label>
+                            <label for="recordName" class="form-label">Record name <span class="mandatoryField">*</span></label>
                             <input type="text" class="form-control" id="recordName" placeholder="" required>
                             <div class="invalid-feedback">
                                 Record name is required
@@ -62,11 +61,10 @@ if (isset($_GET['data'])) {
 
                         <!-- Document type -->
                         <div class="col-md-6 mb-4">
-                            <label for="documentType" class="form-label">Document type <span
-                                    class="mandatoryField">*</span></label>
+                            <label for="documentType" class="form-label">Document type <span class="mandatoryField">*</span></label>
                             <select class="form-select" id="documentType" required onchange="generateForm()">
                                 <option selected disabled value="">Choose...</option>
-                                <option>Advertisement Journal</option>
+                                <!-- <option>Advertisement Journal</option>
                                 <option>Advertisement Newspaper</option>
                                 <option>Article Journal</option>
                                 <option>Article Newspaper
@@ -81,7 +79,7 @@ if (isset($_GET['data'])) {
                                 <option>Sales Brochure
                                 </option>
                                 <option>Sales Record
-                                </option>
+                                </option> -->
                             </select>
                             <div class="invalid-feedback">
                                 Please select document type.
@@ -90,17 +88,14 @@ if (isset($_GET['data'])) {
 
                         <!-- File upload -->
                         <div class="fileUpload container mb-4 px-0">
-                            <label for="documentType" class="form-label">File upload <span
-                                    class="mandatoryField">*</span></label>
+                            <label for="documentType" class="form-label">File upload <span class="mandatoryField">*</span></label>
                             <div id="uploadFileContainer">
                                 <!-- Drag and drop file upload area -->
                                 <div id="drop-area" class="col-md-6 col-md-offset-3 py-5">
                                     <img src="../img/fileUpload.svg" class="pb-2" alt="">
-                                    <h5 id="drop-hint" class="serif pb-2">Drag & drop files or <a href="#"
-                                            id="browse-btn">Browse</a></h5>
+                                    <h5 id="drop-hint" class="serif pb-2">Drag & drop files or <a href="#" id="browse-btn">Browse</a></h5>
                                     <p id="drop-subhint">Supported formats: JPEG, PNG, PDF</p>
-                                    <input type="file" id="file-input" accept=".jpg, .jpeg, .png, .pdf"
-                                        style="display:none;">
+                                    <input type="file" id="file-input" accept=".jpg, .jpeg, .png, .pdf" style="display:none;">
                                     <p id="drop-subhint" class="primary-red">File size limit: 2MB</p>
                                     <!-- <div class="row" id="thumbnails"></div> -->
                                 </div>
@@ -108,8 +103,7 @@ if (isset($_GET['data'])) {
                                 <!-- Uploaded file preview -->
                                 <div id="uploaded-area">
                                     <div class="input-group mb-3">
-                                        <input id="uploaded-file-name" type="text" class="form-control" placeholder=""
-                                            aria-label="" aria-describedby="basic-addon2">
+                                        <input id="uploaded-file-name" type="text" class="form-control" placeholder="" aria-label="" aria-describedby="basic-addon2">
                                         <button class="input-group-text deleteFileUpload" id="basic-addon2">
                                             <i class="bi bi-trash3-fill pe-2"></i>
                                             Delete file
@@ -140,21 +134,18 @@ if (isset($_GET['data'])) {
                         <div class="row">
                             <!-- First Name -->
                             <div class="col-lg-6 mb-4">
-                                <label for="firstNameField" class="form-label">First Name <span
-                                        class="mandatoryField">*</span></label>
+                                <label for="firstNameField" class="form-label">First Name <span class="mandatoryField">*</span></label>
                                 <input type="text" class="form-control" id="firstNameField" placeholder="">
                             </div>
 
                             <!-- Last Name -->
                             <div class="col-lg-6 mb-4">
-                                <label for="lastNameField" class="form-label">Last Name <span
-                                        class="mandatoryField">*</span></label>
+                                <label for="lastNameField" class="form-label">Last Name <span class="mandatoryField">*</span></label>
                                 <input type="text" class="form-control" id="lastNameField" placeholder="">
                             </div>
                         </div>
                         <div class="mb-4">
-                            <label for="emailField" class="form-label">Email <span
-                                    class="mandatoryField">*</span></label>
+                            <label for="emailField" class="form-label">Email <span class="mandatoryField">*</span></label>
                             <input type="text" class="form-control" id="emailField" placeholder="">
                         </div>
                         <div class="mb-4">
@@ -174,7 +165,7 @@ if (isset($_GET['data'])) {
     <!-- footer -->
     <?php include "footer.php" ?>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             var prefillData = <?php echo isset($_GET["data"]) ? $_GET["data"] : "null"; ?>;
 
             if (prefillData !== null) {
@@ -197,7 +188,7 @@ if (isset($_GET['data'])) {
             const sumbitButton = document.getElementById('sumbitRecordBtn');
 
             // Add click event listener to the publish button
-            sumbitButton.addEventListener('click', function () {
+            sumbitButton.addEventListener('click', function() {
                 // Form Validation
                 var validateStatus = validateForm();
                 console.log(validateStatus);
@@ -282,6 +273,9 @@ if (isset($_GET['data'])) {
 
             // Get keyword list
             getKeywordList(prefillData);
+
+            // Get document type list
+            getDropdownList()
         });
 
         function prefillForm(prefillData) {
@@ -317,7 +311,6 @@ if (isset($_GET['data'])) {
             window.location.href = 'submit_records_preview.php?data=' + encodeURIComponent(JSON.stringify(data));
         }
 
-
         function handleFile(file) {
             // check file type
             const allowedTypes = ['image/jpeg', 'image/png', 'application/pdf'];
@@ -330,7 +323,7 @@ if (isset($_GET['data'])) {
             // Do something with the file, like upload it to a server
             console.log(file);
             var reader = new FileReader();
-            reader.onload = function (event) {
+            reader.onload = function(event) {
                 $('#uploaded-file-name').val(file.name);
                 var thumbnail = '<div class="col-lg-4 mb-4"><div class="card"><img class="card-img-top" src="' + event.target.result + '"></div></div>';
                 $('#filePreview').html(thumbnail);
@@ -338,12 +331,33 @@ if (isset($_GET['data'])) {
             reader.readAsDataURL(file);
         }
 
+        function getDropdownList() {
+            var documentTypeList = document.getElementById("documentType");
+
+            var getdocumentTypeList = $.ajax({
+                url: 'getTemplates.php',
+                method: 'GET',
+                success: function(response) {
+                    // Handle the AJAX success response
+                    console.log(response);
+
+                    response.templates.forEach(template => {
+                        // console.log(template .template_name);
+                        var documentTypeOption = document.createElement("option");
+                        documentTypeOption.text = template.template_name;
+                        documentTypeOption.value = template.template_name;
+                        documentTypeList.add(documentTypeOption);
+                    });
+                }
+            });
+        }
+
         function getKeywordList(prefillData) {
             var keywordList = document.getElementById("subjectKeyword");
             var getKeywordList = $.ajax({
                 url: 'getKeyword.php',
                 method: 'GET',
-                success: function (response) {
+                success: function(response) {
                     // Handle the AJAX success response
                     console.log(response);
 
@@ -374,7 +388,7 @@ if (isset($_GET['data'])) {
 
                     MultiselectDropdown(window.MultiselectDropdownOptions);
                 },
-                error: function (error) {
+                error: function(error) {
                     // Handle the AJAX error
                     console.log(error);
                 }
@@ -392,7 +406,7 @@ if (isset($_GET['data'])) {
                 data: {
                     template_name: documentType
                 },
-                success: function (response) {
+                success: function(response) {
                     // Handle the AJAX success response
                     console.log(response);
 
@@ -695,7 +709,8 @@ if (isset($_GET['data'])) {
                                 divElement.appendChild(labelElement);
                                 divElement.appendChild(inputElement);
                                 break;
-                            default: break;
+                            default:
+                                break;
                         }
                         container.appendChild(divElement);
                     });
@@ -707,7 +722,7 @@ if (isset($_GET['data'])) {
                     }
 
                 },
-                error: function (error) {
+                error: function(error) {
                     // Handle the AJAX error
                     console.log(error);
                 }
@@ -865,7 +880,6 @@ if (isset($_GET['data'])) {
 
             return isValid;
         }
-
     </script>
 
 

@@ -57,7 +57,7 @@
                             <label for="documentType" class="form-label">Document type <span class="mandatoryField">*</span></label>
                             <select class="form-select" id="documentType" required onchange="generateForm()">
                                 <option selected disabled value="">Choose...</option>
-                                <option>Advertisement Journal</option>
+                                <!-- <option>Advertisement Journal</option>
                                 <option>Advertisement Newspaper</option>
                                 <option>Article Journal</option>
                                 <option>Article Newspaper
@@ -72,7 +72,7 @@
                                 <option>Sales Brochure
                                 </option>
                                 <option>Sales Record
-                                </option>
+                                </option> -->
                             </select>
                             <div class="invalid-feedback">
                                 Please select document type.
@@ -109,7 +109,7 @@
                         </div>
 
                         <!-- File keyword -->
-                        <div class="">
+                        <div class="mb-4">
                             <label class="mb-2" for="subjectKeyword">Topic subject</label>
                             <span class="mandatoryField">*</span></label>
                             <div>
@@ -278,6 +278,9 @@
 
             // Get keyword list
             getKeywordList();
+
+            // Get document type list
+            getDropdownList()
         });
 
         function handleFile(file) {
@@ -298,6 +301,27 @@
                 $('#filePreview').html(thumbnail);
             };
             reader.readAsDataURL(file);
+        }
+
+        function getDropdownList() {
+            var documentTypeList = document.getElementById("documentType");
+
+            var getdocumentTypeList = $.ajax({
+                url: 'getTemplates.php',
+                method: 'GET',
+                success: function(response) {
+                    // Handle the AJAX success response
+                    console.log(response);
+
+                    response.templates.forEach(template => {
+                        // console.log(template .template_name);
+                        var documentTypeOption = document.createElement("option");
+                        documentTypeOption.text = template.template_name;
+                        documentTypeOption.value = template.template_name;
+                        documentTypeList.add(documentTypeOption);
+                    });
+                }
+            });
         }
 
         function getKeywordList() {

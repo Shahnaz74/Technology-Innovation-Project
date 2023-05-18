@@ -121,37 +121,38 @@ echo "<script>var template_name = '" . $template_name . "';</script>";
                 saveTemplateButton.addEventListener('click', function() {
                     // Form Validation
                     var validateStatus = validateForm();
-                    // console.log(validateStatus);
+                    console.log(validateStatus);
 
-                    var fieldsArray = getFieldsArray();
-                    var postData = {
-                        template_name: document.getElementById("templateName")?.value || "",
-                        fields: fieldsArray,
-                        template_icon: null,
-                    };
+                    if (validateStatus) {
+                        var fieldsArray = getFieldsArray();
+                        var postData = {
+                            template_name: document.getElementById("templateName")?.value || "",
+                            fields: fieldsArray,
+                            template_icon: null,
+                        };
 
-                    console.log(postData);
+                        console.log(postData);
 
-                    $.ajax({
-                        url: 'editTemplates.php',
-                        method: 'PUT',
-                        data: postData,
-                        success: function(response) {
-                            // Handle the AJAX success response
-                            console.log("postData:", postData);
-                            console.log("response:", response);
+                        $.ajax({
+                            url: 'editTemplates.php',
+                            method: 'PUT',
+                            data: postData,
+                            success: function(response) {
+                                // Handle the AJAX success response
+                                console.log("postData:", postData);
+                                console.log("response:", response);
 
-                            // Parse the JSON response
-                            // var jsonResponse = JSON.parse(response);
+                                // Parse the JSON response
+                                var jsonResponse = JSON.parse(response);
 
-                            // if (jsonResponse.message === "Template has been updated") {
-                            //     window.location.href = "admin_portal_templates.php?updatesuccess=true";
-                            // } else {
-                            //     console.log("Unexpected response: " + response.message);
-                            // }
-                        }
-                    });
-
+                                if (jsonResponse.message === "Template has been updated") {
+                                    window.location.href = "admin_portal_templates.php?updatesuccess=true";
+                                } else {
+                                    console.log("Unexpected response: " + response.message);
+                                }
+                            }
+                        });
+                    }
                 });
 
                 // Add field button
@@ -302,6 +303,7 @@ echo "<script>var template_name = '" . $template_name . "';</script>";
             // Get the fields array from the table rows
             function getFieldsArray() {
                 var fieldsArray = [];
+
                 var rows = document.querySelectorAll('table tr');
                 rows.forEach(function(row) {
                     // Check if option is selected
@@ -322,9 +324,23 @@ echo "<script>var template_name = '" . $template_name . "';</script>";
                 return fieldsArray;
             }
 
+            function checkDuplicateNames(fieldsArray) {
+                var namesArray = fieldsArray.map(function(field) {
+                    return field.name;
+                });
+
+                var duplicateNames = namesArray.filter(function(name, index) {
+                    return namesArray.indexOf(name) !== index;
+                });
+
+                return duplicateNames;
+            }
+
             // Validate form
             function validateForm() {
                 var templateName = document.getElementById("templateName").value;
+                var fieldsArray = getFieldsArray();
+                var duplicateNames = checkDuplicateNames(fieldsArray);
                 var isValid = true;
 
                 function createToast(message) {
@@ -368,6 +384,13 @@ echo "<script>var template_name = '" . $template_name . "';</script>";
                     toastElement.style.display = 'block';
                     toast.show();
                 }
+
+                if (duplicateNames.length > 0) {
+                    createToast('There are duplicated fields');
+                    isValid = false;
+                    console.log("invalid7");
+                }
+                return isValid;
             }
         </script>
 </body>

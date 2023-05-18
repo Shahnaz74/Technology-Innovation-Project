@@ -165,6 +165,11 @@
             });
         }
 
+        function validateTemplate() {
+            // Get all fields including newly created fields
+
+        }
+
         function showDeleteSuccessPopup() {
             var successToastMessage = document.getElementById('successToastMessage');
 

@@ -9,7 +9,6 @@ require_once('databaseConfig.php');
 if (isset($_GET["template_name"])) {
 
     $template_name = $_GET["template_name"];
-
     // Get the template_id of the template to be deleted
     $sql = "SELECT template_id FROM template WHERE template_name = '$template_name'";
     $result = $conn->query($sql);
@@ -24,6 +23,15 @@ if (isset($_GET["template_name"])) {
         exit();
     }
 
+    // Delete all related fields from the fields_in_template table
+    $sql = "DELETE FROM fields_in_template WHERE template_id = $template_id";
+    if ($conn->query($sql) !== TRUE) {
+        // Return error message if deletion from fields_in_template table fails
+        http_response_code(400);
+        echo "Error: " . $conn->error;
+        exit();
+    }
+
     // Delete the template from the template table
     $sql = "DELETE FROM template WHERE template_id = $template_id";
     if ($conn->query($sql) !== TRUE) {
@@ -33,14 +41,7 @@ if (isset($_GET["template_name"])) {
         exit();
     }
 
-    // Delete all related fields from the fields_in_template table
-    $sql = "DELETE FROM fields_in_template WHERE template_id = $template_id";
-    if ($conn->query($sql) !== TRUE) {
-        // Return error message if deletion from fields_in_template table fails
-        http_response_code(400);
-        echo "Error: " . $conn->error;
-        exit();
-    }
+
 
     // Return success message
     http_response_code(200);
