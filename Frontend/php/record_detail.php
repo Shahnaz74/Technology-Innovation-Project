@@ -28,6 +28,11 @@ if (isset($_SESSION["upload_" . $upload_id])) {
                     $description = $jsonObj->description;
                     $publishDate = $jsonObj->date;
                     $previewImageFormat = $jsonObj->format;
+                    if ($previewImageFormat === null) {
+                        // The format value is null
+                        // Retrieve the value from file_name
+                        $previewImageFormat = pathinfo($jsonObj->file_name, PATHINFO_EXTENSION);
+                    }
                     $previewImage = "../client-records/" . $title;
 
                     // Build the HTML structure

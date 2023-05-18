@@ -198,12 +198,15 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                         var selectElement = document.getElementById('subjectKeyword');
                         var selectedValues = Array.from(selectElement.selectedOptions).map(option => option.value);
 
+                        var uploadedFileName = document.getElementById("uploaded-file-name")?.value || "";
+                        var file_name = uploadedFileName ? getFilenameFromURL(uploadedFileName) : "";
+
                         $.ajax({
                             url: 'editUpload.php',
                             method: 'PUT',
                             data: {
                                 upload_id: uploadId,
-                                file_name: document.getElementById("uploaded-file-name")?.value || "",
+                                file_name: file_name,
                                 contributor: document.getElementById("contributor")?.value || "",
                                 coverage: document.getElementById("coverage")?.value || "",
                                 creator: document.getElementById("creator")?.value || "",
@@ -244,12 +247,15 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                     var selectElement = document.getElementById('subjectKeyword');
                     var selectedValues = Array.from(selectElement.selectedOptions).map(option => option.value);
 
+                    var uploadedFileName = document.getElementById("uploaded-file-name")?.value || "";
+                    var file_name = uploadedFileName ? getFilenameFromURL(uploadedFileName) : "";
+
                     $.ajax({
                         url: 'editUpload.php',
                         method: 'PUT',
                         data: {
                             upload_id: uploadId,
-                            file_name: document.getElementById("uploaded-file-name")?.value || "",
+                            file_name: file_name,
                             contributor: document.getElementById("contributor")?.value || "",
                             coverage: document.getElementById("coverage")?.value || "",
                             creator: document.getElementById("creator")?.value || "",
@@ -962,6 +968,15 @@ echo "<script>console.log('upload_id: " . $upload_id . "');</script>";
                 }
             }
             return isValid;
+        }
+
+        function getFilenameFromURL(url) {
+            // Split the URL by slashes '/'
+            const parts = url.split('/');
+            // Get the last part of the URL which should be the filename
+            const filename = parts[parts.length - 1];
+            // Return the filename
+            return filename;
         }
     </script>
 </body>
