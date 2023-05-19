@@ -355,10 +355,9 @@ if (isset($_GET['data'])) {
                             documentTypeSelect.fireEvent("onchange");
                         }
 
-                        // Get keyword list
-                        getKeywordList(prefillData);
                     }
-
+                    // Get keyword list
+                    getKeywordList(prefillData);
                 }
             });
         }
