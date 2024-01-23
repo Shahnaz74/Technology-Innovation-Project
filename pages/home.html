@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,400;0,700;1,400;1,700&family=Roboto:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Bootstrap Icon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+
+    <!-- Font Awesome -->
+    <script src="https://use.fontawesome.com/releases/v6.4.0/js/all.js" crossorigin="anonymous"></script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../css/bootstrap.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/custom-css.css">
+
+    <!-- Bootstrap JS -->
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+
+    <!-- Custom JS -->
+    <script defer src="../js/custom-js.js"></script>
+</head>
+
+<body class="homePage">
+
+    <!-- Top Nav Bar -->
+    <nav id="topnavbar">
+        <div class="navbar navbar-expand-lg navbar-light border-bottom border-danger">
+            <div class="container-fluid d-flex align-items-center px-4">
+                <a href="./home.html"><img src="../img/rcca-logo.png" class="hideInMobile pe-3" width="100px"
+                        alt=""></a>
+                <h5 class="flex-grow-1 primary-neutral-900 serif">Rover Car Club Of Australia - Record Archive</h5>
+
+                <!-- Responsive menu toggler -->
+                <button class="btn btn-primary navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                    aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item primary-red">
+                            <a class="nav-link" href="submit_records.html">Upload</a>
+                        </li>
+                        <li class="nav-item hideInMobile">
+                            <a class="nav-link">|</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="admin_portal_login.html">Admin Portal</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="wrapper">
+        <div class="user-content ">
+            <div class="container-fluid homeHero">
+
+                <!-- Search Form -->
+                <form id="home-search-form" class="row mx-0" action="search_results.html" method="GET">
+                    <!-- Search Bar -->
+                    <!-- <div class="search-area">
+                        <div class="search_field">
+                            <input type="text" class="input" name="query" placeholder="Search">
+                        </div>
+                        <div class="dropdown">
+                            <div class="default_option">All Document Type</div>
+                            <ul>
+                                <li>All</li>
+                                <li>PDF</li>
+                                <li>IMAGE</li>
+                            </ul>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-block sans"><i
+                            class="bi bi-search pe-2"></i>Search</button>
+                    </div> -->
+
+                    <div class="d-flex justify-content-center align-items-center">
+                        <div class="col-md-8">
+                            <div class="d-flex mb-3">
+                                <div class="flex-grow-1">
+                                    <div class="input-group pe-2">
+                                        <input type="text" class="form-control"
+                                            aria-label="Text input with dropdown button">
+                                        <button class="btn btn-light pe-lg-5 dropdown-toggle default_option"
+                                            type="button" data-bs-toggle="dropdown" aria-expanded="false">All Document
+                                            Types</button>
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            <li><a class="dropdown-item" href="#">All</a></li>
+                                            <li><a class="dropdown-item" href="#">PDF</a></li>
+                                            <li><a class="dropdown-item" href="#">IMAGE</a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary homeSearchBtn"><i
+                                        class="bi bi-search pe-2"></i>Search</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Nav Boxes -->
+            <section class="row">
+                <div class="col-sm-2 search-results recordCatAdv">
+                    <h5 class="primary-neutal-100 serif"><img src="../img/recordCat_advertisement_white.svg"
+                            width="64px" alt="Area 1" class="pb-2"><br>Advertisement
+                    </h5>
+                </div>
+                <div class="col-sm-2 search-results recordCatNews">
+                    <h5 class="primary-neutal-100 serif"><img src="../img/recordCat_article_white.svg" width="64px"
+                            alt="Area 1" class="pb-2"><br>Article</h5>
+                </div>
+                <div class="col-sm-2 search-results recordCatBook">
+                    <h5 class="primary-neutal-100 serif"><img src="../img/recordCat_book_white.svg" width="64px"
+                            alt="Area 1" class="pb-2"><br>Book</h5>
+                </div>
+                <div class="col-sm-2 search-results recordCatPhoto">
+                    <h5 class="primary-neutal-100 serif"><img src="../img/recordCat_photos_white.svg" width="64px"
+                            alt="Area 1" class="pb-2"><br>Photograph</h5>
+                </div>
+                <div class="col-sm-2 search-results recordCatSalesBrochure">
+                    <h5 class="primary-neutal-100 serif"><img src="../img/recordCat_sales_brochure_white.svg"
+                            width="64px" alt="Area 1" class="pb-2"><br>Sales
+                        Brochure
+                    </h5>
+                </div>
+                <div class="col-sm-2 search-results recordCatSalesRecord">
+                    <h5 class="primary-neutal-100 serif"><img src="../img/recordCat_sales_records_white.svg"
+                            width="64px" alt="Area 1" class="pb-2"><br>Sales Record
+                    </h5>
+                </div>
+            </section>
+        </div>
+    </div>
+    <!-- footer -->
+    <div class="footer">
+        &copy; 2023 Rover Car Club of Australia
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src=”https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js”
+        integrity=”sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo”
+        crossorigin=”anonymous”></script>
+</body>
+
+</html>
