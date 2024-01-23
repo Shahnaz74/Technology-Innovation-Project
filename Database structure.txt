@@ -1,0 +1,65 @@
+Database structure
+
+template -> table
+id -> int(11) Primary Key Auto Increment
+template_name -> text
+template_icon -> text
+first_name -> text
+published_date -> datetime
+source -> text
+file_description -> text
+created -> timestamp default -> current
+updated -> timestamp
+
+user_uploads -> table
+id -> int(11) Primary Key Auto Increment
+file_name -> text
+document_type -> text
+file -> text
+source -> text
+description -> text
+first_name  -> text 
+last_name -> text
+email -> text
+membership_id -> int(30)
+status -> int(11)
+template_id -> int(11) forign_key
+created -> timestamp
+updated -> timestamp
+
+
+upload_status -> table
+id -> int(11) Primary Key Auto Increment
+name -> text (pending , published , archived)
+
+admin_user -> table
+id -> int(11) Primary Key Auto Increment
+email -> text
+first_name -> text
+last_name -> text
+password -> text
+created -> timestamp
+updated -> timestamp
+
+
+template form 
+insert ipi
+Read api
+edit api
+delete api
+
+
+user upload form 
+insert ipi
+Admin Read api
+Admin edit api
+Admin status change api (to change upload status -> pending, published, archived)
+Admin delete api
+
+User Search
+Read Api to find the keyword  
+
+Admin statistics Api
+to show last week statistics.
+
+
